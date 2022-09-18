@@ -34,10 +34,10 @@ def main():
     parser.add_argument('-o', '--output', type=argparse.FileType('w'), help=output_help)
 
     # List transformation options
-    parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     parser.add_argument('-d', '--dedupe', action='store_true', help='Remove duplicates from the list')
     parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
+    parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
 
     args = parser.parse_args()
 
