@@ -7,6 +7,15 @@ import sys
 file_add = 'fab'
 
 
+def strip_nonalpha(wordList):
+    newList = []
+    for word in wordList:
+        newWord = ''.join([i for i in word if i.isalpha()])
+        if len(newWord) > 0:
+            newList.append(newWord)
+    return newList
+
+
 def upper(wordList):
     return list(line.upper() for line in wordList)
 
@@ -38,6 +47,7 @@ def main():
     parser.add_argument('-d', '--dedupe', action='store_true', help='Remove duplicates from the list')
     parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
     parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
+    parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
 
     args = parser.parse_args()
 
@@ -59,6 +69,10 @@ def main():
         sys.exit()
 
     # Do any text transforms
+    if args.strip:
+        inputWords = strip_nonalpha(inputWords)
+        transformed = True
+
     if args.upper:
         inputWords = upper(inputWords)
         transformed = True
