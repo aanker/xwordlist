@@ -50,7 +50,12 @@ def main():
         inputName = args.input.name
         args.input.close()
 
-    except Exception:
+    except UnicodeDecodeError:
+        print('Sorry, only text files accepted')
+        sys.exit()
+
+    except Exception as e:
+        print('error {}'.format(e))
         sys.exit()
 
     # Do any text transforms
