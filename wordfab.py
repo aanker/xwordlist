@@ -11,6 +11,10 @@ def upper(wordList):
     return list(line.upper() for line in wordList)
 
 
+def lower(wordList):
+    return list(line.lower() for line in wordList)
+
+
 def alphabetize(wordList):
     return sorted(wordList)
 
@@ -28,6 +32,7 @@ def main():
     # List transformation options
     parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
+    parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
 
     args = parser.parse_args()
 
@@ -45,6 +50,10 @@ def main():
 
     # Do any text transforms
     if args.upper:
+        inputWords = upper(inputWords)
+        transformed = True
+
+    if args.lower:
         inputWords = upper(inputWords)
         transformed = True
 
