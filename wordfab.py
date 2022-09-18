@@ -73,16 +73,16 @@ def main():
         inputWords = strip_nonalpha(inputWords)
         transformed = True
 
+    if args.dedupe:
+        inputWords = uniquify(inputWords)
+        transformed = True
+
     if args.upper:
         inputWords = upper(inputWords)
         transformed = True
 
     if args.lower:
         inputWords = upper(inputWords)
-        transformed = True
-
-    if args.dedupe:
-        inputWords = uniquify(inputWords)
         transformed = True
 
     if args.alphabetize:
