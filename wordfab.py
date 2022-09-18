@@ -7,6 +7,19 @@ import sys
 file_add = 'fab'
 
 
+def convert(wordList, parseChars):
+    for line in wordList:
+        if line.find(parseChars[0]) != -1:
+            subWordList = line.split(parseChars[0])
+            wordList.remove(line)
+            for newWord in subWordList:
+                if len(newWord) > 0:
+                    wordList.append(newWord)
+                    if len(parseChars[1:]) > 0:
+                        convert(wordList, parseChars[1:])
+    return wordList
+
+
 def strip_nonalpha(wordList):
     newList = []
     for word in wordList:
@@ -44,6 +57,10 @@ def main():
 
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
+    convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
+                    any number of characters in quotes (e.g., -c " ;," will separate words delimited\
+                    by a space, comma or semicolon. ALWAYS PUT SPACE FIRST)'
+    parser.add_argument('-c', '--convert', nargs='?', const=' ', help=convert_help)
     parser.add_argument('-d', '--dedupe', action='store_true', help='Remove duplicates from the list')
     parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
     parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
@@ -67,6 +84,11 @@ def main():
     except Exception as e:
         print('error {}'.format(e))
         sys.exit()
+
+    # Do any text parsing
+    if args.convert is not None:
+        inputWords = convert(inputWords, args.convert)
+        transformed = True
 
     # Do any text transforms
     if args.strip:
