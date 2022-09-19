@@ -121,6 +121,7 @@ def main():
 
         for line in inputWords:
             saveFile.write('{}\n'.format(line))
+        print('New word list saved to {}'.format(saveFile.name))
         saveFile.close()
 
     elif not transformed:
