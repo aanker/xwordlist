@@ -89,7 +89,7 @@ def main():
             sys.exit()
 
         except Exception as e:
-            print('error {}'.format(e))
+            print('file error {}'.format(e))
             sys.exit()
 
     if not input_flag:
