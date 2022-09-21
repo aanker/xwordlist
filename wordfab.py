@@ -3,6 +3,10 @@
 import argparse
 import os
 import sys
+import requests
+
+from bs4 import BeautifulSoup
+
 
 file_add = 'fab'
 
@@ -56,9 +60,13 @@ def main():
     output_help = 'Output text file: if no name specified, "_{}" is added\
                    to input file name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=argparse.FileType('w'), help=output_help)
+    parser.add_argument('-w', '--webpage', help='Input web URL')
 
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
+    divparse_help = 'Further refines the text from a webpage by narrowing to just a div with ID\
+                    given as an argument'
+    parser.add_argument('--divparse', help=divparse_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., -c " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape char'
@@ -90,6 +98,22 @@ def main():
 
         except Exception as e:
             print('file error {}'.format(e))
+            sys.exit()
+
+    if args.webpage:
+        try:
+            r = requests.get(args.webpage)
+            if r.status_code == 200:
+                inputSoup = BeautifulSoup(r.text, 'html.parser')
+                if args.divparse:
+                    inputWords = inputSoup.find(id=args.divparse).stripped_strings
+                else:
+                    inputWords = inputSoup.stripped_strings
+                inputWords = list(line for line in inputWords)
+                input_flag = True
+
+        except Exception as e:
+            print('web error {}'.format(e))
             sys.exit()
 
     if not input_flag:
