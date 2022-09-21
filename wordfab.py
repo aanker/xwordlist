@@ -44,7 +44,7 @@ def uniquify(wordList):
 
 
 def alphabetize(wordList):
-    return sorted(wordList)
+    return sorted(wordList, key=str.casefold)
 
 
 def main():
