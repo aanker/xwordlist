@@ -50,7 +50,7 @@ def main():
     parser = argparse.ArgumentParser(description='Fabulous word list builder')
 
     # Input and output options
-    parser.add_argument('input', type=argparse.FileType('r'), help='Input text file')
+    parser.add_argument('-i', '--input', type=argparse.FileType('r'), help='Input text file')
     output_help = 'Output text file: if no name specified, "_{}" is added\
                    to input file name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=argparse.FileType('w'), help=output_help)
@@ -69,20 +69,27 @@ def main():
     args = parser.parse_args()
 
     # Set up necessary vars
-
-    # Load input file
-    try:
-        inputWords = list(line.strip() for line in args.input)
-        inputName = args.input.name
-        args.input.close()
-
-    except UnicodeDecodeError:
-        print('Sorry, only text files accepted')
-        sys.exit()
-
-    except Exception as e:
-        print('error {}'.format(e))
+    input_flag = False
     transform_flag = False
+
+    # Load input(s)
+    if args.input:
+        try:
+            inputWords = list(line.strip() for line in args.input)
+            inputName = args.input.name
+            args.input.close()
+            input_flag = True
+
+        except UnicodeDecodeError:
+            print('Sorry, only text files accepted')
+            sys.exit()
+
+        except Exception as e:
+            print('error {}'.format(e))
+            sys.exit()
+
+    if not input_flag:
+        print('No input given, nothing to do')
         sys.exit()
 
     # Do any text parsing
