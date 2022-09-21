@@ -8,16 +8,18 @@ file_add = 'fab'
 
 
 def convert(wordList, parseChars):
+    newList = []
     for line in wordList:
         if line.find(parseChars[0]) != -1:
             subWordList = line.split(parseChars[0])
-            wordList.remove(line)
             for newWord in subWordList:
                 if len(newWord) > 0:
-                    wordList.append(newWord)
+                    newList.append(newWord)
             if len(parseChars[1:]) > 0:
-                wordList = convert(wordList, parseChars[1:])
-    return wordList
+                newList = convert(newList, parseChars[1:])
+        else:
+            newList.append(line)
+    return newList
 
 
 def strip_nonalpha(wordList):
