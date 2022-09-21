@@ -61,9 +61,11 @@ def main():
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., -c " ;," will separate words delimited\
-    parser.add_argument('-d', '--dedupe', action='store_true', help='Remove duplicates from the list')
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape char'
     parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
+    dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive so always\
+                    recommended that you also use -l or -u to put everything in the same case first'
+    parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
     parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
     parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
     parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
