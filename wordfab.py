@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 
 file_add = 'fab'
+minimum_letters = 3
 
 
 def convert(wordList, parseChars):
@@ -22,6 +23,14 @@ def convert(wordList, parseChars):
             if len(parseChars[1:]) > 0:
                 newList = convert(newList, parseChars[1:])
         else:
+            newList.append(line)
+    return newList
+
+
+def remove_min(wordList, numChars):
+    newList = []
+    for line in wordList:
+        if len(line) >= numChars:
             newList.append(line)
     return newList
 
@@ -74,6 +83,8 @@ def main():
     dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive so always\
                     recommended that you also use -l or -u to put everything in the same case first'
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
+    minimum_help = 'Set minimum number of letters in a word (if not specified, default is {}.'.format(minimum_letters)
+    parser.add_argument('-m', '--minimum', nargs='?', type=int, const=minimum_letters, help=minimum_help)
     parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
     parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
     parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
@@ -123,6 +134,10 @@ def main():
     # Do any text parsing
     if args.convert is not None:
         inputWords = convert(inputWords, args.convert)
+        transform_flag = True
+
+    if args.minimum is not None:
+        inputWords = remove_min(inputWords, args.minimum)
         transform_flag = True
 
     # Do any text transforms
