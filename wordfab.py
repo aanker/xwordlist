@@ -69,7 +69,6 @@ def main():
     args = parser.parse_args()
 
     # Set up necessary vars
-    transformed = False
 
     # Load input file
     try:
@@ -83,36 +82,37 @@ def main():
 
     except Exception as e:
         print('error {}'.format(e))
+    transform_flag = False
         sys.exit()
 
     # Do any text parsing
     if args.convert is not None:
         inputWords = convert(inputWords, args.convert)
-        transformed = True
+        transform_flag = True
 
     # Do any text transforms
     if args.strip:
         inputWords = strip_nonalpha(inputWords)
-        transformed = True
+        transform_flag = True
 
     if args.dedupe:
         inputWords = uniquify(inputWords)
-        transformed = True
+        transform_flag = True
 
     if args.upper:
         inputWords = upper(inputWords)
-        transformed = True
+        transform_flag = True
 
     if args.lower:
         inputWords = upper(inputWords)
-        transformed = True
+        transform_flag = True
 
     if args.alphabetize:
         inputWords = alphabetize(inputWords)
-        transformed = True
+        transform_flag = True
 
     # Now save the file
-    if transformed:
+    if transform_flag:
         if args.output:
             saveFile = args.output
         else:
@@ -124,7 +124,7 @@ def main():
         print('New word list saved to {}'.format(saveFile.name))
         saveFile.close()
 
-    elif not transformed:
+    elif not transform_flag:
         print('Nothing to write, no changes made')
         sys.exit()
 
