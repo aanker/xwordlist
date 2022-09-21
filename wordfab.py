@@ -126,6 +126,7 @@ def main():
 
     elif not transformed:
         print('Nothing to write, no changes made')
+        sys.exit()
 
 
 if __name__ == '__main__':
