@@ -136,13 +136,13 @@ def main():
         inputWords = convert(inputWords, args.convert)
         transform_flag = True
 
-    if args.minimum is not None:
-        inputWords = remove_min(inputWords, args.minimum)
-        transform_flag = True
-
     # Do any text transforms
     if args.strip:
         inputWords = strip_nonalpha(inputWords)
+        transform_flag = True
+
+    if args.minimum is not None:
+        inputWords = remove_min(inputWords, args.minimum)
         transform_flag = True
 
     if args.upper:
