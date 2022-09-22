@@ -4,7 +4,10 @@ import argparse
 import os
 import sys
 import requests
+import pathlib
+import urllib.parse
 
+from prompt_toolkit import prompt, print_formatted_text, HTML
 from bs4 import BeautifulSoup
 
 
@@ -60,6 +63,29 @@ def alphabetize(wordList):
     return sorted(wordList, key=str.casefold)
 
 
+def setup_output(localArgs):
+    # Has an output file been specified? If not, create from either file or URL
+    if localArgs.output:
+        outputFile = localArgs.output
+    elif localArgs.input:
+        filePieces = os.path.splitext(localArgs.input.name)
+        outputFile = '{}_{}{}'.format(filePieces[0], file_add, filePieces[1])
+    elif localArgs.webpage:
+        urlPieces = urllib.parse.urlparse(localArgs.webpage).hostname.split('.')
+        if len(urlPieces) > 1:
+            outputFile = '{}_{}_{}.txt'.format(urlPieces[-2], urlPieces[-1], file_add)
+        else:
+            outputFile = '{}_{}.txt'.format(urlPieces[0], file_add)
+
+    # Now check if the output file exists and prompt user if it does
+    if pathlib.Path(outputFile).is_file():
+        text = prompt(HTML('Output file named <ansired>{}</ansired> already exists. Overwrite? (Y/N): '.format(outputFile)))
+        if text != 'Y' and text != 'y':
+            print('Exiting... please enter a different file name at the command line')
+            sys.exit()
+    return outputFile
+
+
 def main():
     # First set up argparse
     parser = argparse.ArgumentParser(description='Fabulous word list builder')
@@ -68,7 +94,7 @@ def main():
     parser.add_argument('-i', '--input', type=argparse.FileType('r'), help='Input text file')
     output_help = 'Output text file: if no name specified, "_{}" is added\
                    to input file name and a new file is created'.format(file_add)
-    parser.add_argument('-o', '--output', type=argparse.FileType('w'), help=output_help)
+    parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
     parser.add_argument('-w', '--webpage', help='Input web URL')
 
     # List transformation options
@@ -95,11 +121,12 @@ def main():
     input_flag = False
     transform_flag = False
 
+    outputFile = setup_output(args)
+
     # Load input(s)
     if args.input:
         try:
             inputWords = list(line.strip() for line in args.input)
-            inputName = args.input.name
             args.input.close()
             input_flag = True
 
@@ -163,15 +190,12 @@ def main():
 
     # Now save the file
     if transform_flag:
-        if args.output:
-            saveFile = args.output
-        else:
-            filetup = os.path.splitext(inputName)
-            saveFile = open('{}_{}{}'.format(filetup[0], file_add, filetup[1]), 'w')
+        saveFile = open(outputFile, 'w')
 
         for line in inputWords:
             saveFile.write('{}\n'.format(line))
-        print('New word list saved to {}'.format(saveFile.name))
+
+        print_formatted_text(HTML('New word list saved to <ansired>{}</ansired>'.format(saveFile.name)))
         saveFile.close()
 
     elif not transform_flag:
