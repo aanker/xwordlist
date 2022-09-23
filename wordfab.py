@@ -75,6 +75,9 @@ def setup_output(localArgs):
             outputFile = '{}_{}_{}.txt'.format(urlPieces[-2], urlPieces[-1], file_add)
         else:
             outputFile = '{}_{}.txt'.format(urlPieces[0], file_add)
+    else:
+        # Nothing to set up
+        return
 
     # Now check if the output file exists and prompt user if it does
     if pathlib.Path(outputFile).is_file():
@@ -154,7 +157,8 @@ def main():
             sys.exit()
 
     if not input_flag:
-        print('No input given, nothing to do')
+        help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
+        print_formatted_text(HTML(help_text.format(os.path.basename(__file__))))
         sys.exit()
 
     # Do any text parsing
