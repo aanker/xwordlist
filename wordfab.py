@@ -47,12 +47,11 @@ def strip_nonalpha(wordList):
     return newList
 
 
-def upper(wordList):
-    return list(line.upper() for line in wordList)
-
-
-def lower(wordList):
-    return list(line.lower() for line in wordList)
+def case_change(newCase, wordList):
+    if newCase == 'upper':
+        return list(line.upper() for line in wordList)
+    else:
+        return list(line.lower() for line in wordList)
 
 
 def uniquify(wordList):
@@ -101,6 +100,8 @@ def main():
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     divparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity with\
                     the ID given as an argument'
+    case_help = 'Change the case of words in the list (choices: lower, upper, none [DEFAULT])'
+    parser.add_argument('-c', '--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
     parser.add_argument('--divparse', help=divparse_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., -c " ;," will separate words delimited\
@@ -111,8 +112,6 @@ def main():
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
     minimum_help = 'Set minimum number of letters in a word (if not specified, default is {}.'.format(minimum_letters)
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=minimum_letters, help=minimum_help)
-    parser.add_argument('-l', '--lower', action='store_true', help='Make all words lower case')
-    parser.add_argument('-u', '--upper', action='store_true', help='Make all words upper case')
     parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
 
     args = parser.parse_args()
@@ -172,12 +171,8 @@ def main():
         inputWords = remove_min(inputWords, args.minimum)
         transform_flag = True
 
-    if args.upper:
-        inputWords = upper(inputWords)
-        transform_flag = True
-
-    if args.lower:
-        inputWords = upper(inputWords)
+    if args.case != 'none':
+        inputWords = case_change(args.case, inputWords)
         transform_flag = True
 
     if args.dedupe:
