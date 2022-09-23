@@ -101,10 +101,10 @@ def main():
 
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
-    divparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity with\
-                    the ID given as an argument'
     case_help = 'Change the case of words in the list'
     parser.add_argument('-c', '--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
+    divparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity with\
+                    the ID given as an argument'
     parser.add_argument('--divparse', help=divparse_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., -c " ;," will separate words delimited\
