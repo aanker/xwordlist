@@ -94,8 +94,8 @@ def main():
 
     # Input and output options
     parser.add_argument('-i', '--input', type=argparse.FileType('r'), help='Input text file')
-    output_help = 'Output text file: if no name specified, "_{}" is added\
-                   to input file name and a new file is created'.format(file_add)
+    output_help = 'Output text file: if no name specified, "_{}" is added to either the\
+                   input file name or web domain name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
     parser.add_argument('-w', '--webpage', help='Input web URL')
 
@@ -103,7 +103,7 @@ def main():
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     divparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity with\
                     the ID given as an argument'
-    case_help = 'Change the case of words in the list (choices: lower, upper, none [DEFAULT])'
+    case_help = 'Change the case of words in the list'
     parser.add_argument('-c', '--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
     parser.add_argument('--divparse', help=divparse_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
@@ -113,7 +113,7 @@ def main():
     dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive so always\
                     recommended that you also use -l or -u to put everything in the same case first'
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
-    minimum_help = 'Set minimum number of letters in a word (if not specified, default is {}.'.format(minimum_letters)
+    minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(minimum_letters)
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=minimum_letters, help=minimum_help)
     parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
 
