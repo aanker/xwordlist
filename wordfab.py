@@ -93,6 +93,43 @@ def setup_output(localArgs):
     return outputFile
 
 
+def setup_input(localArgs):
+    returnWords = []
+
+    # Load input(s)
+    if localArgs.input:
+        try:
+            fileWords = list(line.strip() for line in localArgs.input)
+            localArgs.input.close()
+            returnWords.extend(fileWords)
+
+        except UnicodeDecodeError:
+            print_line('Sorry, only text files accepted')
+            sys.exit()
+
+        except Exception as e:
+            print_line('File error {}'.format(e))
+            sys.exit()
+
+    if localArgs.webpage:
+        try:
+            r = requests.get(localArgs.webpage)
+            if r.status_code == 200:
+                inputSoup = BeautifulSoup(r.text, 'html.parser')
+                if localArgs.divparse:
+                    webWords = inputSoup.find(id=localArgs.divparse).stripped_strings
+                else:
+                    webWords = inputSoup.stripped_strings
+                webWords = list(line for line in webWords)
+                returnWords.extend(webWords)
+
+        except Exception as e:
+            print_line('Web error {}'.format(e))
+            sys.exit()
+
+    return returnWords
+
+
 def main():
     # First set up argparse
     parser = argparse.ArgumentParser(description='Fabulous word list builder')
@@ -125,43 +162,12 @@ def main():
     args = parser.parse_args()
 
     # Set up necessary vars
-    input_flag = False
     transform_flag = False
 
     outputFile = setup_output(args)
+    inputWords = setup_input(args)
 
-    # Load input(s)
-    if args.input:
-        try:
-            inputWords = list(line.strip() for line in args.input)
-            args.input.close()
-            input_flag = True
-
-        except UnicodeDecodeError:
-            print_line('Sorry, only text files accepted')
-            sys.exit()
-
-        except Exception as e:
-            print_line('File error {}'.format(e))
-            sys.exit()
-
-    if args.webpage:
-        try:
-            r = requests.get(args.webpage)
-            if r.status_code == 200:
-                inputSoup = BeautifulSoup(r.text, 'html.parser')
-                if args.divparse:
-                    inputWords = inputSoup.find(id=args.divparse).stripped_strings
-                else:
-                    inputWords = inputSoup.stripped_strings
-                inputWords = list(line for line in inputWords)
-                input_flag = True
-
-        except Exception as e:
-            print_line('Web error {}'.format(e))
-            sys.exit()
-
-    if not input_flag:
+    if len(inputWords) == 0:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
         print_line(help_text.format(os.path.basename(__file__)))
         sys.exit()
