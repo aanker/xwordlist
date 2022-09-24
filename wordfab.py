@@ -166,51 +166,37 @@ def main():
 
     args = parser.parse_args()
 
-    # Set up necessary vars
-    transform_flag = False
-
     outputFile = setup_output(args)
     inputWords = setup_input(args)
 
     # Do any text parsing
     if args.convert is not None:
         inputWords = convert(inputWords, args.convert)
-        transform_flag = True
 
     # Do any text transforms
     if args.strip:
         inputWords = strip_nonalpha(inputWords)
-        transform_flag = True
 
     if args.minimum is not None:
         inputWords = remove_min(inputWords, args.minimum)
-        transform_flag = True
 
     if args.case != 'none':
         inputWords = case_change(args.case, inputWords)
-        transform_flag = True
 
     if args.dedupe:
         inputWords = uniquify(inputWords)
-        transform_flag = True
 
     if args.alphabetize:
         inputWords = alphabetize(inputWords)
-        transform_flag = True
 
     # Now save the file
-    if transform_flag:
-        saveFile = open(outputFile, 'w')
+    saveFile = open(outputFile, 'w')
 
-        for line in inputWords:
-            saveFile.write('{}\n'.format(line))
+    for line in inputWords:
+        saveFile.write('{}\n'.format(line))
 
-        print_line('New word list saved to <ansired>{}</ansired>'.format(saveFile.name))
-        saveFile.close()
-
-    elif not transform_flag:
-        print_line('Nothing to write, no changes made')
-        sys.exit()
+    print_line('New word list saved to <ansired>{}</ansired>'.format(saveFile.name))
+    saveFile.close()
 
 
 if __name__ == '__main__':
