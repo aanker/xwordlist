@@ -161,7 +161,7 @@ def main():
                     any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
     parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
-    dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive it is recommended\
+    dedupe_help = 'Remove duplicates from the word list. Note that this is case sensitive so it is recommended\
                    that you also use --case {lower | upper} to put everything in the same case first'
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
     min_ltrs = 3
