@@ -62,6 +62,11 @@ def alphabetize(wordList):
     return sorted(wordList, key=str.casefold)
 
 
+def print_line(printText):
+    print_formatted_text(HTML(printText))
+    return
+
+
 def setup_output(localArgs):
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
@@ -83,7 +88,7 @@ def setup_output(localArgs):
     if pathlib.Path(outputFile).is_file():
         text = prompt(HTML('Output file named <ansired>{}</ansired> already exists. Overwrite? (Y/N): '.format(outputFile)))
         if text != 'Y' and text != 'y':
-            print('Exiting... please enter a different file name at the command line')
+            print_line('Exiting... please enter a different file name at the command line')
             sys.exit()
     return outputFile
 
@@ -133,11 +138,11 @@ def main():
             input_flag = True
 
         except UnicodeDecodeError:
-            print('Sorry, only text files accepted')
+            print_line('Sorry, only text files accepted')
             sys.exit()
 
         except Exception as e:
-            print('file error {}'.format(e))
+            print_line('File error {}'.format(e))
             sys.exit()
 
     if args.webpage:
@@ -153,12 +158,12 @@ def main():
                 input_flag = True
 
         except Exception as e:
-            print('web error {}'.format(e))
+            print_line('Web error {}'.format(e))
             sys.exit()
 
     if not input_flag:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
-        print_formatted_text(HTML(help_text.format(os.path.basename(__file__))))
+        print_line(help_text.format(os.path.basename(__file__)))
         sys.exit()
 
     # Do any text parsing
@@ -194,11 +199,11 @@ def main():
         for line in inputWords:
             saveFile.write('{}\n'.format(line))
 
-        print_formatted_text(HTML('New word list saved to <ansired>{}</ansired>'.format(saveFile.name)))
+        print_line('New word list saved to <ansired>{}</ansired>'.format(saveFile.name))
         saveFile.close()
 
     elif not transform_flag:
-        print('Nothing to write, no changes made')
+        print_line('Nothing to write, no changes made')
         sys.exit()
 
 
