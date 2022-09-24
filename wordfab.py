@@ -158,8 +158,8 @@ def main():
                     the ID given as an argument'
     parser.add_argument('--divparse', help=divparse_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
-                    any number of characters in quotes (e.g., -c " ;," will separate words delimited\
-                    by a space, comma or semicolon). Be careful with back slashes acting as an escape char'
+                    any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
+                    by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
     parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
     dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive it is recommended\
                    that you also use --case {lower | upper} to put everything in the same case first'
