@@ -13,6 +13,8 @@ from bs4 import BeautifulSoup
 
 # Set up globals
 exec_name = os.path.basename(__file__)
+exec_pieces = os.path.splitext(exec_name)
+config_name = '{}.conf'.format(exec_pieces[0])
 file_add = 'fab'
 
 
@@ -138,7 +140,8 @@ def setup_input(localArgs):
 
 def main():
     # First set up configargparse
-    parser = configargparse.ArgumentParser(description='Fabulous word list builder')
+    parser = configargparse.ArgumentParser(default_config_files=[config_name],
+                                           description='Fabulous word list builder')
 
     # Input and output options
     parser.add_argument('-i', '--input', type=configargparse.FileType('r'), help='Input text file')
