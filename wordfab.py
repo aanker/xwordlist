@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import argparse
+import configargparse
 import os
 import sys
 import requests
@@ -136,11 +136,11 @@ def setup_input(localArgs):
 
 
 def main():
-    # First set up argparse
-    parser = argparse.ArgumentParser(description='Fabulous word list builder')
+    # First set up configargparse
+    parser = configargparse.ArgumentParser(description='Fabulous word list builder')
 
     # Input and output options
-    parser.add_argument('-i', '--input', type=argparse.FileType('r'), help='Input text file')
+    parser.add_argument('-i', '--input', type=configargparse.FileType('r'), help='Input text file')
     output_help = 'Output text file: if no name specified, "_{}" is added to either the\
                    input file name or web domain name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
