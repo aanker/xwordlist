@@ -11,6 +11,8 @@ from prompt_toolkit import prompt, print_formatted_text, HTML
 from bs4 import BeautifulSoup
 
 
+# Set up globals
+exec_name = os.path.basename(__file__)
 file_add = 'fab'
 
 
@@ -128,7 +130,7 @@ def setup_input(localArgs):
 
     if len(returnWords) == 0:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
-        print_line(help_text.format(os.path.basename(__file__)))
+        print_line(help_text.format(exec_name))
         sys.exit()
 
     return returnWords
