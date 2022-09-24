@@ -127,6 +127,11 @@ def setup_input(localArgs):
             print_line('Web error {}'.format(e))
             sys.exit()
 
+    if len(returnWords) == 0:
+        help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
+        print_line(help_text.format(os.path.basename(__file__)))
+        sys.exit()
+
     return returnWords
 
 
@@ -166,11 +171,6 @@ def main():
 
     outputFile = setup_output(args)
     inputWords = setup_input(args)
-
-    if len(inputWords) == 0:
-        help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
-        print_line(help_text.format(os.path.basename(__file__)))
-        sys.exit()
 
     # Do any text parsing
     if args.convert is not None:
