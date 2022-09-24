@@ -82,6 +82,17 @@ def create_dict(localAttrs):
         sys.exit()
 
 
+def extract_from_web(extractWhat, soup):
+    if extractWhat == 'text':
+        localWords = soup.stripped_strings
+    else:
+        localWords = []
+        for link in soup.find_all('a'):
+            localWords.append(link.get('href'))
+    localWords = list(line for line in localWords)
+    return localWords
+
+
 def setup_output(localArgs):
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
@@ -133,10 +144,9 @@ def setup_input(localArgs):
                 inputSoup = BeautifulSoup(r.text, 'html.parser')
                 if localArgs.htmlparse:
                     parseDict = create_dict(localArgs.htmlparse)
-                    webWords = inputSoup.find(attrs=parseDict).stripped_strings
+                    webWords = extract_from_web(localArgs.webextract, inputSoup.find(attrs=parseDict))
                 else:
-                    webWords = inputSoup.stripped_strings
-                webWords = list(line for line in webWords)
+                    webWords = extract_from_web(localArgs.webextract, inputSoup)
                 returnWords.extend(webWords)
 
         except AttributeError:
@@ -176,6 +186,8 @@ def main():
                       using tag=term syntax (e.g., ID=main_content or class=lyrics). Multiple entities can\
                       be specified'
     parser.add_argument('--htmlparse', action='append', help=htmlparse_help)
+    webextract_help = 'Specify whether to extract text or links from webpage specified with -w'
+    parser.add_argument('--webextract', choices=['text', 'links'], default='text', help=webextract_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
