@@ -70,6 +70,18 @@ def print_line(printText):
     return
 
 
+def create_dict(localAttrs):
+    returnDict = {}
+    for attr in localAttrs:
+        dict_parts = attr.split('=')
+        returnDict[dict_parts[0]] = dict_parts[1]
+    if len(returnDict) > 0:
+        return returnDict
+    else:
+        print_line('HTML attributes not entered correctly (use tag=term, see help for more info')
+        sys.exit()
+
+
 def setup_output(localArgs):
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
@@ -119,12 +131,18 @@ def setup_input(localArgs):
             r = requests.get(localArgs.webpage)
             if r.status_code == 200:
                 inputSoup = BeautifulSoup(r.text, 'html.parser')
-                if localArgs.divparse:
-                    webWords = inputSoup.find(id=localArgs.divparse).stripped_strings
+                if localArgs.htmlparse:
+                    parseDict = create_dict(localArgs.htmlparse)
+                    webWords = inputSoup.find(attrs=parseDict).stripped_strings
                 else:
                     webWords = inputSoup.stripped_strings
                 webWords = list(line for line in webWords)
                 returnWords.extend(webWords)
+
+        except AttributeError:
+            error_line = 'HTML attribute <ansired>{}</ansired> not found, check document and try again'
+            print_line(error_line.format(localArgs.htmlparse))
+            sys.exit()
 
         except Exception as e:
             print_line('Web error {}'.format(e))
@@ -154,9 +172,10 @@ def main():
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     case_help = 'Change the case of words in the list'
     parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
-    divparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity with\
-                    the ID given as an argument'
-    parser.add_argument('--divparse', help=divparse_help)
+    htmlparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity(ies) specified,\
+                      using tag=term syntax (e.g., ID=main_content or class=lyrics). Multiple entities can\
+                      be specified'
+    parser.add_argument('--htmlparse', action='append', help=htmlparse_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
