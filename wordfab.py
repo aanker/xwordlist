@@ -12,7 +12,6 @@ from bs4 import BeautifulSoup
 
 
 file_add = 'fab'
-minimum_letters = 3
 
 
 def convert(wordList, parseChars):
@@ -160,8 +159,9 @@ def main():
     dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive it is recommended\
                    that you also use --case {lower | upper} to put everything in the same case first'
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
-    minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(minimum_letters)
-    parser.add_argument('-m', '--minimum', nargs='?', type=int, const=minimum_letters, help=minimum_help)
+    min_ltrs = 3
+    minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(min_ltrs)
+    parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
     parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
 
     args = parser.parse_args()
