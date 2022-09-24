@@ -78,7 +78,7 @@ def create_dict(localAttrs):
     if len(returnDict) > 0:
         return returnDict
     else:
-        print_line('HTML attributes not entered correctly (use tag=term, see help for more info')
+        print_line('HTML attributes not entered correctly (use tag=term, see help for more info)')
         sys.exit()
 
 
