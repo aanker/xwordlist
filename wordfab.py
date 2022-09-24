@@ -107,7 +107,7 @@ def main():
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     case_help = 'Change the case of words in the list'
-    parser.add_argument('-c', '--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
+    parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
     divparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity with\
                     the ID given as an argument'
     parser.add_argument('--divparse', help=divparse_help)
@@ -115,8 +115,8 @@ def main():
                     any number of characters in quotes (e.g., -c " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape char'
     parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
-    dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive so always\
-                    recommended that you also use -l or -u to put everything in the same case first'
+    dedupe_help = 'Remove duplicates from the list. Note that this is case sensitive it is recommended\
+                   that you also use --case {lower | upper} to put everything in the same case first'
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
     minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(minimum_letters)
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=minimum_letters, help=minimum_help)
