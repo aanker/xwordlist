@@ -145,10 +145,10 @@ def main():
 
     # Input and output options
     parser.add_argument('-i', '--input', type=configargparse.FileType('r'), help='Input text file')
+    parser.add_argument('-w', '--webpage', help='Input web URL')
     output_help = 'Output text file: if no name specified, "_{}" is added to either the\
                    input file name or web domain name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
-    parser.add_argument('-w', '--webpage', help='Input web URL')
 
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
