@@ -179,7 +179,8 @@ def setup_input(localArgs):
             webWords = get_web_page(oneUrl, localArgs.htmlparse, localArgs.webextract)
             if webWords:
                 returnWords.extend(webWords)
-            time.sleep(urllist_delay)
+            if urlCount < urlLength:
+                time.sleep(urllist_delay)
 
     if len(returnWords) == 0:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
