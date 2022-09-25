@@ -91,8 +91,7 @@ def extract_from_web(extractWhat, soup):
         localWords = []
         for link in soup.find_all('a'):
             localWords.append(link.get('href'))
-    localWords = list(line for line in localWords)
-    return localWords
+    return list(line for line in localWords)
 
 
 def get_web_page(webURL, htmlParse, webExtract):
@@ -102,10 +101,9 @@ def get_web_page(webURL, htmlParse, webExtract):
             inputSoup = BeautifulSoup(r.text, 'html.parser')
             if htmlParse:
                 parseDict = create_dict(htmlParse)
-                returnWords = extract_from_web(webExtract, inputSoup.find(attrs=parseDict))
+                return extract_from_web(webExtract, inputSoup.find(attrs=parseDict))
             else:
-                returnWords = extract_from_web(webExtract, inputSoup)
-            return returnWords
+                return extract_from_web(webExtract, inputSoup)
 
     except (requests.URLRequired, requests.RequestException):
         return False
