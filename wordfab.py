@@ -223,7 +223,8 @@ def main():
     min_ltrs = 3
     minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(min_ltrs)
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
-    parser.add_argument('-s', '--strip', action='store_true', help='Get rid of non-alphabetic characters')
+    strip_help = 'Remove non-alphabetic characters (including spaces)'
+    parser.add_argument('-s', '--strip', action='store_true', help=strip_help)
 
     args = parser.parse_args()
 
@@ -234,10 +235,10 @@ def main():
     if args.convert is not None:
         inputWords = convert(inputWords, args.convert)
 
-    # Do any text transforms
     if args.strip:
         inputWords = strip_nonalpha(inputWords)
 
+    # Do any text transforms
     if args.minimum is not None:
         inputWords = remove_min(inputWords, args.minimum)
 
