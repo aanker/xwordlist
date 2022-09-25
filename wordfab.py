@@ -6,6 +6,7 @@ import sys
 import requests
 import pathlib
 import urllib.parse
+import time
 
 from prompt_toolkit import prompt, print_formatted_text, HTML
 from bs4 import BeautifulSoup
@@ -16,6 +17,7 @@ exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
 file_add = 'fab'
+urllist_delay = 20
 
 
 def convert(wordList, parseChars):
@@ -93,6 +95,31 @@ def extract_from_web(extractWhat, soup):
     return localWords
 
 
+def get_web_page(webURL, htmlParse, webExtract):
+    try:
+        r = requests.get(webURL)
+        if r.status_code == 200:
+            inputSoup = BeautifulSoup(r.text, 'html.parser')
+            if htmlParse:
+                parseDict = create_dict(htmlParse)
+                returnWords = extract_from_web(webExtract, inputSoup.find(attrs=parseDict))
+            else:
+                returnWords = extract_from_web(webExtract, inputSoup)
+            return returnWords
+
+    except (requests.URLRequired, requests.RequestException):
+        return False
+
+    except AttributeError:
+        error_line = 'HTML attribute <ansired>{}</ansired> not found, check document and try again'
+        print_line(error_line.format(htmlParse))
+        sys.exit()
+
+    except Exception as e:
+        print_line('Web error {}'.format(e))
+        sys.exit()
+
+
 def setup_output(localArgs):
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
@@ -138,25 +165,23 @@ def setup_input(localArgs):
             sys.exit()
 
     if localArgs.webpage:
-        try:
-            r = requests.get(localArgs.webpage)
-            if r.status_code == 200:
-                inputSoup = BeautifulSoup(r.text, 'html.parser')
-                if localArgs.htmlparse:
-                    parseDict = create_dict(localArgs.htmlparse)
-                    webWords = extract_from_web(localArgs.webextract, inputSoup.find(attrs=parseDict))
-                else:
-                    webWords = extract_from_web(localArgs.webextract, inputSoup)
+        webWords = get_web_page(localArgs.webpage, localArgs.htmlparse, localArgs.webextract)
+        if webWords:
+            returnWords.extend(webWords)
+
+    if localArgs.urllist:
+        urlList = list(line.strip() for line in localArgs.urllist)
+        urlLength = len(urlList)
+        urlCount = 0
+        localArgs.urllist.close()
+
+        for oneUrl in urlList:
+            urlCount += 1
+            print_line('Getting {} ({} of {})'.format(oneUrl, urlCount, urlLength))
+            webWords = get_web_page(oneUrl, localArgs.htmlparse, localArgs.webextract)
+            if webWords:
                 returnWords.extend(webWords)
-
-        except AttributeError:
-            error_line = 'HTML attribute <ansired>{}</ansired> not found, check document and try again'
-            print_line(error_line.format(localArgs.htmlparse))
-            sys.exit()
-
-        except Exception as e:
-            print_line('Web error {}'.format(e))
-            sys.exit()
+            time.sleep(urllist_delay)
 
     if len(returnWords) == 0:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
@@ -174,6 +199,7 @@ def main():
     # Input and output options
     parser.add_argument('-i', '--input', type=configargparse.FileType('r'), help='Input text file')
     parser.add_argument('-w', '--webpage', help='Input web URL')
+    parser.add_argument('--urllist', type=configargparse.FileType('r'), help='Input multiple URLs in a document')
     output_help = 'Output text file: if no name specified, "_{}" is added to either the\
                    input file name or web domain name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
