@@ -28,7 +28,7 @@ A file with a list of web URLs should contain one URL per line: it otherwise fun
 
 You can specify the output file name with the command line option `--output [filename.txt]` or `-o [filename.txt]`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL plus the string `_fab` (*TK:  Make this a user setting*). Your input and output files can be the same but `wordfab` will always prompt you before writing over an existing file.
 
-`wordfab` only works with text files, if it is given binary data it will let you know and then quit.
+`wordfab` only works with text files, if it is given binary data it will let you know and then quit. For all inputs and outputs you can specify a path as part of a file name as in `--input /Users/aa/wordlist.txt` or use the `--directory /Users/aa/` argument to set a default path for all inputs and outputs.
 
 ### Content Parsing
 
@@ -102,6 +102,6 @@ dedupe = True
 # options that can have multiple items
 htmlparse = [id=songLyricsDiv, class=linkList]
 ```
-Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (like `minimum`, which is likely to be global to anything you do) in the configuration file and leave especially the inputs and outputs to the command line — but YMMV.
+Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
 The `wordfab.conf` file included with the GitHub repository contains commented out examples of the usage of each option. It is important to note that the syntax for specifying default options in a configuration file has subtle differences from options specified on the command line. In particular, on the command line you can use the option `--convert` with nothing else specified and the default delimiter (space) will be used to parse text. However, when specified in the configuration file, you must specify the space (or any other delimiter you want to use) within quotes as in `convert " "`.

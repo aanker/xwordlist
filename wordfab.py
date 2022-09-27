@@ -141,7 +141,7 @@ def setup_output(localArgs):
     if localArgs.output:
         outputFile = localArgs.output
     elif localArgs.input:
-        filePieces = os.path.splitext(localArgs.input.name)
+        filePieces = os.path.splitext(localArgs.input)
         outputFile = '{}_{}{}'.format(filePieces[0], file_add, filePieces[1])
     elif localArgs.webpage:
         urlPieces = urllib.parse.urlparse(localArgs.webpage).hostname.split('.')
@@ -149,6 +149,10 @@ def setup_output(localArgs):
             outputFile = '{}_{}_{}.txt'.format(urlPieces[-2], urlPieces[-1], file_add)
         else:
             outputFile = '{}_{}.txt'.format(urlPieces[0], file_add)
+        # See if a directory has been specified: don't need to check if valid by now
+        if localArgs.directory is not None:
+            outputFile = os.path.join(localArgs.directory, outputFile)
+
     else:
         # Nothing to set up
         return
@@ -211,12 +215,14 @@ def main():
                                            description='Fabulous word list builder')
 
     # Input and output options
-    parser.add_argument('-i', '--input', type=configargparse.FileType('r'), help='Input text file')
+    parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
     parser.add_argument('-w', '--webpage', help='Input web URL')
-    parser.add_argument('--urllist', type=configargparse.FileType('r'), help='Input multiple URLs in a document')
+    parser.add_argument('--urllist', type=pathlib.Path, help='Input multiple URLs in a document')
     output_help = 'Output text file: if no name specified, "_{}" is added to either the\
                    input file name or web domain name and a new file is created'.format(file_add)
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
+    directory_help = 'Set directory for input, output and urllist files'
+    parser.add_argument('--directory', type=pathlib.Path, help=directory_help)
 
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
@@ -242,6 +248,17 @@ def main():
     parser.add_argument('-s', '--strip', action='store_true', help=strip_help)
 
     args = parser.parse_args()
+
+    # See if a default directory was specified and rewrite inputs and outputs as necessary
+    if args.directory is not None:
+        if pathlib.Path(args.directory).is_dir():
+            args.input = os.path.join(args.directory, args.input) if args.input else None
+            args.urllist = os.path.join(args.directory, args.urllist) if args.urllist else None
+            args.output = os.path.join(args.directory, args.output) if args.output else None
+        else:
+            directory_error = 'Exiting... directory path <ansired>{}</ansired> does not exist'
+            print_line(directory_error.format(args.directory))
+            sys.exit()
 
     outputFile = setup_output(args)
     inputWords = setup_input(args)
