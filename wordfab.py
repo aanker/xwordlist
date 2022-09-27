@@ -118,6 +118,24 @@ def get_web_page(webURL, htmlParse, webExtract):
         sys.exit()
 
 
+def get_file_content(inputFile):
+    try:
+        with open(inputFile, 'r') as inputOpen:
+            return list(line.strip() for line in inputOpen)
+
+    except UnicodeDecodeError:
+        print_line('Exiting... only text files accepted')
+        sys.exit()
+
+    except FileNotFoundError:
+        print_line('Exiting... input file <ansired>{}</ansired> does not exist'.format(inputFile))
+        sys.exit()
+
+    except Exception as e:
+        print_line('Exiting... file error {}'.format(e))
+        sys.exit()
+
+
 def setup_output(localArgs):
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
@@ -149,18 +167,9 @@ def setup_input(localArgs):
 
     # Load input(s)
     if localArgs.input:
-        try:
-            fileWords = list(line.strip() for line in localArgs.input)
-            localArgs.input.close()
+        fileWords = get_file_content(localArgs.input)
+        if fileWords:
             returnWords.extend(fileWords)
-
-        except UnicodeDecodeError:
-            print_line('Sorry, only text files accepted')
-            sys.exit()
-
-        except Exception as e:
-            print_line('File error {}'.format(e))
-            sys.exit()
 
     if localArgs.webpage:
         webWords = get_web_page(localArgs.webpage, localArgs.htmlparse, localArgs.webextract)
@@ -168,10 +177,8 @@ def setup_input(localArgs):
             returnWords.extend(webWords)
 
     if localArgs.urllist:
-        urlList = list(line.strip() for line in localArgs.urllist)
         urlLength = len(urlList)
         urlCount = 0
-        localArgs.urllist.close()
 
         for oneUrl in urlList:
             urlCount += 1
@@ -181,6 +188,7 @@ def setup_input(localArgs):
                 returnWords.extend(webWords)
             if urlCount < urlLength:
                 time.sleep(urllist_delay)
+        urlList = get_file_content(localArgs.urllist)
 
     if len(returnWords) == 0:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
