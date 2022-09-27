@@ -67,8 +67,8 @@ def alphabetize(wordList):
     return sorted(wordList, key=str.casefold)
 
 
-def print_line(printText):
-    print_formatted_text(HTML(printText))
+def print_line(printText, endText='\n'):
+    print_formatted_text(HTML(printText), end=endText)
     return
 
 
