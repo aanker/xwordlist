@@ -177,18 +177,25 @@ def setup_input(localArgs):
             returnWords.extend(webWords)
 
     if localArgs.urllist:
-        urlLength = len(urlList)
-        urlCount = 0
-
-        for oneUrl in urlList:
-            urlCount += 1
-            print_line('Getting {} ({} of {})'.format(oneUrl, urlCount, urlLength))
-            webWords = get_web_page(oneUrl, localArgs.htmlparse, localArgs.webextract)
-            if webWords:
-                returnWords.extend(webWords)
-            if urlCount < urlLength:
-                time.sleep(urllist_delay)
         urlList = get_file_content(localArgs.urllist)
+        if urlList:
+            urlLength = len(urlList)
+            urlCount = 0
+
+            for oneUrl in urlList:
+                urlCount += 1
+                urlText = 'Getting <ansired>{}</ansired> ({} of {})'
+                print_line(urlText.format(oneUrl, urlCount, urlLength), endText='')
+                webWords = get_web_page(oneUrl, localArgs.htmlparse, localArgs.webextract)
+                if webWords:
+                    returnWords.extend(webWords)
+                    if urlCount < urlLength:
+                        print_line('  ...done ...sleeping {} seconds'.format(urllist_delay))
+                        time.sleep(urllist_delay)
+                    else:
+                        print_line('  ...done')
+                else:
+                    print_line(' ...no content retrieved, was that a URL?')
 
     if len(returnWords) == 0:
         help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
