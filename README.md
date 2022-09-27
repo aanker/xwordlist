@@ -102,6 +102,6 @@ dedupe = True
 # options that can have multiple items
 htmlparse = [id=songLyricsDiv, class=linkList]
 ```
-Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs.
+Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (like `minimum`, which is likely to be global to anything you do) in the configuration file and leave especially the inputs and outputs to the command line — but YMMV.
 
-
+The `wordfab.conf` file included with the GitHub repository contains commented out examples of the usage of each option. It is important to note that the syntax for specifying default options in a configuration file has subtle differences from options specified on the command line. In particular, on the command line you can use the option `--convert` with nothing else specified and the default delimiter (space) will be used to parse text. However, when specified in the configuration file, you must specify the space (or any other delimiter you want to use) within quotes as in `convert " "`.
