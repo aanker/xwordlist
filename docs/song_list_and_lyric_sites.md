@@ -2,7 +2,7 @@ Below are recipes for downloading various types of text and links from different
 
 ## [SongLyrics](http://songlyrics.com)
 
-### To get list of URLS of songs by an artist
+### To get list of URLs of songs by an artist
 
 It is recommended that you alphabetize the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics. There is no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the `urllist filename.txt` option below.
 ```
@@ -39,7 +39,7 @@ case upper
 
 ## [LyricsFreak](https://www.lyricsfreak.com)
 
-### To get list of URLS of songs by an artist
+### To get list of URLs of songs by an artist
 
 It is recommended that you alphabetize the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics. There is no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the `urllist filename.txt` option below.
 ```
