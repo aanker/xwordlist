@@ -61,7 +61,7 @@ dedupe
 alphabetize
 case upper
 ```
-Note: Given how LyricsFreak constructs their list, every song will have the word ”LYRICS“ at the end (e.g., “MARYJANESLASTDANCELYRICS”). In the future, `wordfab` will have the ability to strip out such characters but for now, you should open the list of songs in your favorite text editor and do a search and replace. Also due to the way LyricsFreak structures the HTML, you will also fine a few extra words such as “STARS” and “TIME” in your list of songs. You should delete those by hand.
+Note: Given how LyricsFreak constructs their list, every song will have the word ”LYRICS“ at the end (e.g., “MARYJANESLASTDANCELYRICS”). In the future, `wordfab` will have the ability to strip out such characters but for now, you should open the list of songs in your favorite text editor and do a search and replace. (*TK add strip characters option*) Also due to the way LyricsFreak structures the HTML, you will also fine a few extra words such as “STARS” and “TIME” in your list of songs. You should delete those by hand.
 
 ### To get song lyrics
 ```
