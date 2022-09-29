@@ -21,6 +21,9 @@ urllist_delay = 20
 
 
 def convert(wordList, parseChars):
+    # First trap for problem where defaults are assumed but not specified
+    if parseChars == 'true':
+        parseChars = ' '
     newList = []
     for line in wordList:
         if line.find(parseChars[0]) != -1:
