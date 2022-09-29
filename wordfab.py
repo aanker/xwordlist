@@ -87,13 +87,19 @@ def create_dict(localAttrs):
         sys.exit()
 
 
-def extract_from_web(extractWhat, soup):
+def extract_from_web(extractWhat, soup, extractURL):
     if extractWhat == 'text':
         localWords = soup.stripped_strings
     else:
         localWords = []
         for link in soup.find_all('a'):
-            localWords.append(link.get('href'))
+            getURL = link.get('href')
+            parsePieces = urllib.parse.urlsplit(getURL)
+            # Check to see if absolute or relative URL.  If relative, make it absolute
+            if parsePieces.scheme == '' and parsePieces.netloc == '':
+                parseExtract = urllib.parse.urlsplit(extractURL)
+                getURL = urllib.parse.urljoin('{}://{}'.format(parseExtract.scheme, parseExtract.netloc), getURL)
+            localWords.append(getURL)
     return list(line for line in localWords)
 
 
@@ -104,9 +110,9 @@ def get_web_page(webURL, htmlParse, webExtract):
             inputSoup = BeautifulSoup(r.text, 'html.parser')
             if htmlParse:
                 parseDict = create_dict(htmlParse)
-                return extract_from_web(webExtract, inputSoup.find(attrs=parseDict))
+                return extract_from_web(webExtract, inputSoup.find(attrs=parseDict), webURL)
             else:
-                return extract_from_web(webExtract, inputSoup)
+                return extract_from_web(webExtract, inputSoup, webURL)
 
     except (requests.URLRequired, requests.RequestException):
         return False
