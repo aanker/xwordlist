@@ -289,7 +289,7 @@ def main():
     for line in inputWords:
         saveFile.write('{}\n'.format(line))
 
-    print_line('New word list saved to <ansired>{}</ansired>'.format(saveFile.name))
+    print_line('New list saved to <ansired>{}</ansired>'.format(saveFile.name))
     saveFile.close()
 
 
