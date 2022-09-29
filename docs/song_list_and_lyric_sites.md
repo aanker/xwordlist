@@ -4,7 +4,7 @@ Below are recipes for downloading various types of text and links from different
 
 ### To get list of URLS of songs by an artist
 
-It is recommended that you alphabetize the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics. There is no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the `urllist filename.txt` option [below](#to-get-song-lyrics)
+It is recommended that you alphabetize the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics. There is no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the `urllist filename.txt` option below.
 ```
 webpage http://www.songlyrics.com/[artist]-lyrics/
 htmlparse class=tracklist
