@@ -30,7 +30,7 @@ case upper
 webpage http://www.songlyrics.com/[artist]/[song-name]-lyrics/
 htmlparse id=songLyricsDiv
 webextract text
-convert " "
+convert
 strip
 dedupe
 alphabetize
