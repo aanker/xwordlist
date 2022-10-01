@@ -16,8 +16,11 @@ from bs4 import BeautifulSoup
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
-file_add = 'fab'
-urllist_delay = 20
+
+GLOBAL_SETTINGS = {
+    'urllist_delay': 20,
+    'file_add': 'fab',
+}
 
 
 def convert(wordList, parseChars):
@@ -79,11 +82,13 @@ def create_dict(localAttrs):
     returnDict = {}
     for attr in localAttrs:
         dict_parts = attr.split('=')
+        if dict_parts[0][:2] == '--':
+            dict_parts[0] = dict_parts[0][2:]
         returnDict[dict_parts[0]] = dict_parts[1]
     if len(returnDict) > 0:
         return returnDict
     else:
-        print_line('HTML attributes not entered correctly (use tag=term, see help for more info)')
+        print_line('Exiting... something is wrong with your configuration file')
         sys.exit()
 
 
@@ -145,7 +150,9 @@ def get_file_content(inputFile):
         sys.exit()
 
 
-def setup_output(localArgs):
+def setup_output(localArgs, otherArgs):
+    file_add = otherArgs['file_add'] if 'file_add' in otherArgs else GLOBAL_SETTINGS['file_add']
+
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
         outputFile = localArgs.output
@@ -175,7 +182,7 @@ def setup_output(localArgs):
     return outputFile
 
 
-def setup_input(localArgs):
+def setup_input(localArgs, otherArgs):
     returnWords = []
 
     # Load input(s)
@@ -203,8 +210,9 @@ def setup_input(localArgs):
                 if webWords:
                     returnWords.extend(webWords)
                     if urlCount < urlLength:
-                        print_line('  ...done ...sleeping {} seconds'.format(urllist_delay))
-                        time.sleep(urllist_delay)
+                        delay = int(otherArgs['urllist_delay']) if 'urllist_delay' in otherArgs else GLOBAL_SETTINGS['urllist_delay']
+                        print_line('  ...done ...sleeping {} seconds'.format(delay))
+                        time.sleep(delay)
                     else:
                         print_line('  ...done')
                 else:
@@ -227,8 +235,7 @@ def main():
     parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
     parser.add_argument('-w', '--webpage', help='Input web URL')
     parser.add_argument('--urllist', type=pathlib.Path, help='Input multiple URLs in a document')
-    output_help = 'Output text file: if no name specified, "_{}" is added to either the\
-                   input file name or web domain name and a new file is created'.format(file_add)
+    output_help = 'Output text file: if no name specified, a default name is created'
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
     directory_help = 'Set directory for input, output and urllist files'
     parser.add_argument('--directory', type=pathlib.Path, help=directory_help)
@@ -256,40 +263,42 @@ def main():
     strip_help = 'Remove non-alphabetic characters (including spaces)'
     parser.add_argument('-s', '--strip', action='store_true', help=strip_help)
 
-    args = parser.parse_args()
+    args = parser.parse_known_args()
+    confArgs = args[0]
+    envArgs = create_dict(args[1])
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
-    if args.directory is not None:
-        if pathlib.Path(args.directory).is_dir():
-            args.input = os.path.join(args.directory, args.input) if args.input else None
-            args.urllist = os.path.join(args.directory, args.urllist) if args.urllist else None
-            args.output = os.path.join(args.directory, args.output) if args.output else None
+    if confArgs.directory is not None:
+        if pathlib.Path(confArgs.directory).is_dir():
+            confArgs.input = os.path.join(confArgs.directory, confArgs.input) if confArgs.input else None
+            confArgs.urllist = os.path.join(confArgs.directory, confArgs.urllist) if confArgs.urllist else None
+            confArgs.output = os.path.join(confArgs.directory, confArgs.output) if confArgs.output else None
         else:
             directory_error = 'Exiting... directory path <ansired>{}</ansired> does not exist'
-            print_line(directory_error.format(args.directory))
+            print_line(directory_error.format(confArgs.directory))
             sys.exit()
 
-    outputFile = setup_output(args)
-    inputWords = setup_input(args)
+    outputFile = setup_output(confArgs, envArgs)
+    inputWords = setup_input(confArgs, envArgs)
 
     # Do any text parsing
-    if args.convert is not None:
-        inputWords = convert(inputWords, args.convert)
+    if confArgs.convert is not None:
+        inputWords = convert(inputWords, confArgs.convert)
 
-    if args.strip:
+    if confArgs.strip:
         inputWords = strip_nonalpha(inputWords)
 
     # Do any text transforms
-    if args.minimum is not None:
-        inputWords = remove_min(inputWords, args.minimum)
+    if confArgs.minimum is not None:
+        inputWords = remove_min(inputWords, confArgs.minimum)
 
-    if args.case != 'none':
-        inputWords = case_change(args.case, inputWords)
+    if confArgs.case != 'none':
+        inputWords = case_change(confArgs.case, inputWords)
 
-    if args.dedupe:
+    if confArgs.dedupe:
         inputWords = uniquify(inputWords)
 
-    if args.alphabetize:
+    if confArgs.alphabetize:
         inputWords = alphabetize(inputWords)
 
     # Now save the file

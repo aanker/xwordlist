@@ -24,9 +24,9 @@ If multiple inputs are specified, the contents of each source are added together
 python wordfab.py --input tompettywords.txt --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/
 ```
 
-A file with a list of web URLs should contain one URL per line: it otherwise functions the same as running the program multiple times using the `--webpage` option. To work effectively, you should limit the URLs to the same site so that `wordfab` is able to parse the HTML consistently (see Content Parsing below).  In addition, the program pauses 20 seconds between each web request to be a good citizen and avoid getting blocked. (*TK:  Make this a user setting*)
+A file with a list of web URLs should contain one URL per line: it otherwise functions the same as running the program multiple times using the `--webpage` option. To work effectively, you should limit the URLs to the same site so that `wordfab` is able to parse the HTML consistently (see Content Parsing below).  In addition, the program pauses 20 seconds between each web request to be a good citizen and avoid getting blocked. To change this delay, see [Changing Global Settings](#changing-global-settings) section below.
 
-You can specify the output file name with the command line option `--output [filename.txt]` or `-o [filename.txt]`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL plus the string `_fab` (*TK:  Make this a user setting*). Your input and output files can be the same but `wordfab` will always prompt you before writing over an existing file.
+You can specify the output file name with the command line option `--output [filename.txt]` or `-o [filename.txt]`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL plus the string `_fab` (to change this string, see [Changing Global Settings](#changing-global-settings) section below). Your input and output files can be the same but `wordfab` will always prompt you before writing over an existing file.
 
 `wordfab` only works with text files, if it is given binary data it will let you know and then quit. For all inputs and outputs you can specify a path as part of a file name as in `--input /Users/aa/wordlist.txt` or use the `--directory /Users/aa/` argument to set a default path for all inputs and outputs.
 
@@ -106,3 +106,10 @@ Options entered on the command line take precedence over the configuration file.
 
 The `wordfab.conf` file included in the GitHub repository contains commented out examples of the usage of each option. In addition, the [wiki hosted on GitHub site](https://github.com/aanker/wordfab/wiki/Recipes) includes ”recipes“ of configuration settings for known sites from which to pull data for your word lists. You can paste the options directly into your configuration file (updating the specific URLs) to improve your understand of how to use `wordfab`.
 
+### Changing Global Settings
+
+The configuration file also includes global settings that are user editable:
+
+*  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the urllist option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: 20 seconds
+
+*  `file_add`:  the string added when a new output file needs to be created but is no name is specified by the user. For instance, if the input file is 'tompetty.txt' and `file_add` is set to 'fab', the output file created will be named 'tompetty_fab.txt'. Default setting: 'fab'
