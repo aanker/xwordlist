@@ -104,4 +104,5 @@ htmlparse = [id=songLyricsDiv, class=linkList]
 ```
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
-The `wordfab.conf` file included with the GitHub repository contains commented out examples of the usage of each option.
+The `wordfab.conf` file included in the GitHub repository contains commented out examples of the usage of each option. In addition, the [wiki hosted on GitHub site](https://github.com/aanker/wordfab/wiki/Recipes) includes ”recipes“ of configuration settings for known sites from which to pull data for your word lists. You can paste the options directly into your configuration file (updating the specific URLs) to improve your understand of how to use `wordfab`.
+
