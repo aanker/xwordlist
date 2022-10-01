@@ -149,8 +149,9 @@ def setup_output(localArgs):
     # Has an output file been specified? If not, create from either file or URL
     if localArgs.output:
         outputFile = localArgs.output
-    elif localArgs.input:
-        filePieces = os.path.splitext(localArgs.input)
+    elif localArgs.input or localArgs.urllist:
+        fileName = localArgs.input if localArgs.input else localArgs.urllist
+        filePieces = os.path.splitext(fileName)
         outputFile = '{}_{}{}'.format(filePieces[0], file_add, filePieces[1])
     elif localArgs.webpage:
         urlPieces = urllib.parse.urlparse(localArgs.webpage).hostname.split('.')
@@ -161,10 +162,6 @@ def setup_output(localArgs):
         # See if a directory has been specified: don't need to check if valid by now
         if localArgs.directory is not None:
             outputFile = os.path.join(localArgs.directory, outputFile)
-    # If a urllist is specified as input, an output name has to be set as an option
-    elif localArgs.urllist:
-        print_line('Exiting... the only input is a urllist so you must specify an output file using -o or --output')
-        sys.exit()
     else:
         # Nothing to set up
         return
