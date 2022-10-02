@@ -93,9 +93,10 @@ def create_dict(localAttrs):
 
 
 def extract_from_web(extractWhat, soup, extractURL):
-    if extractWhat == 'text':
+    # A few ways the default option can come in, try that first
+    if extractWhat == 'text' or extractWhat == 'true' or extractWhat is None:
         localWords = soup.stripped_strings
-    else:
+    elif extractWhat == 'links':
         localWords = []
         for link in soup.find_all('a'):
             getURL = link.get('href')
@@ -105,6 +106,17 @@ def extract_from_web(extractWhat, soup, extractURL):
                 parseExtract = urllib.parse.urlsplit(extractURL)
                 getURL = urllib.parse.urljoin('{}://{}'.format(parseExtract.scheme, parseExtract.netloc), getURL)
             localWords.append(getURL)
+    elif extractWhat[:5] == 'html-':
+        localWords = []
+        extractTags = extractWhat[5:].split('_')
+        for tag in extractTags:
+            for link in soup.find_all(tag):
+                text = link.get_text()
+                localWords.append(text)
+    else:
+        print_line('Exiting... incorrect option for webextract:  <ansired>{}</ansired>'.format(extractWhat))
+        sys.exit()
+
     return list(line for line in localWords)
 
 
@@ -249,7 +261,7 @@ def main():
                       be specified'
     parser.add_argument('--htmlparse', action='append', help=htmlparse_help)
     webextract_help = 'Specify whether to extract text or links from webpage specified with -w'
-    parser.add_argument('--webextract', choices=['text', 'links'], default='text', help=webextract_help)
+    parser.add_argument('--webextract', nargs='?', default='text', help=webextract_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
