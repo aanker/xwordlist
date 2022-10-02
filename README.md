@@ -50,6 +50,12 @@ python wordfab.py --urllist tom_petty_links.txt --htmlparse id=songLyricsDiv --w
 ```
 Note that you don’t need to add the `--webextract text` as that is the default for web extraction. Also note that you should go through the file of URLs before you ask `wordfab` to grab all of that content; you will find that there is a lot of duplication and you probably don’t need all of the URLs. `wordfab` works best hand in hand with your text editor of choice (I prefer Sublime Text personally).
 
+Sometimes however, the `--webextract text` option will return too much random text and you need to be more specific. For instance, if you grab a page from Wikipedia, you will find all sorts of random navigation, captions and other text that may not fit in your list. For that, we have an additional setting: `--webextract html-XX`. This option allows you to pull the text only from one or more html tags. To grab the content inside paragraphs of text, use `--webextract html-p` which only extracts text between `<p>` and `</p>` tags. You can chain multiple tags by separating them between underscore (`_`) characters:  use `--webextract html-b_i` to get all text that is either bolded (`<b>`) or italicized (`<i>`).
+
+If this gets too confusing, we highly suggest you check out the recipes page on the [wiki](https://github.com/aanker/wordfab/wiki/Recipes) which gives many examples of ways to use this functionality in combination with specific websites. Be sure to read below about [configuration files](#configuration-file) first.
+
+### Converting Text Blocks to Words
+
 Using the above content parsing options will provide you with lines of text which is probably not what you ultimately want for a word list. The next option to use is `--convert` which takes any block of text and turns it into a list of words. The default if you don’t specify anything is to use spaces as delimiters but you can ask `wordfab` to use additional characters as deliminters by adding them in quotes. For instance, `--convert " ;-,"` will separate words connected by spaces, semi-colons, dashes and commas.
 
 Usually when you are pulling content from web pages, the default behavior for `--convert` is fine and you won’t need to use other delimiters. But to build a word list for crossword construction, you will want to remove all of those additional non-alphabetic characters. To do that, use `--strip` or `-s` which gets rid of everything (including numbers) that you would not want in your word list. (*TK: Add more flexibility on this setting*)
