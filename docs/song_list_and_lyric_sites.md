@@ -7,7 +7,7 @@ Below are recipes for downloading various types of text and links from different
 It is recommended that you alphabetize the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics. There is no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the `urllist filename.txt` option below.
 ```
 webpage http://www.songlyrics.com/[artist]-lyrics/
-htmlparse class=tracklist
+container class=tracklist
 webextract links
 alphabetize
 ```
@@ -17,7 +17,7 @@ alphabetize
 The options below will get you a list of songs with spaces removed between words for long entries like “MARYJANESLASTDANCE”. To get a list of titles with spaces (e.g., “MARY JANES LAST DANCE”) leave out the `strip` option. To get the song titles converted into a word list (e.g., “MARY”, “JANES”, “LAST”, “DANCE”), add the `convert` option.
 ```
 webpage http://www.songlyrics.com/[artist]-lyrics/
-htmlparse class=tracklist
+container class=tracklist
 webextract text
 strip
 dedupe
@@ -28,7 +28,7 @@ case upper
 ### To get song lyrics
 ```
 webpage http://www.songlyrics.com/[artist]/[song-name]-lyrics/
-htmlparse id=songLyricsDiv
+container id=songLyricsDiv
 webextract text
 convert
 strip
@@ -44,7 +44,7 @@ case upper
 It is recommended that you alphabetize the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics. There is no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the `urllist filename.txt` option below.
 ```
 webpage https://www.lyricsfreak.com/[initial]/[artist+name]/
-htmlparse class=lf-list__container
+container class=lf-list__container
 webextract links
 alphabetize
 ```
@@ -54,7 +54,7 @@ alphabetize
 The options below will get you a list of songs with spaces removed between words for long entries like “MARYJANESLASTDANCE”. To get a list of titles with spaces (e.g., “MARY JANES LAST DANCE”) leave out the `strip` option. To get the song titles converted into a word list (e.g., “MARY”, “JANES”, “LAST”, “DANCE”), add the `convert` option.
 ```
 webpage https://www.lyricsfreak.com/[initial]/[artist+name]/
-htmlparse class=lf-list__container
+container class=lf-list__container
 webextract text
 strip
 dedupe
@@ -66,7 +66,7 @@ Note: Given how LyricsFreak constructs their list, every song will have the word
 ### To get song lyrics
 ```
 webpage https://www.lyricsfreak.com/[initial]/[artist+name]/[song+name_datecode]
-htmlparse id=content
+container id=content
 webextract text
 convert
 strip

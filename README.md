@@ -32,21 +32,21 @@ You can specify the output file name with the command line option `--output [fil
 
 ### Content Parsing
 
-The most useful content extraction tool in `wordfab` is its ability to pull content out of structured web pages. When given a web URL (or text file with a list of web URLs), by default `wordfab` will return an output file with all of the text on the web page(s). More useful is to only grab specific parts of the page, which you can do using the `--htmlparse` option. For instance, if you wish to get the lyrics to a song on the website [SongLyrics](http://songlyrics.com), you only need the content inside the HTML element with the ID “songLyricsDiv”.
+The most useful content extraction tool in `wordfab` is its ability to pull content out of structured web pages. When given a web URL (or text file with a list of web URLs), by default `wordfab` will return an output file with all of the text on the web page(s). More useful is to only grab specific parts of the page, which you can do using the `--container` option. For instance, if you wish to get the lyrics to a song on the website [SongLyrics](http://songlyrics.com), you only need the content inside the HTML element with the ID “songLyricsDiv”.
 
 ```
-python wordfab.py --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --htmlparse id=songLyricsDiv
+python wordfab.py --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --container id=songLyricsDiv
 ```
 
-The `--htmlparse` option also works on classes (as in`class=XX`). To grab URLs instead of text, just set the additional option `--webextract links`. You can use the link extraction functionality to build your file of URLs that you then use to grab multiple text blocks. For instance, to grab a list of URLs for all of the songs by Tom Petty on SongLyrics, try
+The `--container` option also works on classes (as in`class=XX`). To grab URLs instead of text, just set the additional option `--webextract links`. You can use the link extraction functionality to build your file of URLs that you then use to grab multiple text blocks. For instance, to grab a list of URLs for all of the songs by Tom Petty on SongLyrics, try
 
 ```
-python wordfab.py --webpage http://www.songlyrics.com/tom-petty-lyrics/ --htmlparse class=tracklist --webextract links
+python wordfab.py --webpage http://www.songlyrics.com/tom-petty-lyrics/ --container class=tracklist --webextract links
 ```
 
 Then take the file created and feed it back to grab all of the song lyrics by entering
 ```
-python wordfab.py --urllist tom_petty_links.txt --htmlparse id=songLyricsDiv --webextract text
+python wordfab.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text
 ```
 Note that you don’t need to add the `--webextract text` as that is the default for web extraction. Also note that you should go through the file of URLs before you ask `wordfab` to grab all of that content; you will find that there is a lot of duplication and you probably don’t need all of the URLs. `wordfab` works best hand in hand with your text editor of choice (I prefer Sublime Text personally).
 
@@ -63,7 +63,7 @@ Usually when you are pulling content from web pages, the default behavior for `-
 You may decide when you are pulling large amounts of content down that you want to take each step at a time to make sure you’re not getting junk data — in fact, at least until you have done some trial runs that is highly recommended! But `wordfab` knows the right order to take these operations so they don’t conflict with each other and you can chain multiple items at once. To come back to our list of links of Tom Petty songs, you could do the following and end up with a word list in one shot:
 
 ```
-python wordfab.py --urllist tom_petty_links.txt --htmlparse id=songLyricsDiv --webextract text --convert --strip
+python wordfab.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text --convert --strip
 ```
 
 ### Word Transformation
@@ -80,13 +80,13 @@ You should always change case to either lower or upper as part of deduping becau
 To bring it all home, the following command line along with the list of links we built above should give you a fully parsed, alphabetized, deduped, crossword ready list of words from Tom Petty’s oeuvre:
 
 ```
-python wordfab.py --urllist tom_petty_links.txt --htmlparse id=songLyricsDiv --webextract text --convert --strip --dedupe --alphabetize --case upper --minimum
+python wordfab.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text --convert --strip --dedupe --alphabetize --case upper --minimum
 ```
 
 The order of options entered on the command line doesn’t matter, `wordfab` does everything in the most logical order. To simplify the above (and get rid of options that are defaults and don’t need to be specified), you could also enter:
 
 ```
-python wordfab.py --urllist tom_petty_links.txt --htmlparse id=songLyricsDiv --convert -sdam --case upper 
+python wordfab.py --urllist tom_petty_links.txt --container id=songLyricsDiv --convert -sdam --case upper 
 ```
 
 ## Configuration File
@@ -106,7 +106,7 @@ dedupe
 dedupe = True
 
 # options that can have multiple items
-htmlparse = [id=songLyricsDiv, class=linkList]
+container = [id=songLyricsDiv, class=linkList]
 ```
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 

@@ -120,13 +120,13 @@ def extract_from_web(extractWhat, soup, extractURL):
     return list(line for line in localWords)
 
 
-def get_web_page(webURL, htmlParse, webExtract):
+def get_web_page(webURL, containerParse, webExtract):
     try:
         r = requests.get(webURL)
         if r.status_code == 200:
             inputSoup = BeautifulSoup(r.text, 'html.parser')
-            if htmlParse:
-                parseDict = create_dict(htmlParse)
+            if containerParse:
+                parseDict = create_dict(containerParse)
                 return extract_from_web(webExtract, inputSoup.find(attrs=parseDict), webURL)
             else:
                 return extract_from_web(webExtract, inputSoup, webURL)
@@ -136,7 +136,7 @@ def get_web_page(webURL, htmlParse, webExtract):
 
     except AttributeError:
         error_line = 'HTML attribute <ansired>{}</ansired> not found, check document and try again'
-        print_line(error_line.format(htmlParse))
+        print_line(error_line.format(containerParse))
         sys.exit()
 
     except Exception as e:
@@ -204,7 +204,7 @@ def setup_input(localArgs, otherArgs):
             returnWords.extend(fileWords)
 
     if localArgs.webpage:
-        webWords = get_web_page(localArgs.webpage, localArgs.htmlparse, localArgs.webextract)
+        webWords = get_web_page(localArgs.webpage, localArgs.container, localArgs.webextract)
         if webWords:
             returnWords.extend(webWords)
 
@@ -218,7 +218,7 @@ def setup_input(localArgs, otherArgs):
                 urlCount += 1
                 urlText = 'Getting <ansired>{}</ansired> ({} of {})'
                 print_line(urlText.format(oneUrl, urlCount, urlLength), endText='')
-                webWords = get_web_page(oneUrl, localArgs.htmlparse, localArgs.webextract)
+                webWords = get_web_page(oneUrl, localArgs.container, localArgs.webextract)
                 if webWords:
                     returnWords.extend(webWords)
                     if urlCount < urlLength:
@@ -256,10 +256,10 @@ def main():
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     case_help = 'Change the case of words in the list'
     parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
-    htmlparse_help = 'Further refines the text from a webpage by narrowing to any HTML entity(ies) specified,\
+    container_help = 'Further refines the text from a webpage by narrowing to any HTML entity(ies) specified,\
                       using tag=term syntax (e.g., ID=main_content or class=lyrics). Multiple entities can\
                       be specified'
-    parser.add_argument('--htmlparse', action='append', help=htmlparse_help)
+    parser.add_argument('--container', action='append', help=container_help)
     webextract_help = 'Specify whether to extract text or links from webpage specified with -w'
     parser.add_argument('--webextract', nargs='?', default='text', help=webextract_help)
     convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
