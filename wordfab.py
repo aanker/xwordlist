@@ -86,10 +86,8 @@ def create_dict(localAttrs):
             dict_parts[0] = dict_parts[0][2:]
         # See if it is a class dictionary, in which case we make a tuple
         if dict_parts[0] == 'class':
-            if len(dict_parts) == 3:
-                returnDict[dict_parts[0]] = (dict_parts[1], int(dict_parts[2]))
-            else:
-                returnDict[dict_parts[0]] = (dict_parts[1], 0)
+            numParts = int(dict_parts[2]) if len(dict_parts) == 3 else 0
+            returnDict[dict_parts[0]] = (dict_parts[1], numParts)
         else:
             returnDict[dict_parts[0]] = dict_parts[1]
     if len(returnDict) > 0:
