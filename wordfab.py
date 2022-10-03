@@ -84,7 +84,14 @@ def create_dict(localAttrs):
         dict_parts = attr.split('=')
         if dict_parts[0][:2] == '--':
             dict_parts[0] = dict_parts[0][2:]
-        returnDict[dict_parts[0]] = dict_parts[1]
+        # See if it is a class dictionary, in which case we make a tuple
+        if dict_parts[0] == 'class':
+            if len(dict_parts) == 3:
+                returnDict[dict_parts[0]] = (dict_parts[1], int(dict_parts[2]))
+            else:
+                returnDict[dict_parts[0]] = (dict_parts[1], 0)
+        else:
+            returnDict[dict_parts[0]] = dict_parts[1]
     if len(returnDict) > 0:
         return returnDict
     else:
@@ -127,7 +134,20 @@ def get_web_page(webURL, containerParse, webExtract):
             inputSoup = BeautifulSoup(r.text, 'html.parser')
             if containerParse:
                 parseDict = create_dict(containerParse)
-                return extract_from_web(webExtract, inputSoup.find(attrs=parseDict), webURL)
+                # See if we have a class, in which case, have to do more screening (1 to N classes)
+                if 'class' in parseDict:
+                    classDict = {}
+                    classDict['class'], whichNum = parseDict['class']
+                    returnWords = []
+                    counter = 0
+                    fullSoup = inputSoup.find_all(attrs=classDict)
+                    for whichSoup in fullSoup:
+                        counter += 1
+                        if counter == whichNum or whichNum == 0:
+                            returnWords.extend(extract_from_web(webExtract, whichSoup, webURL))
+                    return returnWords
+                else:
+                    return extract_from_web(webExtract, inputSoup.find(attrs=parseDict), webURL)
             else:
                 return extract_from_web(webExtract, inputSoup, webURL)
 
@@ -257,9 +277,8 @@ def main():
     case_help = 'Change the case of words in the list'
     parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
     container_help = 'Further refines the text from a webpage by narrowing to any HTML entity(ies) specified,\
-                      using tag=term syntax (e.g., ID=main_content or class=lyrics). Multiple entities can\
-                      be specified'
-    parser.add_argument('--container', action='append', help=container_help)
+                      using tag=term syntax (e.g., id=main_content or class=lyrics).'
+    parser.add_argument('--container', nargs=1, help=container_help)
     webextract_help = 'Specify whether to extract text, links or specific tags from web inputs'
     parser.add_argument('--webextract', nargs='?', default='text', help=webextract_help)
     convert_help = 'Convert a block of text to a word list. Default delimiter is a space but acccepts\
