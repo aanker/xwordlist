@@ -260,9 +260,9 @@ def main():
                       using tag=term syntax (e.g., ID=main_content or class=lyrics). Multiple entities can\
                       be specified'
     parser.add_argument('--container', action='append', help=container_help)
-    webextract_help = 'Specify whether to extract text or links from webpage specified with -w'
+    webextract_help = 'Specify whether to extract text, links or specific tags from web inputs'
     parser.add_argument('--webextract', nargs='?', default='text', help=webextract_help)
-    convert_help = 'Converts a block of text to a word list. Default delimiter is a space but acccepts\
+    convert_help = 'Convert a block of text to a word list. Default delimiter is a space but acccepts\
                     any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
     parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
