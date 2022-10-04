@@ -46,10 +46,12 @@ The most useful content extraction tool in `xwordlist` is its ability to pull co
 python xwordlist.py --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --container id=songLyricsDiv
 ```
 
-The `--container` option also works on classes (as in`class=XX`). To grab URLs instead of text, just set the additional option `--webextract links`. You can use the link extraction functionality to build your file of URLs that you then use to grab multiple text blocks. For instance, to grab a list of URLs for all of the songs by Tom Petty on SongLyrics, try
+The `--container` option also works on classes (as in`class=XX`). But whereas there can only be one `id` tag per page, there can be multiple `class` items with the same label. To specify a single instance of a `class` attribute, add `=N` which will only grab the Nth time that label appears on the page. For example, `class=tracklist=1` will retrieve the first instance of the “tracklist” `class` on a page. If you leave out the `=N` attribute, `xwordlist` will grab all instances of that `class`.
+
+To grab URLs instead of text, just set the additional option `--webextract links`. You can use the link extraction functionality to build your file of URLs that you then use to grab multiple text blocks. For instance, to grab a list of URLs for all of the songs by Tom Petty on SongLyrics, try
 
 ```
-python xwordlist.py --webpage http://www.songlyrics.com/tom-petty-lyrics/ --container class=tracklist --webextract links
+python xwordlist.py --webpage http://www.songlyrics.com/tom-petty-lyrics/ --container class=tracklist=1 --webextract links
 ```
 
 Then take the file created and feed it back to grab all of the song lyrics by entering
