@@ -128,4 +128,4 @@ The configuration file also includes global settings that are user editable:
 
 *  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the `urllist` option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: 20 seconds
 
-*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is 'tompetty.txt' and `file_add` is set to 'fab', the output file created will be named 'tompetty_fab.txt'. Default setting: 'fab'
+*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is 'tompetty.txt' and `file_add` is set to 'xwl', the output file created will be named 'tompetty_xwl.txt'. Default setting: 'xwl'
