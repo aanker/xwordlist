@@ -2,7 +2,15 @@
 `xwordlist` is a command line Python program designed to help you create, build and organize crossword puzzle word lists. Besides helping you with basic functions such as deduping, alphabetizing and changing case, it is also able to pull text out of structured web pages or large blocks of text, including lists of pages with similar content — for instance, the lyrics of songs from a particular artist.
 
 ## Installation
-For now, you are on your own if you wish to install `xwordlist` (this is still an early stage project). You can clone the repository, install the dependencies and type `python xwordlist.py`. If you need more instructions than that, you might be better off waiting until the project is further along. (*TK:  Add pip install*)
+For now, you are mostly on your own if you wish to install `xwordlist` as this is still an early stage project. After making sure your python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning the repository or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
+```
+python3 -m pip install -r requirements.txt
+```
+To run the program, type
+```
+python3 xwordlist.py
+```
+If you need more instructions than that, you might be better off waiting until the project is further along. (*TK:  Add pip install*)
 
 ## Usage
 
