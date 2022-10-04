@@ -19,7 +19,7 @@ config_name = '{}.conf'.format(exec_pieces[0])
 
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
-    'file_add': 'fab',
+    'file_add': 'xwl',
 }
 
 
@@ -259,7 +259,7 @@ def setup_input(localArgs, otherArgs):
 def main():
     # First set up configargparse
     parser = configargparse.ArgumentParser(default_config_files=[config_name],
-                                           description='Fabulous word list builder')
+                                           description='Crossword puzzle word list builder')
 
     # Input and output options
     parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
@@ -295,6 +295,8 @@ def main():
     args = parser.parse_known_args()
     confArgs = args[0]
     envArgs = create_dict(args[1])
+    # print(confArgs)
+    # sys.exit()
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:

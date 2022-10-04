@@ -1,4 +1,4 @@
-Below are recipes for downloading various types of text and links from different song list and lyric sites. Paste the options in each section into your `wordfab.conf` configuration file, update the URLs for the specifics of what you are trying to parse and run `wordfab`.
+Below are recipes for downloading various types of text and links from different song list and lyric sites. Paste the options in each section into your `xwordlist.conf` configuration file, update the URLs for the specifics of what you are trying to parse and run `xwordlist`.
 
 ## [SongLyrics](http://songlyrics.com)
 
@@ -61,7 +61,7 @@ dedupe
 alphabetize
 case upper
 ```
-Note: Given how LyricsFreak constructs their list, every song will have the word ”LYRICS“ at the end (e.g., “MARYJANESLASTDANCELYRICS”). In the future, `wordfab` will have the ability to strip out such characters but for now, you should open the list of songs in your favorite text editor and do a search and replace. (*TK: add strip characters option*) Also due to the way LyricsFreak structures the HTML, you will also find a few extra words such as “STARS” and “TIME” in your list of songs. You should delete those by hand.
+Note: Given how LyricsFreak constructs their list, every song will have the word ”LYRICS“ at the end (e.g., “MARYJANESLASTDANCELYRICS”). In the future, `xwordlist` will have the ability to strip out such characters but for now, you should open the list of songs in your favorite text editor and do a search and replace. (*TK: add strip characters option*) Also due to the way LyricsFreak structures the HTML, you will also find a few extra words such as “STARS” and “TIME” in your list of songs. You should delete those by hand.
 
 ### To get song lyrics
 ```
@@ -77,4 +77,4 @@ case upper
 
 ## Legal Disclaimer
 
-Always read the terms of service first! The inclusion of any site on this wiki does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use wordfab and when you download data from public websites while using it.
+Always read the terms of service first! The inclusion of any site on this wiki does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use xwordlist and when you download data from public websites while using it.
