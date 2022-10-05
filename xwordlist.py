@@ -7,6 +7,7 @@ import requests
 import pathlib
 import urllib.parse
 import time
+import re
 
 from prompt_toolkit import prompt, print_formatted_text, HTML
 from bs4 import BeautifulSoup
@@ -21,6 +22,23 @@ GLOBAL_SETTINGS = {
     'urllist_delay': 20,
     'file_add': 'xwl',
 }
+
+
+def regex(wordList, regexInput):
+    try:
+        newList = []
+        for line in wordList:
+            newList.extend(re.findall(regexInput, line))
+        return newList
+
+    except re.error:
+        error_line = 'Regex pattern <ansired>{}</ansired> not valid, please check and try again'
+        print_line(error_line.format(regexInput))
+        sys.exit()
+
+    except Exception as e:
+        print_line('Error {}'.format(e))
+        sys.exit()
 
 
 def convert(wordList, parseChars):
@@ -291,6 +309,7 @@ def main():
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
     strip_help = 'Remove non-alphabetic characters (including spaces)'
     parser.add_argument('-s', '--strip', action='store_true', help=strip_help)
+    parser.add_argument('--regex', nargs=1, help='Transform text based on regex')
 
     args = parser.parse_known_args()
     confArgs = args[0]
@@ -311,6 +330,14 @@ def main():
     inputWords = setup_input(confArgs, envArgs)
 
     # Do any text parsing
+    if confArgs.regex is not None:
+        if confArgs.regex[0] == 'true':
+            regex_error = 'Exiting... no regex pattern given, please use format '
+            regex_error += '<ansired>regex PATTERN</ansired> in configuration file'
+            print_line(regex_error)
+            sys.exit()
+        inputWords = regex(inputWords, confArgs.regex[0])
+
     if confArgs.convert is not None:
         inputWords = convert(inputWords, confArgs.convert)
 
