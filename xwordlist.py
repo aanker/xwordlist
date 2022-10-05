@@ -295,8 +295,6 @@ def main():
     args = parser.parse_known_args()
     confArgs = args[0]
     envArgs = create_dict(args[1])
-    # print(confArgs)
-    # sys.exit()
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:
