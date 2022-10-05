@@ -166,6 +166,11 @@ def get_web_page(webURL, containerParse, webExtract):
                     return extract_from_web(webExtract, inputSoup.find(attrs=parseDict), webURL)
             else:
                 return extract_from_web(webExtract, inputSoup, webURL)
+        elif r.status_code == 403:
+            print_line('Unable to load webpage due to code 403: this usually means we are being blocked')
+
+        else:
+            print_line('Unable to load webpage, status code = {}'.format(r.status_code))
 
     except (requests.URLRequired, requests.RequestException):
         return False
