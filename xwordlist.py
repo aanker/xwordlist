@@ -62,7 +62,7 @@ def convert(wordList, parseChars):
 def remove_min(wordList, numChars):
     newList = []
     for line in wordList:
-        if len(line) >= numChars:
+        if line and len(line) >= numChars:
             newList.append(line)
     return newList
 
