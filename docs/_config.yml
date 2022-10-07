@@ -1,0 +1,6 @@
+# Jekyll configuration
+name:  XWordList Help
+description:  Documentation site for XWordList software
+url: "https://xwl.com"
+markdown: GFM
+theme: minima
