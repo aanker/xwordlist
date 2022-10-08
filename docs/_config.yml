@@ -1,6 +1,21 @@
 # Jekyll configuration
+title: XWordList - Software for Building Puzzle Word Lists
+author:
+  name: Andrew Anker
+  email: "aa@quid.pro"
 name:  XWordList Help
 description:  Documentation site for XWordList software
 url: "https://xwl.com"
 markdown: GFM
+
+# Theme info
 theme: minima
+minima:
+  skin: auto
+  social_links:
+    github: aanker
+    facebook: aanker
+    linkedin: aanker
+    twitter: aa
+header_pages:
+  - help.md
