@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Help
+title: How to Use XWordList
 permalink: /help/
 ---
 
-This page provides a more in-depth explanation of how to use `xwordlist`. The functionality is split into three categories of features:
+The easiest way to think of the functionality of `xwordlist` is in three categories:
 *  [Input and Output](#input-and-output)
 *  [Content Parsing](#content-parsing)
 *  [Word Transformation](#word-transformation)
 
-Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the recipes provided on this site (*TK: recipes pages*) include easy copy-and-paste options for grabbing data off websites that can be used to build themed word lists.
+Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the recipes provided on this site (*TK: recipes pages*) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
 ## Input and Output
 
@@ -54,7 +54,7 @@ Note that you don’t need to add the `--webextract text` as that is the default
 
 Sometimes however, the `--webextract text` option will return too much random text and you need to be more specific. For instance, if you grab a page from Wikipedia, you will find all sorts of random navigation, captions and other text that may not fit in your list. For that, we have an additional setting: `--webextract html-XX`. This option allows you to pull the text only from one or more html tags. To grab the content inside paragraphs of text, use `--webextract html-p` which only extracts text between `<p>` and `</p>` tags. You can chain multiple tags by separating them between underscore (`_`) characters:  use `--webextract html-b_i` to get all text that is either bolded (`<b>`) or italicized (`<i>`).
 
-If this gets too confusing, we highly suggest you check out the recipes page on the [wiki](https://github.com/aanker/xwordlist/wiki/Recipes) which gives many examples of ways to use this functionality in combination with specific websites. Be sure to read below about [configuration files](#configuration-file) first.
+If this gets too confusing, we highly suggest you check out the recipe pages (*TK: recipes pages*) which give many examples of ways to use this functionality in combination with specific websites. Be sure to read below about [configuration files](#configuration-file) first.
 
 ### Converting Text Blocks to Words
 

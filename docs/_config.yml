@@ -1,8 +1,7 @@
 # Jekyll configuration
 title: XWordList - Software for Building Puzzle Word Lists
-author:
-  name: Andrew Anker
-  email: "aa@quid.pro"
+author: Andrew Anker
+email: "aa@quid.pro"
 name:  XWordList Help
 description:  Documentation site for XWordList software
 url: "https://xwl.com"
