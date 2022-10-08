@@ -1,25 +1,17 @@
-# xwordlist
-`xwordlist` is a command line Python program designed to help you create, build and organize crossword puzzle word lists. Besides helping you with basic functions such as deduping, alphabetizing and changing case, it is also able to pull text out of structured web pages or large blocks of text, including lists of pages with similar content — for instance, the lyrics of songs from a particular artist.
+---
+layout: page
+title: Help
+permalink: /help/
+---
 
-## Installation
-For now, you are mostly on your own if you wish to install `xwordlist` as this is still an early stage project. After making sure your python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning the repository or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
-```
-python3 -m pip install -r requirements.txt
-```
-To run the program, type
-```
-python3 xwordlist.py
-```
-If you need more instructions than that, you might be better off waiting until the project is further along. (*TK:  Add pip install*)
+This page provides a more in-depth explanation of how to use `xwordlist`. The functionality is split into three categories of features:
+*  [Input and Output](#input-and-output)
+*  [Content Parsing](#content-parsing)
+*  [Word Transformation](#word-transformation)
 
-## Usage
+Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the recipes provided on this site (*TK: recipes pages*) include easy copy-and-paste options for grabbing data off websites that can be used to build themed word lists.
 
-For quick help instructions on the command line, type
-```
-python xwordlist.py --help
-```
-
-### Input and Output
+## Input and Output
 
 `xwordlist` accepts three types of non-mutually exclusive inputs:
 *  Text file:  `--input [filename.txt]` or `-i [filename.txt]`
@@ -38,7 +30,7 @@ You can specify the output file name with the command line option `--output [fil
 
 `xwordlist` only works with text files, if it is given binary data it will let you know and then quit. For all inputs and outputs you can specify a path as part of a file name as in `--input /Users/aa/wordlist.txt` or use the `--directory /Users/aa/` argument to set a default path for all inputs and outputs.
 
-### Content Parsing
+## Content Parsing
 
 The most useful content extraction tool in `xwordlist` is its ability to pull content out of structured web pages. When given a web URL (or text file with a list of web URLs), by default `xwordlist` will return an output file with all of the text on the web page(s). More useful is to only grab specific parts of the page, which you can do using the `--container` option. For instance, if you wish to get the lyrics to a song on the website [SongLyrics](http://songlyrics.com), you only need the content inside the HTML element with the ID “songLyricsDiv”.
 
@@ -76,7 +68,7 @@ You may decide when you are pulling large amounts of content down that you want 
 python xwordlist.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text --convert --strip
 ```
 
-### Word Transformation
+## Word Transformation
 
 With any list of words derived from a public source such as a lyrics database, you will want a few more items that are relatively self explanatory.
 
