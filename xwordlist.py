@@ -106,8 +106,11 @@ def create_dict(localAttrs):
         if dict_parts[0] == 'class':
             numParts = int(dict_parts[2]) if len(dict_parts) == 3 else 0
             returnDict[dict_parts[0]] = (dict_parts[1], numParts)
-        else:
+        elif len(dict_parts) > 1:
             returnDict[dict_parts[0]] = dict_parts[1]
+        else:
+            print_line('Exiting... incorrect option <ansired>{}</ansired>'.format(dict_parts[0]))
+            sys.exit()
     if len(returnDict) > 0:
         return returnDict
     else:
