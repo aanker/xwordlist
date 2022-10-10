@@ -296,10 +296,7 @@ def main():
     directory_help = 'Set directory for input, output and urllist files'
     parser.add_argument('--directory', type=pathlib.Path, help=directory_help)
 
-    # List transformation options
-    parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
-    case_help = 'Change the case of words in the list'
-    parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
+    # Content parsing options
     container_help = 'Further refines the text from a webpage by narrowing to any HTML entity(ies) specified,\
                       using tag=term syntax (e.g., id=main_content or class=lyrics).'
     parser.add_argument('--container', nargs=1, help=container_help)
@@ -309,6 +306,12 @@ def main():
                     any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
                     by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
     parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
+    parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
+
+    # List transformation options
+    parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
+    case_help = 'Change the case of words in the list'
+    parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
     dedupe_help = 'Remove duplicates from the word list. Note that this is case sensitive so it is recommended\
                    that you also use --case {lower | upper} to put everything in the same case first'
     parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
@@ -317,7 +320,6 @@ def main():
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
     strip_help = 'Remove non-alphabetic characters (including spaces)'
     parser.add_argument('-s', '--strip', action='store_true', help=strip_help)
-    parser.add_argument('--regex', nargs=1, help='Transform text based on regex')
 
     args = parser.parse_known_args()
     confArgs = args[0]
