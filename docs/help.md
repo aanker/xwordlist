@@ -1,123 +1,155 @@
 ---
-layout: page
-title: How to Use XWordList
+layout: home
+title: Help
 permalink: /help/
 ---
 
-The easiest way to think of the functionality of `xwordlist` is in three categories:
-*  [Input and Output](#input-and-output)
-*  [Content Parsing](#content-parsing)
-*  [Word Transformation](#word-transformation)
+The functionality of `xwordlist` can be divided into three categories:
+*  [Input and Output](#input-and-output): start with content from your local machine and add more programmatically from the web. Build a list of URLs and crawl multiple pages on the web. Save everything to a file name of your choosing or let the software create one for you.
+*  [Content Parsing](#content-parsing): take content from multiple sources and parse it into a normalized list of words. Grab all the words on a web page or limit to one ID, one or more classes and/or one or more HTML tags. Use a regex pattern to get rid of anything you don’t need.
+*  [Word Transformation](#word-transformation): refine your list into something you can paste directly into your construction software — alphabetized, deduped, properly cased and with all the extraneous words filtered out.
 
 Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the recipes provided on this site (*TK: recipes pages*) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
-## Input and Output
+## Basic Example
 
-`xwordlist` accepts three types of non-mutually exclusive inputs:
-*  Text file:  `--input [filename.txt]` or `-i [filename.txt]`
-*  Web URL:  `--webpage [URL]` or `-w [URL]`
-*  Text file with list of web URLs:  `--urllist [filename.txt]`
+The easiest way to understand `xwordlist` is to walk through the example of getting a list of song titles, something you might want to do if you are building a themed puzzle about a particular musician. In this case, we’ll be grabbing a list of songs by Tom Petty from [this page on SongLyrics](https://www.songlyrics.com/tom-petty-lyrics/):
 
-If multiple inputs are specified, the contents of each source are added together. For instance, you can use your base word list as an input file and then add the contents of a web page by entering
+To see what raw output looks like, we’ll first just get the whole page without any refinement:
 
 ```
-python xwordlist.py --input tompettywords.txt --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/
+python3 xwordlist.py --webpage https://www.songlyrics.com/tom-petty-lyrics/
 ```
 
-A file with a list of web URLs should contain one URL per line: it otherwise functions the same as running the program multiple times using the `--webpage` option. To work effectively, you should limit the URLs to the same site so that `xwordlist` is able to parse the HTML consistently (see [Content Parsing](#content-parsing) below).  In addition, the program pauses 20 seconds between each web request to be a good citizen and avoid getting blocked. To change this delay, see [Changing Global Settings](#changing-global-settings) section below.
+After running this command, you should see a new file called `songlyrics_com_xwl.txt` in your `xwordlist` folder. Since no output file name was specified, a default based on the URL was created. Open the file with your favorite text editor and you will see that we have generated a file with all of the text strings from the SongLyrics web page, including random bits of page titles, navigation and advertising verbiage.
 
-You can specify the output file name with the command line option `--output [filename.txt]` or `-o [filename.txt]`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL plus the string `_xwl` (to change this string, see [Changing Global Settings](#changing-global-settings) section below). Your input and output files can be the same but `xwordlist` will always prompt you before writing over an existing file.
+That is a good start, but now let’s just grab the text from the table in the middle with the title “Tom Petty Lyrics - by Popularity” which includes the list of song titles we are looking for. By examining the HTML of the page, we see that the text is contained in a table with the class name “tracklist”, which we can specify using the `--container` option. Next try the command:
 
-`xwordlist` only works with text files, if it is given binary data it will let you know and then quit. For all inputs and outputs you can specify a path as part of a file name as in `--input /Users/aa/wordlist.txt` or use the `--directory /Users/aa/` argument to set a default path for all inputs and outputs.
+```
+python3 xwordlist.py --webpage https://www.songlyrics.com/tom-petty-lyrics/ --output tompetty.txt --container class=tracklist=1 --webextract html-a
+```
+
+Rather than let a default file be created, this time we have specified that the output should go to `tompetty.txt`; open that file to see the result. You may have noticed that when we specified the `--container` option, we included `class=tracklist=1`. If we had specified an ID, it would have to be unique to the page but there can be multiple uses of the same class name on a page and in this case, we wanted the first. If we had left out the `=1` on the end, `xwordlist` would have given us all of the instances of that class on the page. Try it to see what different outputs look like!
+
+The list of song names is numbered, which is not something we want for our word list. By using `--webextract html-a`, we ask the software to further refine our query to only give us text within `<a>` tags, which very nicely contains each song title but not the numbers. If for some reason we wanted multiple tags — say for instance all the content that is either bolded or italicized — we could have specified `--webextract html-i_b_em_strong` which would include all of the text within `<i> <b> <em> <strong>` tags. Chain as many HTML tags as you need by separating them with the underscore character.
+
+Now that we have a list of song titles, there are a few bits of clean up since most of these kinds of lists can be a bit noisy. For instance, this list of songs by Tom Petty includes multiple versions of the same song with additional words that we may not want for our final word list. First, we should alphabetize it to make it easier to scan. Rather than go back to the web, we’ll use the file we just created:
+
+```
+python3 xwordlist.py --input tompetty.txt --output tompetty.txt --alphabetize
+```
+
+Of course, you could save the alphabetized list to a different file name (or let the software create a new file) but for the purposes of this example, we will stick with the same file. Scan through that file and delete duplicates and anything that you wouldn’t want in your word list. Don’t worry about extraneous characters — like for instance the apostrophe on the end of Free Fallin’ — the software will clean that up. Once you have made any edits to that file, be sure to save it before continuing on to the next step.
+
+From here, there are two ways we can go with this list. We may want to create a list where the entire song name is an entry, for instance for long themed entries such as “WONTBACKDOWN”. To do that, we need to strip out all non-alphabetic characters (including spaces) and dedupe the list. Whenever you use the dedupe function, you should also change everything to the same case since the software will treat “Mary Jane” and “mary jane” as two different entries. So first run this:
+
+```
+python3 xwordlist.py --input tompetty.txt --output tompetty_songs.txt --strip --dedupe --case upper --alphabetize
+```
+
+We saved this to a new file name for reasons that will become obvious in a second. Go open that new file `tompetty_songs.txt` and you will see a list of Tom Petty songs that are ready to be imported into your crossword construction software. But since most of these are long titles that are hard to fit into a standard crossword, we also want the individual words: for instance just the word “BREAK” to clue as “___ Down” for a shorter entry. To do that, we need to add the `--convert` option on our original list which will separate each title’s words into a new list. Try:
+
+```
+python3 xwordlist.py --input tompetty.txt --output tompetty_title_words.txt --convert --strip --dedupe --case upper --alphabetize --minimum
+```
+
+You now have two great lists to use to start building your Tom Petty puzzle! You can paste them into one doc and have `xwordlist` alphabetize and dedupe or you can just paste each individual list directly into your construction software, perhaps to score one set of words higher than the other. Experiement and figure out what works best for your constructing needs.
+
+Also, check out the recipes page (*TK: recipes pages*) for other possibilities. You can use the software to grab and convert the lyrics from individual songs, spider all of the songs at once or parse Wikipedia for album titles. Let us know what you find!
+
+## List of Available Options
+
+Each option below is shown as would be specified on the command line. To use as an option in the configuration file, you do not have to enter the dashes (i.e., `--input filename.txt` on the command line but `input filename.txt` in the configuration file.)
+
+The order that options are specified in does not matter, the software knows the right order to take these operations so they don’t conflict with each other.
+
+### Input and Output
+
+`xwordlist` only works with text files, if it is given binary data it will let you know and then quit.
+
+#### **--input** or **-i** filename.txt
+Use the text file named “filename.txt” as an input for the parsing and transformation engine. If you specify other input sources (such as `--webpage` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
+
+#### **--webpage** or **-w** URL
+Use the web page located at the address named by the URL as an input into the parsing and transformation engine. The software will grab all of the available text strings from the web page, unless other options are specified to narrow the request down (see `--container` and `--webextract` for more information). The URL should be the fully qualified address, including `http://` or `https://`. The software does not support authenticated sites.
+
+If you specify other input sources (such as `--input` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
+
+#### **--urllist** filename.txt
+Read the text file named “filename.txt” and loop through each of the URLs to find input for the parsing and transformation engine. This option functions the same as running the program multiple times using the `--webpage` option for each entry in “filename.txt”.
+
+To work effectively, you should limit the URLs to the same site (or multiple sites with the same HTML structure) so that the software is able to parse the HTML consistently for each URL. Although you can specify multiple URLs, the text parsing and conversion options will act the same on everything retrieved.
+
+The program pauses 20 seconds between each URL requested to be a good citizen and avoid getting blocked. To change this delay, see the [Changing Global Settings](#changing-global-settings) section below. If you specify other input sources (such as `--input` and `--webpage`), all will be added together before processing by the parsing and transformation engine.
+
+#### **--output** or **-o** filename.txt
+Save the list of words output by the parsing and transformation engine to the file named “filename.txt”. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the input web address plus the string `_xwl`. To change this string, see the [Changing Global Settings](#changing-global-settings) section below.
+
+Your input and output files can be the same, the software will always prompt you before writing over an existing file.
+
+#### **--directory** /path/to/folder
+Set a directory to use for all input and output files. The software will look in the directory specified for files named in the `input` and `urllist` options and will write any file specified by the `output` option (or the default file if no output is specified) to this directory.
+
+For all inputs and outputs you can also specify a path as part of a file name as in `--input /path/to/wordlist.txt`.
 
 ## Content Parsing
 
-The most useful content extraction tool in `xwordlist` is its ability to pull content out of structured web pages. When given a web URL (or text file with a list of web URLs), by default `xwordlist` will return an output file with all of the text on the web page(s). More useful is to only grab specific parts of the page, which you can do using the `--container` option. For instance, if you wish to get the lyrics to a song on the website [SongLyrics](http://songlyrics.com), you only need the content inside the HTML element with the ID “songLyricsDiv”.
+#### **--container** tag=name
+Limit the content read from web page(s) specified by either `--webpage` or `--urllist` to a particular HTML `id` or `class` tag. You must specify both the tag and the name of the element requested, for example `--container id=page_content` or `--container class=wikitable`.
 
-```
-python xwordlist.py --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --container id=songLyricsDiv
-```
+Since the `id` tag must be unique on a properly structured HTML page, specifying an `id` element will return a single container. To specify a single instance of a `class` attribute, add `=N` which will only grab the Nth time that label appears on the page. For example, `class=tracklist=1` will retrieve the first instance of the tracklist `class` on a page. If you leave out the `=N` attribute, the software will grab all instances of that `class`. 
 
-The `--container` option also works on classes (as in`class=XX`). But whereas there can only be one `id` tag per page, there can be multiple `class` items with the same label. To specify a single instance of a `class` attribute, add `=N` which will only grab the Nth time that label appears on the page. For example, `class=tracklist=1` will retrieve the first instance of the “tracklist” `class` on a page. If you leave out the `=N` attribute, `xwordlist` will grab all instances of that `class`.
+#### **--webextract** text (default) | links | html-XX
+Specify what kind of content to grab from web pages. The default is `text` and for most web pages you will not need to use this option at all.
 
-To grab URLs instead of text, just set the additional option `--webextract links`. You can use the link extraction functionality to build your file of URLs that you then use to grab multiple text blocks. For instance, to grab a list of URLs for all of the songs by Tom Petty on SongLyrics, try
+Use the `links` option when you want to retrieve URLs from a web page, for instance to build a text file of URLs to then feed to the `--urllist` option. `links` only returns URLs specified by `<a>` tags, it parses out the values located in the `href` element. If it finds relative URLs, it builds fully-qualified links based on the page’s URL.
 
-```
-python xwordlist.py --webpage http://www.songlyrics.com/tom-petty-lyrics/ --container class=tracklist=1 --webextract links
-```
+Use the `html-XX` to further refine which text to pull from a web page by limiting to only text within specified tags. For instance, use `html-b` to only return text inside all `<b>` and `</b>` blocks. You can chain multiple tags by separating them with the underscore character, for example `html-i_em` will get all content in either `<i>` or `<em>` blocks.
 
-Then take the file created and feed it back to grab all of the song lyrics by entering
-```
-python xwordlist.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text
-```
-Note that you don’t need to add the `--webextract text` as that is the default for web extraction. Also note that you should go through the file of URLs before you ask `xwordlist` to grab all of that content; you will find that there is a lot of duplication and you probably don’t need all of the URLs. `xwordlist` works best hand in hand with your text editor of choice (I prefer Sublime Text personally).
+#### **--regex** pattern
+Refine which text to keep by using regex patterns. Whereas other options such as `--container` or `--webextract` will grab all of the text within whatever containers and/or elements specified, `--regex` allows you to narrow down to particular parts of text text strings to keep. For examples of patterns to use, see regex examples. (*TK: regex examples*)
 
-Sometimes however, the `--webextract text` option will return too much random text and you need to be more specific. For instance, if you grab a page from Wikipedia, you will find all sorts of random navigation, captions and other text that may not fit in your list. For that, we have an additional setting: `--webextract html-XX`. This option allows you to pull the text only from one or more html tags. To grab the content inside paragraphs of text, use `--webextract html-p` which only extracts text between `<p>` and `</p>` tags. You can chain multiple tags by separating them between underscore (`_`) characters:  use `--webextract html-b_i` to get all text that is either bolded (`<b>`) or italicized (`<i>`).
-
-If this gets too confusing, we highly suggest you check out the recipe pages (*TK: recipes pages*) which give many examples of ways to use this functionality in combination with specific websites. Be sure to read below about [configuration files](#configuration-file) first.
-
-### Converting Text Blocks to Words
-
-Using the above content parsing options will provide you with lines of text which is probably not what you ultimately want for a word list. The next option to use is `--convert` which takes any block of text and turns it into a list of words. The default if you don’t specify anything is to use spaces as delimiters but you can ask `xwordlist` to use additional characters as deliminters by adding them in quotes. For instance, `--convert " ;-,"` will separate words connected by spaces, semi-colons, dashes and commas.
-
-Usually when you are pulling content from web pages, the default behavior for `--convert` is fine and you won’t need to use other delimiters. But to build a word list for crossword construction, you will want to remove all of those additional non-alphabetic characters. To do that, use `--strip` or `-s` which gets rid of everything (including numbers) that you would not want in your word list. (*TK: Add more flexibility on this setting*)
-
-You may decide when you are pulling large amounts of content down that you want to take each step at a time to make sure you’re not getting junk data — in fact, at least until you have done some trial runs that is highly recommended! But `xwordlist` knows the right order to take these operations so they don’t conflict with each other and you can chain multiple items at once. To come back to our list of links of Tom Petty songs, you could do the following and end up with a word list in one shot:
-
-```
-python xwordlist.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text --convert --strip
-```
+#### **--convert** "chars" (optional)
+Take any block of text and turn it into a list of words. If `"chars"` is not specified, the software uses spaces to separate text into words and in most cases, that will suffice. If you do need to specify `"chars"`, put all characters to be used as delimiters inside the quotes. For instance, if you want to separate text blocks connected by either dashes or spaces, you would use `--convert "- "`.
 
 ## Word Transformation
 
-With any list of words derived from a public source such as a lyrics database, you will want a few more items that are relatively self explanatory.
+#### **--alphabetize** or **-a**
+Alphabetize the list of words.
 
-*  Dedupe:  `--dedupe` or `-d`
-*  Alphabetize:  `--alphabetize` or `-a`
-*  Change case:  `--case lower | upper`
-*  Minimum word length:  `--minimum X` or `-m X`
+#### **--case** none (default) | lower | upper
+Change the case of all words in the list.
 
-You should always change case to either lower or upper as part of deduping because the deduping routine is case sensitive. Also, the default minimum word length is 3 letters so if you’re happy with that (as most crosswords are), just `-m` without any additional number will screen out any word smaller than 3 letters.
+#### **--dedupe** or **-d**
+Remove all duplicates in the list. Note that `--dedupe` is case sensitive: `apple` and `APPLE` will be treated as two separate words. It is always best to run `--dedupe` along with `--case lower` or `--case upper`.
 
-To bring it all home, the following command line along with the list of links we built above should give you a fully parsed, alphabetized, deduped, crossword ready list of words from Tom Petty’s oeuvre:
+#### **--minimum** or **-m** NN
+Remove all words with less than `NN` characters. By default, `NN` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
 
-```
-python xwordlist.py --urllist tom_petty_links.txt --container id=songLyricsDiv --webextract text --convert --strip --dedupe --alphabetize --case upper --minimum
-```
-
-The order of options entered on the command line doesn’t matter, `xwordlist` does everything in the most logical order. To simplify the above (and get rid of options that are defaults and don’t need to be specified), you could also enter:
-
-```
-python xwordlist.py --urllist tom_petty_links.txt --container id=songLyricsDiv --convert -sdam --case upper 
-```
+#### **--strip** or **-s**
+Remove all non-alphabetic characters, to make your list crossword puzzle ready. (*TK: Add more flexibility on this setting*)
 
 ## Configuration File
 
-`xwordlist` will also look for a configuration file named `xwordlist.conf` located in the same directory as the main Python program. For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time. One configuration option per line, but you can enter each setting in any one of a number of different ways:
+`xwordlist` will also look for a configuration file named `xwordlist.conf` located in the same directory as the main Python program. For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
 
+The `xwordlist.conf` that is provided when you download from GitHub includes a commented out example of the format for each option. The format is the same as the command line options described above, but the dashes (`-` or `--`) are not necessary:
+ 
 ```
 # options that take an argument:
 case upper
-case = upper
-case: upper
---case upper
 
 # options that don’t take an argument:
---dedupe
 dedupe
-dedupe = True
-
-# options that can have multiple items
-container = [id=songLyricsDiv, class=linkList]
 ```
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
-The `xwordlist.conf` file included in the GitHub repository contains commented out examples of the usage of each option. In addition, the [wiki hosted on the GitHub site](https://github.com/aanker/xwordlist/wiki/Recipes) includes ”recipes“ of configuration settings for known sites from which to pull data for your word lists. You can paste the options directly into your configuration file (updating the specific URLs) to improve your understand of how to use `xwordlist`.
+Many of the recipes provided on this site (*TK: recipes pages*) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
 ### Changing Global Settings
 
 The configuration file also includes global settings that are user editable:
 
-*  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the `urllist` option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: 20 seconds
+*  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the `--urllist` option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: 20 seconds
 
-*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is 'tompetty.txt' and `file_add` is set to 'xwl', the output file created will be named 'tompetty_xwl.txt'. Default setting: 'xwl'
+*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is “tompetty.txt” and `file_add` is set to “xwl”, the output file created will be named “tompetty_xwl.txt”. Default setting: “xwl”
