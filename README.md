@@ -27,3 +27,7 @@ For quick help instructions on the command line, type
 python3 xwordlist.py --help
 ```
 Please see the [project’s main website](https://xwl.ist) for more information about using the software including a [basic example](https://xwl.ist/help/#basic-example), recipes for common patterns and a [reference](https://xwl.ist/help/#list-of-available-options) to all options.
+
+## License
+
+This software is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
