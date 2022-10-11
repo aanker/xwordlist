@@ -5,11 +5,11 @@ title: 'Software for Building Puzzle Word Lists'
 
 `xwordlist` is a command line Python program designed to help you create, build and organize crossword puzzle word lists. As I started to think about constructing crossword puzzles with heavy themes — trying to make the entire puzzle themed, not just three or four long entries — I realized that I would need the ability to acquire and organize large amounts of text on very specific topics. After hacking around with a combination of search-and-replace text editors and Excel, I realized I needed to build someting more custom and thus `xwordlist` was born. 
 
-Besides helping you with basic text functions such as deduping, alphabetizing and changing case, this program is able to pull content out of structured web pages or parse large blocks of text, including lists of web pages with similarly structured content. Although I first started using the software to grab the lyrics of songs by a particular musician, I have added regex and better html parsing functionality to make getting data from Wikipedia and less structured sites a bit more possible.
+Besides helping with basic text functions such as deduping, alphabetizing and changing case, this program is able to pull content out of structured web pages and parse large blocks of text, including lists of web pages with similarly structured content. Although I first started using the software to grab the lyrics of songs, I have added regex and better html parsing functionality to make it easier to get data from Wikipedia and less structured sites.
 
 ## Installation
 
-This is still an [early stage project](https://github.com/aanker/xwordlist) that is likely to change often, I am not yet worrying about breaking changes to APIs or updating the functionality in fundamental ways. Use at your discretion!
+This is still an [early stage project](https://github.com/aanker/xwordlist) that is likely to change often and so I am not yet worrying about breaking changes to APIs or updating the functionality in fundamental ways. Use at your discretion!
 
 For now, you are mostly on your own if you wish to install `xwordlist`. After making sure your Python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning [the repository](https://github.com/aanker/xwordlist) or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
 ```
@@ -27,6 +27,7 @@ For quick help instructions on the command line, type
 ```
 python3 xwordlist.py --help
 ```
+For an example of how to use the software as well as a reference to all options, see the [expanded help page](/help).
 
 ### Input and Output
 
@@ -55,7 +56,7 @@ python3 xwordlist.py --webpage http://www.songlyrics.com/tom-petty/free-falling-
 
 This will provide you with lines of text which is probably not what you ultimately want for a word list. The next option to use is `--convert` which takes any block of text and turns it into a list of words. To make it crossword construction ready, you will also want to remove any non-alphabetic characters using `--strip` or `-s` which gets rid of everything (including numbers) that you would not want in your word list.
 
-For more information about the program’s content parsing ability, including how to target specific html class names or individual tags, see the [expanded help page](/help).
+For more information about the program’s content parsing ability, including how to target specific html class names or individual tags and how to use regex patterns, see the [expanded help page](/help).
 
 ### Word Transformation
 
