@@ -81,3 +81,7 @@ Options entered on the command line take precedence over the configuration file.
 The `xwordlist.conf` file included in the GitHub repository contains commented out examples of the usage of each option. 
 
 For more information about setting configuration options, see the [expanded help page](/help).
+
+## License
+
+The theme is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
