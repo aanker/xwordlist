@@ -4,7 +4,10 @@ author:
   name: Andrew Anker
   email: "aa@quid.pro"
 description:  Documentation site for XWordList software
-baseurl: "" # the subpath of your site, e.g. /blog
+description: >
+  Documentation site for XWordList, software to help create, build and
+  organize crossword puzzle word lists.
+
 url: "https://xwl.com"
 markdown: GFM
 
@@ -13,7 +16,7 @@ remote_theme: jekyll/minima
 minima:
   skin: auto
   social_links:
-    github: aanker
+    github: aanker/xwordlist
     facebook: aanker
     linkedin: aanker
     twitter: aa
