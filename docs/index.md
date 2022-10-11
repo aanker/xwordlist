@@ -84,4 +84,4 @@ For more information about setting configuration options, see the [expanded help
 
 ## License
 
-The theme is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+This software is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
