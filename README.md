@@ -4,11 +4,13 @@
 
 Besides helping with basic text functions such as deduping, alphabetizing and changing case, this program is able to pull content out of structured web pages and parse large blocks of text, including lists of web pages with similarly structured content. Although I first started using the software to grab the lyrics of songs, I have added regex and better html parsing functionality to make it easier to get data from Wikipedia and less structured sites.
 
+For more information, see the project’s main website hosted at [xwl.ist](https://xwl.ist).
+
 ## Installation
 
-This is still an [early stage project](https://github.com/aanker/xwordlist) that is likely to change often and so I am not yet worrying about breaking changes to APIs or updating the functionality in fundamental ways. Use at your discretion!
+This is still an early stage project that is likely to change often and so I am not yet worrying about breaking changes to APIs or updating the functionality in fundamental ways. Use at your discretion!
 
-For now, you are mostly on your own if you wish to install `xwordlist`. After making sure your Python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning [the repository](https://github.com/aanker/xwordlist) or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
+For now, you are mostly on your own if you wish to install `xwordlist`. After making sure your Python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning this repository or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
 ```
 python3 -m pip install -r requirements.txt
 ```
@@ -22,6 +24,6 @@ If you need more instructions than that, you might be better off waiting until t
 
 For quick help instructions on the command line, type
 ```
-python xwordlist.py --help
+python3 xwordlist.py --help
 ```
 Please see the [project’s main website](https://xwl.ist) for more information about using the software including a [basic example](https://xwl.ist/help/#basic-example), recipes for common patterns and a [reference](https://xwl.ist/help/#list-of-available-options) to all options.
