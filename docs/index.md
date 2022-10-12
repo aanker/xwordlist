@@ -32,9 +32,9 @@ For an example of how to use the software as well as a reference to all options,
 ### Input and Output
 
 `xwordlist` accepts three types of non-mutually exclusive inputs:
-*  Text file:  `--input [filename.txt]` or `-i [filename.txt]`
-*  Web URL:  `--webpage [URL]` or `-w [URL]`
-*  Text file with list of web URLs:  `--urllist [filename.txt]`
+*  Text file:  `--input filename.txt` or `-i filename.txt`
+*  Web URL:  `--webpage URL` or `-w URL`
+*  Text file with list of web URLs:  `--urllist filename.txt`
 
 If multiple inputs are specified, the contents of each source are added together. For instance, you can use your base word list as an input file and then add the contents of a web page by entering
 
@@ -42,7 +42,7 @@ If multiple inputs are specified, the contents of each source are added together
 python3 xwordlist.py --input tompettywords.txt --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/
 ```
 
-You can specify the output file name with the command line option `--output [filename.txt]` or `-o [filename.txt]`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL. Your input and output files can be the same but `xwordlist` will always prompt you before writing over an existing file.
+You can specify the output file name with the command line option `--output filename.txt` or `-o filename.txt`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL. Your input and output files can be the same but `xwordlist` will always prompt you before writing over an existing file.
 
 For more information about using a text file with a list of web URLs and setting a default directory, see the [expanded help page](/help).
 

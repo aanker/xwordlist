@@ -68,7 +68,7 @@ The order that options are specified in does not matter, the software knows the 
 `xwordlist` only works with text files, if it is given binary data it will let you know and then quit.
 
 #### **--input** or **-i** filename.txt
-Use the text file named “filename.txt” as an input for the parsing and transformation engine. If you specify other input sources (such as `--webpage` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
+Use the text file named `filename.txt` as an input for the parsing and transformation engine. If you specify other input sources (such as `--webpage` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
 
 #### **--webpage** or **-w** URL
 Use the web page located at the address named by the URL as an input into the parsing and transformation engine. The software will grab all of the available text strings from the web page, unless other options are specified to narrow the request down (see `--container` and `--webextract` for more information). The URL should be the fully qualified address, including `http://` or `https://`. The software does not support authenticated sites.
@@ -76,14 +76,14 @@ Use the web page located at the address named by the URL as an input into the pa
 If you specify other input sources (such as `--input` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
 
 #### **--urllist** filename.txt
-Read the text file named “filename.txt” and loop through each of the URLs to find input for the parsing and transformation engine. This option functions the same as running the program multiple times using the `--webpage` option for each entry in “filename.txt”.
+Read the text file named `filename.txt` and loop through each of the URLs to find input for the parsing and transformation engine. This option functions the same as running the program multiple times using the `--webpage` option for each entry in `filename.txt`.
 
 To work effectively, you should limit the URLs to the same site (or multiple sites with the same HTML structure) so that the software is able to parse the HTML consistently for each URL. Although you can specify multiple URLs, the text parsing and conversion options will act the same on everything retrieved.
 
 The program pauses 20 seconds between each URL requested to be a good citizen and avoid getting blocked. To change this delay, see the [Changing Global Settings](#changing-global-settings) section below. If you specify other input sources (such as `--input` and `--webpage`), all will be added together before processing by the parsing and transformation engine.
 
 #### **--output** or **-o** filename.txt
-Save the list of words output by the parsing and transformation engine to the file named “filename.txt”. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the input web address plus the string `_xwl`. To change this string, see the [Changing Global Settings](#changing-global-settings) section below.
+Save the list of words output by the parsing and transformation engine to the file named `filename.txt`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the input web address plus the string `_xwl`. To change this string, see the [Changing Global Settings](#changing-global-settings) section below.
 
 Your input and output files can be the same, the software will always prompt you before writing over an existing file.
 
@@ -107,7 +107,7 @@ Use the `links` option when you want to retrieve URLs from a web page, for insta
 Use the `html-XX` to further refine which text to pull from a web page by limiting to only text within specified tags. For instance, use `html-b` to only return text inside all `<b>` and `</b>` blocks. You can chain multiple tags by separating them with the underscore character, for example `html-i_em` will get all content in either `<i>` or `<em>` blocks.
 
 #### **--regex** pattern
-Refine which text to keep by using regex patterns. Whereas other options such as `--container` or `--webextract` will grab all of the text within whatever containers and/or elements specified, `--regex` allows you to narrow down to particular parts of text text strings to keep. For examples of patterns to use, see regex examples. (*TK: regex examples*)
+Refine which text to keep by using regex patterns. Whereas other options such as `--container` or `--webextract` will grab all of the text within whatever containers and/or elements specified, `--regex` allows you to narrow down to particular parts of text strings to keep. For examples of patterns to use, see regex examples. (*TK: regex examples*)
 
 #### **--convert** "chars" (optional)
 Take any block of text and turn it into a list of words. If `"chars"` is not specified, the software uses spaces to separate text into words and in most cases, that will suffice. If you do need to specify `"chars"`, put all characters to be used as delimiters inside the quotes. For instance, if you want to separate text blocks connected by either dashes or spaces, you would use `--convert "- "`.
@@ -123,8 +123,8 @@ Change the case of all words in the list.
 #### **--dedupe** or **-d**
 Remove all duplicates in the list. Note that `--dedupe` is case sensitive: `apple` and `APPLE` will be treated as two separate words. It is always best to run `--dedupe` along with `--case lower` or `--case upper`.
 
-#### **--minimum** or **-m** NN
-Remove all words with less than `NN` characters. By default, `NN` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
+#### **--minimum** or **-m** N
+Remove all words with less than `N` characters. By default, `N` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
 
 #### **--strip** or **-s**
 Remove all non-alphabetic characters, to make your list crossword puzzle ready. (*TK: Add more flexibility on this setting*)
@@ -150,6 +150,6 @@ Many of the recipes provided on this site (*TK: recipes pages*) include options 
 
 The configuration file also includes global settings that are user editable:
 
-*  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the `--urllist` option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: 20 seconds
+*  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the `--urllist` option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: `20`
 
-*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is “tompetty.txt” and `file_add` is set to “xwl”, the output file created will be named “tompetty_xwl.txt”. Default setting: “xwl”
+*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is `tompetty.txt` and `file_add` is set to `xwl`, the output file created will be named `tompetty_xwl.txt`. Default setting: `xwl`
