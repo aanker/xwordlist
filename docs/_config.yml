@@ -23,5 +23,6 @@ minima:
 
 header_pages:
   - help.md
+  - resources.md
 plugins:
   - jekyll-feed
