@@ -13,6 +13,9 @@
           {% if site.author.email -%}
             <li><a class="u-email" href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>
           {%- endif %}
+          {% if site.author.url -%}
+            <li><a class="u-email" href="{{ site.author.url }}">{{ site.author.url }}</a></li>
+          {%- endif %}
         </ul>
       {%- endif %}
       </div>
