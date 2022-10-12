@@ -126,12 +126,13 @@ def extract_from_web(extractWhat, soup, extractURL):
         localWords = []
         for link in soup.find_all('a'):
             getURL = link.get('href')
-            parsePieces = urllib.parse.urlsplit(getURL)
-            # Check to see if absolute or relative URL.  If relative, make it absolute
-            if parsePieces.scheme == '' and parsePieces.netloc == '':
-                parseExtract = urllib.parse.urlsplit(extractURL)
-                getURL = urllib.parse.urljoin('{}://{}'.format(parseExtract.scheme, parseExtract.netloc), getURL)
-            localWords.append(getURL)
+            if getURL:
+                parsePieces = urllib.parse.urlsplit(getURL)
+                # Check to see if absolute or relative URL.  If relative, make it absolute
+                if parsePieces.scheme == '' and parsePieces.netloc == '':
+                    parseExtract = urllib.parse.urlsplit(extractURL)
+                    getURL = urllib.parse.urljoin('{}://{}'.format(parseExtract.scheme, parseExtract.netloc), getURL)
+                localWords.append(getURL)
     elif extractWhat[:5] == 'html-':
         localWords = []
         extractTags = extractWhat[5:].split('_')
