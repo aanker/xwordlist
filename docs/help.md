@@ -88,7 +88,7 @@ Save the list of words output by the parsing and transformation engine to the fi
 Your input and output files can be the same, the software will always prompt you before writing over an existing file.
 
 #### **--directory** /path/to/folder
-Set a directory to use for all input and output files. The software will look in the directory specified for files named in the `input` and `urllist` options and will write any file specified by the `output` option (or the default file if no output is specified) to this directory.
+Set a directory to use for all input and output files. The software will look in the directory specified for files named in the `--input` and `--urllist` options and will write any file specified by the `--output` option (or the default file if no output is specified) to this directory.
 
 For all inputs and outputs you can also specify a path as part of a file name as in `--input /path/to/wordlist.txt`.
 
