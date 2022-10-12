@@ -9,7 +9,7 @@ The functionality of `xwordlist` can be divided into three categories:
 *  [Content Parsing](#content-parsing): take content from multiple sources and parse it into a normalized list of words. Grab all the words on a web page or limit to one ID, one or more classes and/or one or more HTML tags. Use a regex pattern to get rid of anything you don’t need.
 *  [Word Transformation](#word-transformation): refine your list into something you can paste directly into your construction software — alphabetized, deduped, properly cased and with all the extraneous words filtered out.
 
-Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the recipes provided on this site (*TK: recipes pages*) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
+Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the [recipes provided on this site](/resources/#recipes) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
 ## Basic Example
 
@@ -55,7 +55,7 @@ python3 xwordlist.py --input tompetty.txt --output tompetty_title_words.txt --co
 
 You now have two great lists to use to start building your Tom Petty puzzle! You can paste them into one doc and have `xwordlist` alphabetize and dedupe or you can just paste each individual list directly into your construction software, perhaps to score one set of words higher than the other. Experiement and figure out what works best for your constructing needs.
 
-Also, check out the recipes page (*TK: recipes pages*) for other possibilities. You can use the software to grab and convert the lyrics from individual songs, spider all of the songs at once or parse Wikipedia for album titles. Let us know what you find!
+Also, check out the [recipes page](/resources/#recipes) for other possibilities. You can use the software to grab and convert the lyrics from individual songs, spider all of the songs at once or parse Wikipedia for album titles. Let us know what you find!
 
 ## List of Available Options
 
@@ -144,7 +144,7 @@ dedupe
 ```
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
-Many of the recipes provided on this site (*TK: recipes pages*) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
+Many of the [recipes provided on this site]((/resources/#recipes)) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
 ### Changing Global Settings
 
