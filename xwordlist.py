@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 
 
 # Set up globals
+__version__ = '22.01.01'
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
