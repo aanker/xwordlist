@@ -23,4 +23,4 @@ In general, it is good to test the content before you turn it into a word list. 
 
 ## Legal Disclaimer
 
-Always read the terms of service first! Our inclusion of any website does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use `xwordlist` and when you download data from public websites while using it.
+Always read the terms of service first! Our inclusion of any website does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything; you’re on your own when use `xwordlist` and when you download data from public websites while using it.
