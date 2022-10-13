@@ -1,12 +1,9 @@
 ---
-layout: page
-title: ""
+layout: recipes
+title: LyricsFreak
+title_url: https://www.lyricsfreak.com
 permalink: /recipes/lyrics-freak
 ---
-
-## Site: [LyricsFreak](https://www.lyricsfreak.com)
-
-For instructions on how to use recipes as well as other structured sites to use for word list building, see the [recipes home page](/resources/#recipes).
 
 ### To get list of URLs of songs by an artist
 
@@ -65,7 +62,3 @@ case upper
 ### Additional Notes
 
 *  We have noticed that LyricsFreak will sometimes include non-lyric content such as “Short guitar break” within the text of lyrics. Always be sure to check the output for anything that doesn’t make sense for your word list.
-
-### Legal Disclaimer
-
-Always read the terms of service first! Our inclusion of any website does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use `xwordlist` and when you download data from public websites while using it.

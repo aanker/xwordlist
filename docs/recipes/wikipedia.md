@@ -1,12 +1,9 @@
 ---
-layout: page
-title: ""
+layout: recipes
+title: Wikipedia
+title_url: https://en.wikipedia.org/
 permalink: /recipes/wikipedia
 ---
-
-## Site: [Wikipedia](https://en.wikipedia.org/)
-
-For instructions on how to use recipes as well as other structured sites to use for word list building, see the [recipes home page](/resources/#recipes).
 
 ### To get the primary text content of a Wikipedia page
 
@@ -59,7 +56,3 @@ case upper
 ### Additional Notes
 
 *  We have found that although Wikipedia pages have many standard tags, often times they are not consistent from page to page, even when similar data is being presented. For example, this [directory of Disney characters](https://en.wikipedia.org/wiki/Category:Disney_animated_characters) links off to a number of sub-pages, many of which have very different formatting from others. This can make it difficult to use the `urllist` option to crawl a number of sub-pages the way you might on a more consistently structured site.
-
-### Legal Disclaimer
-
-Always read the terms of service first! Our inclusion of any website does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use `xwordlist` and when you download data from public websites while using it.

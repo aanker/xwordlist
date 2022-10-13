@@ -1,12 +1,9 @@
 ---
-layout: page
-title: ""
+layout: recipes
+title: SongLyrics
+title_url: http://songlyrics.com
 permalink: /recipes/song-lyrics
 ---
-
-## Site: [SongLyrics](http://songlyrics.com)
-
-For instructions on how to use recipes as well as other structured sites to use for word list building, see the [recipes home page](/resources/#recipes).
 
 ### To get list of URLs of songs by an artist
 
@@ -59,7 +56,3 @@ dedupe
 alphabetize
 case upper
 ```
-
-### Legal Disclaimer
-
-Always read the terms of service first! Our inclusion of any website does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use `xwordlist` and when you download data from public websites while using it.
