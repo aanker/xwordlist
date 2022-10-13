@@ -144,7 +144,7 @@ dedupe
 ```
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
-Many of the [recipes provided on this site]((/resources/#recipes)) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
+Many of the [recipes provided on this site](/resources/#recipes) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
 ### Changing Global Settings
 
