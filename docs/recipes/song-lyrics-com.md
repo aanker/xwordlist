@@ -6,6 +6,8 @@ permalink: /recipes/song-lyrics
 
 ## Site: [SongLyrics](http://songlyrics.com)
 
+For instructions on how to use recipes as well as other structured sites to use for word list building, see the [recipes home page](/resources/#recipes).
+
 ### To get list of URLs of songs by an artist
 
 We suggest alphabetizing the list to look for duplicates or similar titles. For instance, often the same song will appear both in its studio and live versions with essentially the same lyrics: there is probably no reason to grab the text from both. You can use this list of URLs to get all the lyrics by an artist using the last recipe on this page.
@@ -57,3 +59,7 @@ dedupe
 alphabetize
 case upper
 ```
+
+### Legal Disclaimer
+
+Always read the terms of service first! Our inclusion of any website does not guarantee that pulling information programmatically is allowed under the site’s terms of service or that you won’t be blocked trying. We make no representations of anything, you’re on your own when use `xwordlist` and when you download data from public websites while using it.
