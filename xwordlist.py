@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 
 # Set up globals
-__version__ = '22.01.01'
+__version__ = '22.01.02'
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
@@ -25,71 +25,72 @@ GLOBAL_SETTINGS = {
 }
 
 
-def regex(wordList, regexInput):
-    try:
+class WordList:
+    def __init__(self, myList=[]):
+        self.myList = myList
+
+    # List transformation options
+    def remove_min(self, numChars):
         newList = []
-        for line in wordList:
-            newList.extend(re.findall(regexInput, line))
-        return newList
+        for line in self.myList:
+            if line and len(line) >= numChars:
+                newList.append(line)
+        self.myList = newList
 
-    except re.error:
-        error_line = 'Regex pattern <ansired>{}</ansired> not valid, please check and try again'
-        print_line(error_line.format(regexInput))
-        sys.exit()
+    def strip_nonalpha(self):
+        newList = []
+        for word in self.myList:
+            newWord = ''.join([i for i in word if i.isalpha()])
+            if len(newWord) > 0:
+                newList.append(newWord)
+        self.myList = newList
 
-    except Exception as e:
-        print_line('Error {}'.format(e))
-        sys.exit()
+    def case_change(self, newCase):
+        case_dict = {
+            'upper': str.upper,
+            'lower': str.lower,
+        }
+        if newCase in case_dict:
+            self.myList = list(case_dict[newCase](line) for line in self.myList)
+        elif newCase != 'none':
+            print_line('Exiting... unknown case option <ansired>{}</ansired>'.format(newCase))
+            sys.exit()
 
+    def uniquify(self):
+        self.myList = list(dict.fromkeys(self.myList))
 
-def convert(wordList, parseChars):
-    # First trap for problem where defaults are assumed but not specified
-    if parseChars == 'true':
-        parseChars = ' '
-    newList = []
-    for line in wordList:
-        if line.find(parseChars[0]) != -1:
-            subWordList = line.split(parseChars[0])
-            for newWord in subWordList:
-                if len(newWord) > 0:
-                    newList.append(newWord)
-            if len(parseChars[1:]) > 0:
-                newList = convert(newList, parseChars[1:])
-        else:
-            newList.append(line)
-    return newList
+    def alphabetize(self):
+        self.myList = sorted(self.myList, key=str.casefold)
 
+    # Content parsing options
+    def regex(self, regexInput):
+        try:
+            newList = []
+            for line in self.myList:
+                newList.extend(re.findall(regexInput, line))
+            self.myList = newList
 
-def remove_min(wordList, numChars):
-    newList = []
-    for line in wordList:
-        if line and len(line) >= numChars:
-            newList.append(line)
-    return newList
+        except re.error:
+            error_line = 'Regex pattern <ansired>{}</ansired> not valid, please check and try again'
+            print_line(error_line.format(regexInput))
+            sys.exit()
 
+        except Exception as e:
+            print_line('Error {}'.format(e))
+            sys.exit()
 
-def strip_nonalpha(wordList):
-    newList = []
-    for word in wordList:
-        newWord = ''.join([i for i in word if i.isalpha()])
-        if len(newWord) > 0:
-            newList.append(newWord)
-    return newList
-
-
-def case_change(newCase, wordList):
-    if newCase == 'upper':
-        return list(line.upper() for line in wordList)
-    else:
-        return list(line.lower() for line in wordList)
-
-
-def uniquify(wordList):
-    return list(dict.fromkeys(wordList))
-
-
-def alphabetize(wordList):
-    return sorted(wordList, key=str.casefold)
+    def convert(self, parseChars):
+        # First trap for problem where defaults are assumed but not specified
+        if parseChars == 'true':
+            parseChars = ' '
+        for char in parseChars:
+            newList = []
+            for line in self.myList:
+                if line.find(char) != -1:
+                    newList.extend(line.split(char))
+                else:
+                    newList.append(line)
+            self.myList = newList
 
 
 def print_line(printText, endText='\n'):
@@ -339,7 +340,7 @@ def main():
             sys.exit()
 
     outputFile = setup_output(confArgs, envArgs)
-    inputWords = setup_input(confArgs, envArgs)
+    inputWords = WordList(setup_input(confArgs, envArgs))
 
     # Do any text parsing
     if confArgs.regex is not None:
@@ -348,31 +349,31 @@ def main():
             regex_error += '<ansired>regex PATTERN</ansired> in configuration file'
             print_line(regex_error)
             sys.exit()
-        inputWords = regex(inputWords, confArgs.regex[0])
+        inputWords.regex(confArgs.regex[0])
 
     if confArgs.convert is not None:
-        inputWords = convert(inputWords, confArgs.convert)
+        inputWords.convert(confArgs.convert)
 
     if confArgs.strip:
-        inputWords = strip_nonalpha(inputWords)
+        inputWords.strip_nonalpha()
 
     # Do any text transforms
     if confArgs.minimum is not None:
-        inputWords = remove_min(inputWords, confArgs.minimum)
+        inputWords.remove_min(confArgs.minimum)
 
     if confArgs.case != 'none':
-        inputWords = case_change(confArgs.case, inputWords)
+        inputWords.case_change(confArgs.case)
 
     if confArgs.dedupe:
-        inputWords = uniquify(inputWords)
+        inputWords.uniquify()
 
     if confArgs.alphabetize:
-        inputWords = alphabetize(inputWords)
+        inputWords.alphabetize()
 
     # Now save the file
     saveFile = open(outputFile, 'w')
 
-    for line in inputWords:
+    for line in inputWords.myList:
         saveFile.write('{}\n'.format(line))
 
     print_line('New list saved to <ansired>{}</ansired>'.format(saveFile.name))
