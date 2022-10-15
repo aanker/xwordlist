@@ -207,6 +207,17 @@ def get_file_content(inputFile):
         sys.exit()
 
 
+def save_output(localOuput, localWords):
+    try:
+        with open(localOuput, 'w') as outputOpen:
+            outputOpen.writelines(str(line) + '\n' for line in localWords.myList)
+        print_line('New list saved to <ansired>{}</ansired>'.format(outputOpen.name))
+
+    except Exception as e:
+        print_line('File save error {}'.format(e))
+        sys.exit()
+
+
 def setup_output(localArgs, otherArgs):
     file_add = otherArgs['file_add'] if 'file_add' in otherArgs else GLOBAL_SETTINGS['file_add']
 
@@ -279,17 +290,6 @@ def setup_input(localArgs, otherArgs):
         sys.exit()
 
     return returnWords
-
-
-def save_output(localOuput, localWords):
-    try:
-        with open(localOuput, 'w') as f:
-            f.writelines(str(line) + '\n' for line in localWords.myList)
-        print_line('New list saved to <ansired>{}</ansired>'.format(f.name))
-
-    except Exception as e:
-        print_line('File save error {}'.format(e))
-        sys.exit()
 
 
 def main():
