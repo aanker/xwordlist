@@ -65,7 +65,7 @@ With any list of words derived from a public source such as a lyrics database, y
 *  Dedupe:  `--dedupe` or `-d`
 *  Alphabetize:  `--alphabetize` or `-a`
 *  Change case:  `--case lower | upper`
-*  Minimum word length:  `--minimum X` or `-m X`
+*  Minimum word length:  `--minimum N` or `-m N`
 
 The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive. Also, the default minimum word length is 3 letters so if you’re happy with that (as most crosswords are), just `-m` without any additional number will screen out any word smaller than 3 letters.
 
