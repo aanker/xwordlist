@@ -281,6 +281,17 @@ def setup_input(localArgs, otherArgs):
     return returnWords
 
 
+def save_output(localOuput, localWords):
+    try:
+        with open(localOuput, 'w') as f:
+            f.writelines(str(line) + '\n' for line in localWords.myList)
+        print_line('New list saved to <ansired>{}</ansired>'.format(f.name))
+
+    except Exception as e:
+        print_line('File save error {}'.format(e))
+        sys.exit()
+
+
 def main():
     # First set up configargparse
     parser = configargparse.ArgumentParser(default_config_files=[config_name],
@@ -367,13 +378,7 @@ def main():
         inputWords.alphabetize()
 
     # Now save the file
-    saveFile = open(outputFile, 'w')
-
-    for line in inputWords.myList:
-        saveFile.write('{}\n'.format(line))
-
-    print_line('New list saved to <ansired>{}</ansired>'.format(saveFile.name))
-    saveFile.close()
+    save_output(outputFile, inputWords)
 
 
 if __name__ == '__main__':
