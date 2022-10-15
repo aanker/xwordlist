@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 
 # Set up globals
-__version__ = '22.01.02'
+__version__ = '22.01.03'
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
@@ -56,8 +56,21 @@ class WordList:
             print_line('Exiting... unknown case option <ansired>{}</ansired>'.format(newCase))
             sys.exit()
 
-    def uniquify(self):
-        self.myList = list(dict.fromkeys(self.myList))
+    def uniquify(self, dedupeType):
+        if dedupeType == 'bycase':
+            self.myList = list(dict.fromkeys(self.myList))
+        elif dedupeType in ['nocase', 'true']:
+            newList = []
+            newSet = set()
+            for line in self.myList:
+                newLine = line.casefold()
+                if newLine not in newSet:
+                    newSet.add(newLine)
+                    newList.append(line)
+            self.myList = newList
+        else:
+            print_line('Exiting... incorrect dedupe option <ansired>{}</ansired>'.format(dedupeType))
+            sys.exit()
 
     def alphabetize(self):
         self.myList = sorted(self.myList, key=str.casefold)
@@ -322,9 +335,10 @@ def main():
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     case_help = 'Change the case of words in the list'
     parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
-    dedupe_help = 'Remove duplicates from the word list. Note that this is case sensitive so it is recommended\
-                   that you also use --case {lower | upper} to put everything in the same case first'
-    parser.add_argument('-d', '--dedupe', action='store_true', help=dedupe_help)
+    dedupe_help = 'Remove duplicates from the word list. By default, ignores case: "apple" and "APPLE" are\
+                   the same word and the first instance found is kept. Use --dedupe bycase to treat each\
+                   as a different word'
+    parser.add_argument('-d', '--dedupe', nargs='?', const='nocase', help=dedupe_help)
     min_ltrs = 3
     minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(min_ltrs)
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
@@ -371,8 +385,8 @@ def main():
     if confArgs.case != 'none':
         inputWords.case_change(confArgs.case)
 
-    if confArgs.dedupe:
-        inputWords.uniquify()
+    if confArgs.dedupe is not None:
+        inputWords.uniquify(confArgs.dedupe)
 
     if confArgs.alphabetize:
         inputWords.alphabetize()

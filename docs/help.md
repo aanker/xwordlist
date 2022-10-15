@@ -41,7 +41,7 @@ python3 xwordlist.py --input tompetty.txt --output tompetty.txt --alphabetize
 
 Of course, you could save the alphabetized list to a different file name (or let the software create a new file) but for the purposes of this example, we will stick with the same file. Scan through that file and delete duplicates and anything that you wouldn’t want in your word list. Don’t worry about extraneous characters — like for instance the apostrophe on the end of Free Fallin’ — the software will clean that up. Once you have made any edits to that file, be sure to save it before continuing on to the next step.
 
-From here, there are two ways we can go with this list. We may want to create a list where the entire song name is an entry, for instance for long themed entries such as “WONTBACKDOWN”. To do that, we need to strip out all non-alphabetic characters (including spaces) and dedupe the list. Whenever you use the dedupe function, you should also change everything to the same case since the software will treat “Mary Jane” and “mary jane” as two different entries. So first run this:
+From here, there are two ways we can go with this list. We may want to create a list where the entire song name is an entry, for instance for long themed entries such as “WONTBACKDOWN”. To do that, we need to strip out all non-alphabetic characters (including spaces) and dedupe the list. So first run this:
 
 ```
 python3 xwordlist.py --input tompetty.txt --output tompetty_songs.txt --strip --dedupe --case upper --alphabetize
@@ -120,8 +120,8 @@ Alphabetize the list of words.
 #### **--case** none (default) | lower | upper
 Change the case of all words in the list.
 
-#### **--dedupe** or **-d**
-Remove all duplicates in the list. Note that `--dedupe` is case sensitive: `apple` and `APPLE` will be treated as two separate words. It is always best to run `--dedupe` along with `--case lower` or `--case upper`.
+#### **--dedupe** or **-d** nocase (default) | bycase
+Remove all duplicates in the list. The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive.
 
 #### **--minimum** or **-m** N
 Remove all words with less than `N` characters. By default, `N` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
@@ -140,7 +140,7 @@ The `xwordlist.conf` that is provided when you download from GitHub includes a c
 case upper
 
 # options that don’t take an argument:
-dedupe
+alphabetize
 ```
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
