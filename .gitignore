@@ -153,3 +153,7 @@ cython_debug/
 .DS_Store
 *.sublime-project
 *.sublime-workspace
+
+# Ignore functional test stuff
+test.sh
+tests/
