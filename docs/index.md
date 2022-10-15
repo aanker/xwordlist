@@ -7,6 +7,8 @@ title: 'Software for Building Puzzle Word Lists'
 
 Besides helping with basic text functions such as deduping, alphabetizing and changing case, this program is able to pull content out of structured web pages and parse large blocks of text, including lists of web pages with similarly structured content. Although I first started using the software to grab the lyrics of songs, I have added regex and better html parsing functionality to make it easier to get data from Wikipedia and less structured sites.
 
+For an example of a themed 5x5 mini puzzle built with a word list assembled using this software, see [my personal website](https://quid.pro/xwords/tom-petty-mini/).
+
 ## Installation
 
 This is still an [early stage project](https://github.com/aanker/xwordlist) that is likely to change often and so I am not yet worrying about breaking changes to APIs or updating the functionality in fundamental ways. Use at your discretion!
