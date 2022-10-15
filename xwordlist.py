@@ -161,11 +161,9 @@ def get_web_page(webURL, containerParse, webExtract):
                     classDict = {}
                     classDict['class'], whichNum = parseDict['class']
                     returnWords = []
-                    counter = 0
                     fullSoup = inputSoup.find_all(attrs=classDict)
-                    for whichSoup in fullSoup:
-                        counter += 1
-                        if counter == whichNum or whichNum == 0:
+                    for counter, whichSoup in enumerate(fullSoup, start=1):
+                        if whichNum == counter or whichNum == 0:
                             returnWords.extend(extract_from_web(webExtract, whichSoup, webURL))
                     return returnWords
                 else:
@@ -259,10 +257,8 @@ def setup_input(localArgs, otherArgs):
         urlList = get_file_content(localArgs.urllist)
         if urlList:
             urlLength = len(urlList)
-            urlCount = 0
 
-            for oneUrl in urlList:
-                urlCount += 1
+            for urlCount, oneUrl in enumerate(urlList, start=1):
                 urlText = 'Getting <ansired>{}</ansired> ({} of {})'
                 print_line(urlText.format(oneUrl, urlCount, urlLength), endText='')
                 webWords = get_web_page(oneUrl, localArgs.container, localArgs.webextract)
