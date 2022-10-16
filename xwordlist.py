@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 
 # Set up globals
-__version__ = '22.01.03'
+__version__ = '22.01.04'
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
@@ -22,7 +22,12 @@ config_name = '{}.conf'.format(exec_pieces[0])
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
     'file_add': 'xwl',
+    'impact_color': 'ansired',
 }
+
+COLOR_OPTIONS = ['ansiblack', 'ansired', 'ansigreen', 'ansiyellow', 'ansiblue', 'ansimagenta',
+                 'ansicyan', 'ansigray', 'ansibrightblack', 'ansibrightred', 'ansibrightgreen',
+                 'ansibrightyellow', 'ansibrightblue', 'ansibrightmagenta', 'ansibrightcyan', 'ansiwhite']
 
 
 class WordList:
@@ -53,7 +58,8 @@ class WordList:
         if newCase in case_dict:
             self.myList = list(case_dict[newCase](line) for line in self.myList)
         elif newCase != 'none':
-            print_line('Exiting... unknown case option <ansired>{}</ansired>'.format(newCase))
+            print_text = 'Exiting... unknown case option <{color}>{newcase}</{color}>'
+            print_line(print_text, {'newcase': newCase})
             sys.exit()
 
     def uniquify(self, dedupeType):
@@ -69,7 +75,8 @@ class WordList:
                     newList.append(line)
             self.myList = newList
         else:
-            print_line('Exiting... incorrect dedupe option <ansired>{}</ansired>'.format(dedupeType))
+            print_text = 'Exiting... incorrect dedupe option <{color}>{dedupeType}</{color}>'
+            print_line(print_text, {'dedupeType': dedupeType})
             sys.exit()
 
     def alphabetize(self):
@@ -84,12 +91,12 @@ class WordList:
             self.myList = newList
 
         except re.error:
-            error_line = 'Regex pattern <ansired>{}</ansired> not valid, please check and try again'
-            print_line(error_line.format(regexInput))
+            error_text = 'Regex pattern <{color}>{regexInput}</{color}> not valid, please check and try again'
+            print_line(error_text, {'regexInput': regexInput})
             sys.exit()
 
         except Exception as e:
-            print_line('Error {}'.format(e))
+            print_line('Error {e}', {'e': e})
             sys.exit()
 
     def convert(self, parseChars):
@@ -106,8 +113,8 @@ class WordList:
             self.myList = newList
 
 
-def print_line(printText, endText='\n'):
-    print_formatted_text(HTML(printText), end=endText)
+def print_line(printText, argument={}, endText='\n'):
+    print_formatted_text(HTML(printText.format(**argument, color=IMPACT_COLOR)), end=endText)
     return
 
 
@@ -124,7 +131,8 @@ def create_dict(localAttrs):
         elif len(dict_parts) > 1:
             returnDict[dict_parts[0]] = dict_parts[1]
         else:
-            print_line('Exiting... incorrect option <ansired>{}</ansired>'.format(dict_parts[0]))
+            print_text = 'Exiting... incorrect option <{color}>{dictPart}</{color}>'
+            print_line(print_text, {'dictPart': dict_parts[0]})
             sys.exit()
     if len(returnDict) > 0:
         return returnDict
@@ -156,7 +164,8 @@ def extract_from_web(extractWhat, soup, extractURL):
                 text = link.get_text()
                 localWords.append(text)
     else:
-        print_line('Exiting... incorrect option for webextract:  <ansired>{}</ansired>'.format(extractWhat))
+        print_text = 'Exiting... incorrect option for webextract:  <{color}>{extractWhat}</{color}>'
+        print_line(print_text, {'extractWhat': extractWhat})
         sys.exit()
 
     return list(line for line in localWords)
@@ -187,18 +196,19 @@ def get_web_page(webURL, containerParse, webExtract):
             print_line('Unable to load webpage due to code 403: this usually means we are being blocked')
 
         else:
-            print_line('Unable to load webpage, status code = {}'.format(r.status_code))
+            print_text = 'Unable to load webpage, status code = {statusCode}'
+            print_line(print_text, {'statusCode': r.status_code})
 
     except (requests.URLRequired, requests.RequestException):
         return False
 
     except AttributeError:
-        error_line = 'HTML attribute <ansired>{}</ansired> not found, check document and try again'
-        print_line(error_line.format(containerParse))
+        error_text = 'HTML attribute <{color}>{containerParse}</{color}> not found, check document and try again'
+        print_line(error_text, {'containerParse': containerParse})
         sys.exit()
 
     except Exception as e:
-        print_line('Web error {}'.format(e))
+        print_line('Web error {e}', {'e': e})
         sys.exit()
 
 
@@ -212,11 +222,12 @@ def get_file_content(inputFile):
         sys.exit()
 
     except FileNotFoundError:
-        print_line('Exiting... input file <ansired>{}</ansired> does not exist'.format(inputFile))
+        error_text = 'Exiting... input file <{color}>{inputFile}</{color}> does not exist'
+        print_line(error_text, {'inputFile': inputFile})
         sys.exit()
 
     except Exception as e:
-        print_line('Exiting... file error {}'.format(e))
+        print_line('Exiting... file error {e}', {'e': e})
         sys.exit()
 
 
@@ -224,10 +235,11 @@ def save_output(localOuput, localWords):
     try:
         with open(localOuput, 'w') as outputOpen:
             outputOpen.writelines(str(line) + '\n' for line in localWords.myList)
-        print_line('New list saved to <ansired>{}</ansired>'.format(outputOpen.name))
+        print_text = 'New list saved to <{color}>{output}</{color}>'
+        print_line(print_text, {'output': outputOpen.name})
 
     except Exception as e:
-        print_line('File save error {}'.format(e))
+        print_line('Exiting... file save error {e}', {'e': e})
         sys.exit()
 
 
@@ -256,7 +268,8 @@ def setup_output(localArgs, otherArgs):
 
     # Now check if the output file exists and prompt user if it does
     if pathlib.Path(outputFile).is_file():
-        text = prompt(HTML('Output file named <ansired>{}</ansired> already exists. Overwrite? (Y/N): '.format(outputFile)))
+        prompt_text = 'Output file named <{color}>{output}</{color}> already exists. Overwrite? (Y/N): '
+        text = prompt(HTML(prompt_text.format(color=IMPACT_COLOR, output=outputFile)))
         if text != 'Y' and text != 'y':
             print_line('Exiting... please enter a different file name at the command line')
             sys.exit()
@@ -283,14 +296,19 @@ def setup_input(localArgs, otherArgs):
             urlLength = len(urlList)
 
             for urlCount, oneUrl in enumerate(urlList, start=1):
-                urlText = 'Getting <ansired>{}</ansired> ({} of {})'
-                print_line(urlText.format(oneUrl, urlCount, urlLength), endText='')
+                print_text = 'Getting <{color}>{oneUrl}</{color}> ({urlCount} of {urlLength})'
+                arg_dict = {
+                    'oneUrl': oneUrl,
+                    'urlCount': urlCount,
+                    'urlLength': urlLength,
+                }
+                print_line(print_text, arg_dict, endText='')
                 webWords = get_web_page(oneUrl, localArgs.container, localArgs.webextract)
                 if webWords:
                     returnWords.extend(webWords)
                     if urlCount < urlLength:
                         delay = int(otherArgs['urllist_delay']) if 'urllist_delay' in otherArgs else GLOBAL_SETTINGS['urllist_delay']
-                        print_line('  ...done ...sleeping {} seconds'.format(delay))
+                        print_line('  ...done ...sleeping {delay} seconds', {'delay': delay})
                         time.sleep(delay)
                     else:
                         print_line('  ...done')
@@ -298,8 +316,8 @@ def setup_input(localArgs, otherArgs):
                     print_line(' ...no content retrieved, was that a URL?')
 
     if len(returnWords) == 0:
-        help_text = 'No input given, nothing to do (enter <ansired>{} -h</ansired> for help)'
-        print_line(help_text.format(exec_name))
+        print_text = 'No input given, nothing to do (enter <{color}>{exec_name} -h</{color}> for help)'
+        print_line(print_text, {'exec_name': exec_name})
         sys.exit()
 
     return returnWords
@@ -349,6 +367,13 @@ def main():
     confArgs = args[0]
     envArgs = create_dict(args[1])
 
+    # See if conf file contains an impact color
+    global IMPACT_COLOR
+    if 'impact_color' in envArgs and 'ansi{}'.format(envArgs['impact_color']) in COLOR_OPTIONS:
+        IMPACT_COLOR = 'ansi{}'.format(envArgs['impact_color'])
+    else:
+        IMPACT_COLOR = GLOBAL_SETTINGS['impact_color']
+
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:
         if pathlib.Path(confArgs.directory).is_dir():
@@ -356,8 +381,8 @@ def main():
             confArgs.urllist = os.path.join(confArgs.directory, confArgs.urllist) if confArgs.urllist else None
             confArgs.output = os.path.join(confArgs.directory, confArgs.output) if confArgs.output else None
         else:
-            directory_error = 'Exiting... directory path <ansired>{}</ansired> does not exist'
-            print_line(directory_error.format(confArgs.directory))
+            print_text = 'Exiting... directory path <{color}>{directory}</{color}> does not exist'
+            print_line(print_text, {'directory': confArgs.directory})
             sys.exit()
 
     outputFile = setup_output(confArgs, envArgs)
@@ -367,7 +392,7 @@ def main():
     if confArgs.regex is not None:
         if confArgs.regex[0] == 'true':
             regex_error = 'Exiting... no regex pattern given, please use format '
-            regex_error += '<ansired>regex PATTERN</ansired> in configuration file'
+            regex_error += '<{color}>regex PATTERN</{color}> in configuration file'
             print_line(regex_error)
             sys.exit()
         inputWords.regex(confArgs.regex[0])
