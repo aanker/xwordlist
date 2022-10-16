@@ -121,7 +121,7 @@ Alphabetize the list of words.
 Change the case of all words in the list.
 
 #### **--dedupe** or **-d** nocase (default) | bycase
-Remove all duplicates in the list. The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive.
+Remove all duplicates in the list. The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive, you can just use `--dedupe` with no additional arguments for the default `nocase`.
 
 #### **--minimum** or **-m** N
 Remove all words with less than `N` characters. By default, `N` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
