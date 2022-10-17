@@ -351,11 +351,11 @@ def main():
 
     # List transformation options
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
-    case_help = 'Change the case of words in the list'
-    parser.add_argument('--case', choices=['lower', 'upper', 'none'], default='none', help=case_help)
     dedupe_help = 'Remove duplicates from the word list. By default, ignores case: "apple" and "APPLE" are\
                    the same word and the first instance found is kept. Use --dedupe bycase to treat each\
                    as a different word'
+    case_help = ' {none (default) | lower | upper} Change the case of words in the list'
+    parser.add_argument('--case', nargs='?', const='none', help=case_help)
     parser.add_argument('-d', '--dedupe', nargs='?', const='nocase', help=dedupe_help)
     min_ltrs = 3
     minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(min_ltrs)
@@ -407,7 +407,7 @@ def main():
     if confArgs.minimum is not None:
         inputWords.remove_min(confArgs.minimum)
 
-    if confArgs.case != 'none':
+    if confArgs.case is not None:
         inputWords.case_change(confArgs.case)
 
     if confArgs.dedupe is not None:
