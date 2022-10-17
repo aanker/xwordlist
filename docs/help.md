@@ -61,6 +61,8 @@ Also, check out the [recipes page](/resources/#recipes) for other possibilities.
 
 Each option below is shown as would be specified on the command line. To use as an option in the configuration file, you do not have to enter the dashes (i.e., `--input filename.txt` on the command line but `input filename.txt` in the configuration file.)
 
+When a default option is specified, you can leave it out. For instance, rather than entering `--dedupe nocase`, you can just add `--dedupe`.
+
 The order that options are specified in does not matter, the software knows the right order to take these operations so they don’t conflict with each other.
 
 ### Input and Output
@@ -121,7 +123,7 @@ Alphabetize the list of words.
 Change the case of all words in the list.
 
 #### **--dedupe** or **-d** nocase (default) | bycase
-Remove all duplicates in the list. The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive, you can just use `--dedupe` with no additional arguments for the default `nocase`.
+Remove all duplicates in the list. The dedupe function by default is case insensitive: “apple” and “APPLE” are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive, you can just use `--dedupe` with no additional arguments for the default `nocase`.
 
 #### **--minimum** or **-m** N
 Remove all words with less than `N` characters. By default, `N` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
