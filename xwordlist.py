@@ -11,10 +11,11 @@ import re
 
 from prompt_toolkit import prompt, print_formatted_text, HTML
 from bs4 import BeautifulSoup
+from anyascii import anyascii
 
 
 # Set up globals
-__version__ = '22.01.04'
+__version__ = '22.01.05'
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
 config_name = '{}.conf'.format(exec_pieces[0])
@@ -42,13 +43,20 @@ class WordList:
                 newList.append(line)
         self.myList = newList
 
-    def strip_nonalpha(self):
+    def strip_nonalpha(self, stripWhat):
         newList = []
-        for word in self.myList:
-            newWord = ''.join([i for i in word if i.isalpha()])
-            if len(newWord) > 0:
-                newList.append(newWord)
-        self.myList = newList
+        if stripWhat in ['keepdiacritic', 'diacritic', 'true']:
+            for word in self.myList:
+                if stripWhat != 'keepdiacritic':
+                    word = anyascii(word)
+                newWord = ''.join([i for i in word if i.isalpha()])
+                if len(newWord) > 0:
+                    newList.append(newWord)
+            self.myList = newList
+        else:
+            print_text = 'Exiting... unknown strip option <{color}>{stripWhat}</{color}>'
+            print_line(print_text, {'stripWhat': stripWhat})
+            sys.exit()
 
     def case_change(self, newCase):
         case_dict = {
@@ -360,8 +368,10 @@ def main():
     min_ltrs = 3
     minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(min_ltrs)
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
-    strip_help = 'Remove non-alphabetic characters (including spaces)'
-    parser.add_argument('-s', '--strip', action='store_true', help=strip_help)
+    strip_help = '{diacritic (default) | keepdiacritic} Remove non-alphabetic characters (including spaces).\
+                  By default, converts diacritical marks into English letters  (e.g., Renée becomes Renee).\
+                  Use --strip keepdiacritic to leave diacriticals in.'
+    parser.add_argument('-s', '--strip', nargs='?', const='diacritic', help=strip_help)
 
     global IMPACT_COLOR
     IMPACT_COLOR = GLOBAL_SETTINGS['impact_color']
@@ -400,8 +410,8 @@ def main():
     if confArgs.convert is not None:
         inputWords.convert(confArgs.convert)
 
-    if confArgs.strip:
-        inputWords.strip_nonalpha()
+    if confArgs.strip is not None:
+        inputWords.strip_nonalpha(confArgs.strip)
 
     # Do any text transforms
     if confArgs.minimum is not None:

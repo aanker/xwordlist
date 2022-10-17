@@ -1,3 +1,4 @@
+anyascii==0.3.1
 beautifulsoup4==4.11.1
 ConfigArgParse==1.5.3
 prompt_toolkit==3.0.20

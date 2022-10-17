@@ -126,8 +126,8 @@ Remove all duplicates in the list. The dedupe function by default is case insens
 #### **--minimum** or **-m** N
 Remove all words with less than `N` characters. By default, `N` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
 
-#### **--strip** or **-s**
-Remove all non-alphabetic characters, to make your list crossword puzzle ready. (*TK: Add more flexibility on this setting*)
+#### **--strip** or **-s** diacritic (default) | keepdiacritic
+Remove all non-alphabetic characters, to make your list crossword puzzle ready. By default, the software first converts diacritics to English equivalents, for instance “Renée” is turned into “Renee”. To leave diacritics as is, use `--strip keepdiacritic`.
 
 ## Configuration File
 
