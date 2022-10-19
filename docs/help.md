@@ -1,6 +1,7 @@
 ---
 layout: home
-title: Help
+title: Help Reference and Example
+menu_title: Help
 permalink: /help/
 ---
 

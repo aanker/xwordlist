@@ -1,6 +1,7 @@
 ---
 layout: home
-title: Resources
+title:  Resources and Recipes
+menu_title: Resources
 permalink: /resources/
 ---
 
