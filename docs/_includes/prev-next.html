@@ -1,0 +1,15 @@
+{% if page.previous.url or page.next.url %}
+  <div class="pagination">
+    {% if page.previous.url %}
+      <a href="{{page.previous.url}}">&laquo;&nbsp;Previous Recipe ({{page.previous.title}})</a>
+    {% else %}
+      No More Recipes
+    {% endif %}
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    {% if page.next.url %}
+      <a href="{{page.next.url}}">Next Recipe ({{page.next.title}})&nbsp;&raquo;</a>
+    {% else %}
+      No More Recipes
+    {% endif %}
+  </div>
+{% endif %}

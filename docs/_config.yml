@@ -26,3 +26,7 @@ header_pages:
   - resources.md
 plugins:
   - jekyll-feed
+
+collections:
+  recipes:
+    output: true
