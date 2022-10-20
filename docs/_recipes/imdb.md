@@ -44,7 +44,7 @@ webpage https://www.imdb.com/name/[ID-code-for-person]/bio                ; cust
 container id=bio_content
 webextract html-div
 ```
-With either of these grabs, it is best to go through the data before parsing it further as there can be a lot of extra content you probaly don’t want, including the name of the author of the bio. Once you have deleted the extraneous content, then run the usual parsing commands on that file to get it into word list shape.
+With either of these grabs, it is best to go through the data before parsing it further as there can be a lot of extra content you probably don’t want, including the name of the author of the bio. Once you have deleted the extraneous content, then run the usual parsing commands on that file to get it into word list shape.
 
 ```
 convert
