@@ -18,7 +18,7 @@ from anyascii import anyascii
 __version__ = '22.01.05'
 exec_name = os.path.basename(__file__)
 exec_pieces = os.path.splitext(exec_name)
-config_name = '{}.conf'.format(exec_pieces[0])
+config_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), '{}.conf'.format(exec_pieces[0]))
 
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
