@@ -165,7 +165,7 @@ def extract_from_web(extractWhat, soup, extractURL):
                 # Check to see if absolute or relative URL.  If relative, make it absolute
                 if parsePieces.scheme == '' and parsePieces.netloc == '':
                     parseExtract = urllib.parse.urlsplit(extractURL)
-                    getURL = urllib.parse.urljoin('{}://{}'.format(parseExtract.scheme, parseExtract.netloc), getURL)
+                    getURL = urllib.parse.urljoin(f'{parseExtract.scheme}://{parseExtract.netloc}', getURL)
                 localWords.append(getURL)
     elif extractWhat[:5] == 'html-':
         localWords = []
@@ -263,13 +263,13 @@ def setup_output(localArgs, otherArgs):
     elif localArgs.input or localArgs.urllist:
         fileName = localArgs.input if localArgs.input else localArgs.urllist
         filePieces = os.path.splitext(fileName)
-        outputFile = '{}_{}{}'.format(filePieces[0], file_add, filePieces[1])
+        outputFile = f'{filePieces[0]}_{file_add}{filePieces[1]}'
     elif localArgs.webpage:
         urlPieces = urllib.parse.urlparse(localArgs.webpage).hostname.split('.')
         if len(urlPieces) > 1:
-            outputFile = '{}_{}_{}.txt'.format(urlPieces[-2], urlPieces[-1], file_add)
+            outputFile = f'{urlPieces[-2]}_{urlPieces[-1]}_{file_add}.txt'
         else:
-            outputFile = '{}_{}.txt'.format(urlPieces[0], file_add)
+            outputFile = f'{urlPieces[0]}_{file_add}.txt'
         # See if a directory has been specified: don't need to check if valid by now
         if localArgs.directory is not None:
             outputFile = os.path.join(localArgs.directory, outputFile)
@@ -372,7 +372,7 @@ def main():
                    Use --dedupe bycase to treat each as a different word'
     parser.add_argument('-d', '--dedupe', nargs='?', const='nocase', help=dedupe_help)
     min_ltrs = 3
-    minimum_help = 'Set minimum number of letters in a word (if not specified, default is {})'.format(min_ltrs)
+    minimum_help = f'Set minimum number of letters in a word (if not specified, default is {min_ltrs})'
     parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
     strip_help = '{diacritic (default) | keepdiacritic} Remove non-alphabetic characters (including spaces).\
                   By default, converts diacritical marks into English letters  (e.g., Renée becomes Renee).\
@@ -384,9 +384,9 @@ def main():
     envArgs = create_dict(args[1])
 
     # See if conf file contains an impact color
-    if 'impact_color' in envArgs and 'ansi{}'.format(envArgs['impact_color']) in COLOR_OPTIONS:
+    if 'impact_color' in envArgs and f"ansi{envArgs['impact_color']}" in COLOR_OPTIONS:
         global IMPACT_COLOR
-        IMPACT_COLOR = 'ansi{}'.format(envArgs['impact_color'])
+        IMPACT_COLOR = f"ansi{envArgs['impact_color']}"
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:
