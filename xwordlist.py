@@ -12,13 +12,14 @@ import re
 from prompt_toolkit import prompt, print_formatted_text, HTML
 from bs4 import BeautifulSoup
 from anyascii import anyascii
+from importlib.metadata import version
 
 
 # Set up globals
-__version__ = '22.01.05'
-exec_name = os.path.basename(__file__)
-exec_pieces = os.path.splitext(exec_name)
-config_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), '{}.conf'.format(exec_pieces[0]))
+__version__ = version('xwordlist')
+exec_pieces = os.path.splitext(os.path.basename(__file__))
+exec_name = exec_pieces[0]
+config_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'{exec_name}.conf')
 
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
@@ -337,6 +338,9 @@ def main():
     # First set up configargparse
     parser = configargparse.ArgumentParser(default_config_files=[config_name],
                                            description='Crossword puzzle word list builder')
+
+    # Meta options
+    parser.add_argument('-v', '--version', action='version', version=f'{exec_name} {__version__}')
 
     # Input and output options
     parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
