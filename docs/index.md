@@ -11,23 +11,52 @@ For an example of a themed 5x5 mini puzzle built with a word list assembled usin
 
 ## Installation
 
-This is still an [early stage project](https://github.com/aanker/xwordlist) that is likely to change often and so I am not yet worrying about breaking changes to APIs or updating the functionality in fundamental ways. Use at your discretion!
+It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If you are good with all of that, skip down to the `pip` instructions below. Otherwise on either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program.
 
-For now, you are mostly on your own if you wish to install `xwordlist`. After making sure your Python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning [the repository](https://github.com/aanker/xwordlist) or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
+The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both. Follow the instructions down to the section labeled `Installing from PyPI`.
+
+From there, you can install `xwordlist` by typing
+
+```
+pip install xwordlist
+```
+To see if your installation was successful, type
+```
+xwordlist --version
+```
+If properly installed, the software should respond with its name and the installed version.
+
+### Manual Installation
+
+To install the software manually, copy the `xwordlist` code to your local working environment by either cloning the [GitHub repository](https://github.com/aanker/xwordlist) or downloading and unpacking the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip) into a new directory. To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
+
 ```
 python3 -m pip install -r requirements.txt
 ```
-To run the program, type
+To see if your installation was successful, type
 ```
-python3 xwordlist.py
+python3 xwordlist.py --version
 ```
-If you need more instructions than that, you might be better off waiting until the project is further along. If you have comments or questions beyond what is provided on this site, please refer to the main [GitHub repository](https://github.com/aanker/xwordlist) and feel free to email me or open an [issue](https://github.com/aanker/xwordlist/issues) if you have further questions.
+If properly installed, the software should respond with its name and the installed version.
+
+### Upgrading
+
+As an early stage project, `xwordlist` is likely to be updated often — including new features and bug fixes. For a record of changes and to see the most current version number, see the [changelog](changelog). Remember that you can always check which version you have by typing `xwordlist --version`.
+
+To update your installation using `pip`, type
+
+```
+pip install --upgrade xwordlist
+```
+To upgrade a manual installation, it is best to repeat the installation process replacing old files with the new ones downloaded from GitHub.
 
 ## Usage
 
+If you have installed the software using `pip`, you should be able to run the program by simply typing `xwordlist` or `xwl`. For manual installs, you will need to type `python3 xwordlist.py`. The rest of the documentation assumes you have installed via `pip` and uses the short form.
+
 For quick help instructions on the command line, type
 ```
-python3 xwordlist.py --help
+xwordlist --help
 ```
 For an example of how to use the software as well as a reference to all options, see the [expanded help page](/help).
 
@@ -41,7 +70,7 @@ For an example of how to use the software as well as a reference to all options,
 If multiple inputs are specified, the contents of each source are added together. For instance, you can use your base word list as an input file and then add the contents of a web page by entering
 
 ```
-python3 xwordlist.py --input tompettywords.txt --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/
+xwordlist --input tompettywords.txt --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/
 ```
 
 You can specify the output file name with the command line option `--output filename.txt` or `-o filename.txt`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL. Your input and output files can be the same but `xwordlist` will always prompt you before writing over an existing file.
@@ -53,7 +82,7 @@ For more information about using a text file with a list of web URLs and setting
 The most useful content extraction tool in `xwordlist` is its ability to pull content out of structured web pages. When given a web URL (or text file with a list of web URLs), by default `xwordlist` will return an output file with all of the text on the web page(s). More useful is to only grab specific parts of the page, which you can do using the `--container` option. For instance, if you wish to get the lyrics to a song on the website [SongLyrics](http://songlyrics.com), you only need the content inside the HTML element with the ID “songLyricsDiv”.
 
 ```
-python3 xwordlist.py --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --container id=songLyricsDiv
+xwordlist --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --container id=songLyricsDiv
 ```
 
 This will provide you with lines of text which is probably not what you ultimately want for a word list. The next option to use is `--convert` which takes any block of text and turns it into a list of words. To make it crossword construction ready, you will also want to remove any non-alphabetic characters using `--strip` or `-s` which gets rid of everything (including numbers) that you would not want in your word list.
@@ -72,7 +101,6 @@ With any list of words derived from a public source such as a lyrics database, y
 The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive. Also, the default minimum word length is 3 letters so if you’re happy with that (as most crosswords are), just `-m` without any additional number will screen out any word smaller than 3 letters.
 
 The order of options entered on the command line doesn’t matter, `xwordlist` does everything in the most logical order.
-
 
 ### Configuration File
 

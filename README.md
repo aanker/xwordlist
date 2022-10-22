@@ -8,23 +8,45 @@ For more information, see the project’s main website hosted at [xwl.ist](https
 
 ## Installation
 
-For now, you are mostly on your own if you wish to install `xwordlist`. After making sure your Python is up-to-date and you have activated a virtual environment (see [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on that), you can copy the `xwordlist` code to your local working environment by either cloning this repository or downloading the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip). To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
+It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If you are good with all of that, skip down to the `pip` instructions below. Otherwise on either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program.
+
+The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both. Follow the instructions down to the section labeled `Installing from PyPI`.
+
+From there, you can install `xwordlist` by typing
+
+```
+pip install xwordlist
+```
+To see if your installation was successful, type
+```
+xwordlist --version
+```
+If properly installed, the software should respond with its name and the installed version.
+
+### Manual Installation
+
+To install the software manually, copy the `xwordlist` code to your local working environment by either cloning this repository or downloading and unpacking the [zip archive](https://github.com/aanker/xwordlist/archive/refs/heads/main.zip) into a new directory. To install the dependencies required to make `xwordlist` work, use your terminal program to find the directory in which you have copied the files and type
+
 ```
 python3 -m pip install -r requirements.txt
 ```
-To run the program, type
+To see if your installation was successful, type
 ```
-python3 xwordlist.py
+python3 xwordlist.py --version
 ```
-If you need more instructions than that, you might be better off waiting until the project is further along. If you have comments or questions beyond what is provided on this site, please refer to the main [GitHub repository](https://github.com/aanker/xwordlist) and feel free to email me or open an [issue](https://github.com/aanker/xwordlist/issues) if you have further questions.
+If properly installed, the software should respond with its name and the installed version.
 
 ## Usage
 
+If you have installed the software using `pip`, you should be able to run the program by simply typing `xwordlist` or `xwl`. For manual installs, you will need to type `python3 xwordlist.py`. The rest of the documentation assumes you have installed via `pip` and uses the short form.
+
 For quick help instructions on the command line, type
 ```
-python3 xwordlist.py --help
+xwordlist --help
 ```
 Please see the [project’s main website](https://xwl.ist) for more information about using the software including a [basic example](https://xwl.ist/help/#basic-example), [recipes for common patterns](https://xwl.ist/resources/#recipes) and a [reference](https://xwl.ist/help/#list-of-available-options) to all options.
+
+Find a bug? Please let us know [here](https://github.com/aanker/xwordlist/issues).
 
 ## License
 

@@ -19,7 +19,7 @@ The easiest way to understand `xwordlist` is to walk through the example of gett
 To see what raw output looks like, we’ll first just get the whole page without any refinement:
 
 ```
-python3 xwordlist.py --webpage https://www.songlyrics.com/tom-petty-lyrics/
+xwordlist --webpage https://www.songlyrics.com/tom-petty-lyrics/
 ```
 
 After running this command, you should see a new file called `songlyrics_com_xwl.txt` in your `xwordlist` folder. Since no output file name was specified, a default based on the URL was created. Open the file with your favorite text editor and you will see that we have generated a file with all of the text strings from the SongLyrics web page, including random bits of page titles, navigation and advertising verbiage.
@@ -27,7 +27,7 @@ After running this command, you should see a new file called `songlyrics_com_xwl
 That is a good start, but now let’s just grab the text from the table in the middle with the title “Tom Petty Lyrics - by Popularity” which includes the list of song titles we are looking for. By examining the HTML of the page, we see that the text is contained in a table with the class name “tracklist”, which we can specify using the `--container` option. Next try the command:
 
 ```
-python3 xwordlist.py --webpage https://www.songlyrics.com/tom-petty-lyrics/ --output tompetty.txt --container class=tracklist=1 --webextract html-a
+xwordlist --webpage https://www.songlyrics.com/tom-petty-lyrics/ --output tompetty.txt --container class=tracklist=1 --webextract html-a
 ```
 
 Rather than let a default file be created, this time we have specified that the output should go to `tompetty.txt`; open that file to see the result. You may have noticed that when we specified the `--container` option, we included `class=tracklist=1`. If we had specified an ID, it would have to be unique to the page but there can be multiple uses of the same class name on a page and in this case, we wanted the first. If we had left out the `=1` on the end, `xwordlist` would have given us all of the instances of that class on the page. Try it to see what different outputs look like!
@@ -37,7 +37,7 @@ The list of song names is numbered, which is not something we want for our word 
 Now that we have a list of song titles, there are a few bits of clean up since most of these kinds of lists can be a bit noisy. For instance, this list of songs by Tom Petty includes multiple versions of the same song with additional words that we may not want for our final word list. First, we should alphabetize it to make it easier to scan. Rather than go back to the web, we’ll use the file we just created:
 
 ```
-python3 xwordlist.py --input tompetty.txt --output tompetty.txt --alphabetize
+xwordlist --input tompetty.txt --output tompetty.txt --alphabetize
 ```
 
 Of course, you could save the alphabetized list to a different file name (or let the software create a new file) but for the purposes of this example, we will stick with the same file. Scan through that file and delete duplicates and anything that you wouldn’t want in your word list. Don’t worry about extraneous characters — like for instance the apostrophe on the end of Free Fallin’ — the software will clean that up. Once you have made any edits to that file, be sure to save it before continuing on to the next step.
@@ -45,13 +45,13 @@ Of course, you could save the alphabetized list to a different file name (or let
 From here, there are two ways we can go with this list. We may want to create a list where the entire song name is an entry, for instance for long themed entries such as “WONTBACKDOWN”. To do that, we need to strip out all non-alphabetic characters (including spaces) and dedupe the list. So first run this:
 
 ```
-python3 xwordlist.py --input tompetty.txt --output tompetty_songs.txt --strip --dedupe --case upper --alphabetize
+xwordlist --input tompetty.txt --output tompetty_songs.txt --strip --dedupe --case upper --alphabetize
 ```
 
 We saved this to a new file name for reasons that will become obvious in a second. Go open that new file `tompetty_songs.txt` and you will see a list of Tom Petty songs that are ready to be imported into your crossword construction software. But since most of these are long titles that are hard to fit into a standard crossword, we also want the individual words: for instance just the word “BREAK” to clue as “___ Down” for a shorter entry. To do that, we need to add the `--convert` option on our original list which will separate each title’s words into a new list. Try:
 
 ```
-python3 xwordlist.py --input tompetty.txt --output tompetty_title_words.txt --convert --strip --dedupe --case upper --alphabetize --minimum
+xwordlist --input tompetty.txt --output tompetty_title_words.txt --convert --strip --dedupe --case upper --alphabetize --minimum
 ```
 
 You now have two great lists to use to start building your Tom Petty puzzle! You can paste them into one doc and have `xwordlist` alphabetize and dedupe or you can just paste each individual list directly into your construction software, perhaps to score one set of words higher than the other. Experiement and figure out what works best for your constructing needs.
@@ -131,6 +131,15 @@ Remove all words with less than `N` characters. By default, `N` is 3 and for mos
 
 #### **--strip** or **-s** diacritic (default) | keepdiacritic
 Remove all non-alphabetic characters, to make your list crossword puzzle ready. By default, the software first converts diacritics to English equivalents, for instance “Renée” is turned into “Renee”. To leave diacritics as is, use `--strip keepdiacritic`.
+
+## Meta Options
+
+#### **--help** or **-h**
+View the help message and exit.
+
+#### **--version** or **-v**
+View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](changelog). 
+
 
 ## Configuration File
 
