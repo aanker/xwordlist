@@ -26,6 +26,8 @@ GLOBAL_SETTINGS = {
     'impact_color': 'ansired',
 }
 
+IMPACT_COLOR = GLOBAL_SETTINGS['impact_color']
+
 COLOR_OPTIONS = ['ansiblack', 'ansired', 'ansigreen', 'ansiyellow', 'ansiblue', 'ansimagenta',
                  'ansicyan', 'ansigray', 'ansibrightblack', 'ansibrightred', 'ansibrightgreen',
                  'ansibrightyellow', 'ansibrightblue', 'ansibrightmagenta', 'ansibrightcyan', 'ansiwhite']
@@ -373,15 +375,13 @@ def main():
                   Use --strip keepdiacritic to leave diacriticals in.'
     parser.add_argument('-s', '--strip', nargs='?', const='diacritic', help=strip_help)
 
-    global IMPACT_COLOR
-    IMPACT_COLOR = GLOBAL_SETTINGS['impact_color']
-
     args = parser.parse_known_args()
     confArgs = args[0]
     envArgs = create_dict(args[1])
 
     # See if conf file contains an impact color
     if 'impact_color' in envArgs and 'ansi{}'.format(envArgs['impact_color']) in COLOR_OPTIONS:
+        global IMPACT_COLOR
         IMPACT_COLOR = 'ansi{}'.format(envArgs['impact_color'])
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
