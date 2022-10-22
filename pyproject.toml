@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "xwordlist"
+version = "22.1.6"
+description = "Software to help create, build and organize crossword puzzle word lists"
+authors = ["Andrew Anker <aa@quid.pro>"]
+license = "MIT"
+readme = "README.md"
+classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: End Users/Desktop",
+        "Topic :: Games/Entertainment :: Puzzle Games",
+    ]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+anyascii = "0.3.1"
+beautifulsoup4 = "4.11.1"
+configargparse = "1.5.3"
+prompt-toolkit = "3.0.20"
+requests = "2.28.1"
+
+[project.urls]
+repository = "https://github.com/aanker/xwordlist"
+homepage = "https:/xwl.ist"
+documentation = "https://xwl.ist/help"
+"Bug Tracker" = "https://github.com/aanker/xwordlist/issues"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+xwl = "xwordlist:main"
+xwordlist = "xwordlist:main"
