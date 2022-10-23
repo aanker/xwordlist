@@ -17,9 +17,16 @@ from importlib.metadata import version
 
 # Set up globals
 __version__ = version('xwordlist')
-exec_pieces = os.path.splitext(os.path.basename(__file__))
-exec_name = exec_pieces[0]
-config_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'{exec_name}.conf')
+
+FILE_NAMES = {
+    'name': __name__,
+    'conf': f'{__name__}.conf',
+    'exec_path': os.path.dirname(os.path.abspath(__file__)),
+    'user_path': f'~/{__name__}'
+}
+CONFIG_EXEC = os.path.join(FILE_NAMES['exec_path'], FILE_NAMES['conf'])
+CONFIG_HOME = os.path.join(FILE_NAMES['user_path'], FILE_NAMES['conf'])
+
 
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
@@ -328,7 +335,7 @@ def setup_input(localArgs, otherArgs):
 
     if len(returnWords) == 0:
         print_text = 'No input given, nothing to do (enter <{color}>{exec_name} -h</{color}> for help)'
-        print_line(print_text, {'exec_name': exec_name})
+        print_line(print_text, {'exec_name': FILE_NAMES['name']})
         sys.exit()
 
     return returnWords
@@ -336,11 +343,11 @@ def setup_input(localArgs, otherArgs):
 
 def main():
     # First set up configargparse
-    parser = configargparse.ArgumentParser(default_config_files=[config_name],
+    parser = configargparse.ArgumentParser(default_config_files=[CONFIG_EXEC, CONFIG_HOME],
                                            description='Crossword puzzle word list builder')
 
     # Meta options
-    parser.add_argument('-v', '--version', action='version', version=f'{exec_name} {__version__}')
+    parser.add_argument('-v', '--version', action='version', version=f"{FILE_NAMES['name']} {__version__}")
 
     # Input and output options
     parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
