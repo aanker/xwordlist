@@ -11,16 +11,16 @@ For an example of a themed 5x5 mini puzzle built with a word list assembled usin
 
 ## Installation
 
-It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If you are good with all of that, skip down to the `pip` instructions below. Otherwise on either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program.
+It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If your environment is all set up and you know `pip` is both installed and up-to-date, skip down to the `pip` instructions below. Most Macs and Linux users will find that `pip` is installed but probably needs to be updated. Most Windows users will need to install `pip` first. In other words, unless you really know what you are doing, you probably need to continue to follow the next paragraph.
 
-The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both. Follow the instructions down to the section labeled *Installing from PyPI*.
+On either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program. The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both. Follow the instructions on that page down to the section labeled *Installing from PyPI*.
 
 From there, you can install `xwordlist` by typing
 
 ```
 pip install xwordlist
 ```
-To see if your installation was successful, type
+Be sure to type `xwordlist` as there is other software called `wordlist` (without the “x”) which is not what you want. To see if your installation was successful, type
 ```
 xwordlist --version
 ```
