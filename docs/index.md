@@ -110,7 +110,7 @@ Options entered on the command line take precedence over the configuration file.
 
 The `xwordlist.conf` file included in the GitHub repository contains commented out examples of the usage of each option. 
 
-For more information about setting configuration options, see the [expanded help page](/help).
+For more information about setting configuration options, see the [expanded help page](/help). Also, be sure to check out the various [recipes pages](/resources/#recipes) which provide options you can paste directly into your configuration file to do common activities.
 
 ## License
 
