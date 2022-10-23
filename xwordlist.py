@@ -388,7 +388,10 @@ def main():
 
     args = parser.parse_known_args()
     confArgs = args[0]
-    envArgs = create_dict(args[1])
+
+    # Check to see if we've found any configuration data
+    envArgs = create_dict(args[1]) if len(args[1]) > 0 else {}
+
 
     # See if conf file contains an impact color
     if 'impact_color' in envArgs and f"ansi{envArgs['impact_color']}" in COLOR_OPTIONS:
