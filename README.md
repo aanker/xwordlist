@@ -8,8 +8,6 @@ For more information, see the project’s main website hosted at [xwl.ist](https
 
 ## Installation
 
-SPECIAL NOTE:  PIP INSTALL DOES NOT WORK AT THIS PRESENT TIME. PLEASE FOLLOW MANUAL INSTALLATION INSTRUCTIONS
-
 It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If you are good with all of that, skip down to the `pip` instructions below. Otherwise on either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program.
 
 The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both. Follow the instructions down to the section labeled `Installing from PyPI`.

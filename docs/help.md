@@ -143,7 +143,7 @@ View the version number and exit. For a record of changes and to see the most cu
 
 ## Configuration File
 
-`xwordlist` will also look for a configuration file named `xwordlist.conf` located in the same directory as the main Python program. For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
+`xwordlist` will also look for a configuration file named `xwordlist.conf` located in the same directory as the main Python program or in a folder in the user’s home directory (`~/xwordlist`). For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
 
 The `xwordlist.conf` that is provided when you download from GitHub includes a commented out example of the format for each option. The format is the same as the command line options described above, but the dashes (`-` or `--`) are not necessary:
  

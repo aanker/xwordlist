@@ -11,8 +11,6 @@ For an example of a themed 5x5 mini puzzle built with a word list assembled usin
 
 ## Installation
 
-SPECIAL NOTE:  PIP INSTALL DOES NOT WORK AT THIS PRESENT TIME. PLEASE FOLLOW MANUAL INSTALLATION INSTRUCTIONS
-
 It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If you are good with all of that, skip down to the `pip` instructions below. Otherwise on either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program.
 
 The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both. Follow the instructions down to the section labeled `Installing from PyPI`.
@@ -106,7 +104,7 @@ The order of options entered on the command line doesn’t matter, `xwordlist` d
 
 ### Configuration File
 
-`xwordlist` will also look for a configuration file named `xwordlist.conf` located in the same directory as the main Python program. For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
+`xwordlist` will also look for a configuration file named `xwordlist.conf` located in either the same directory as the main Python program or in a folder in the user’s home directory (`~/xwordlist`). For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
 
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’d rather look at raw text. It is recommended that you specify your most important defaults in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
