@@ -60,48 +60,6 @@ xwordlist --help
 ```
 For an example of how to use the software as well as a reference to all options, see the [expanded help page](/help).
 
-### Input and Output
-
-`xwordlist` accepts three types of non-mutually exclusive inputs:
-*  Text file:  `--input filename.txt` or `-i filename.txt`
-*  Web URL:  `--webpage URL` or `-w URL`
-*  Text file with list of web URLs:  `--urllist filename.txt`
-
-If multiple inputs are specified, the contents of each source are added together. For instance, you can use your base word list as an input file and then add the contents of a web page by entering
-
-```
-xwordlist --input tompettywords.txt --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/
-```
-
-You can specify the output file name with the command line option `--output filename.txt` or `-o filename.txt`. If you do not specify an output file name, a file will be created for you based on either the input file name or the domain name of the web URL. Your input and output files can be the same but `xwordlist` will always prompt you before writing over an existing file.
-
-For more information about using a text file with a list of web URLs and setting a default directory, see the [expanded help page](/help).
-
-### Content Parsing
-
-The most useful content extraction tool in `xwordlist` is its ability to pull content out of structured web pages. When given a web URL (or text file with a list of web URLs), by default `xwordlist` will return an output file with all of the text on the web page(s). More useful is to only grab specific parts of the page, which you can do using the `--container` option. For instance, if you wish to get the lyrics to a song on the website [SongLyrics](http://songlyrics.com), you only need the content inside the HTML element with the ID “songLyricsDiv”.
-
-```
-xwordlist --webpage http://www.songlyrics.com/tom-petty/free-falling-lyrics/ --container id=songLyricsDiv
-```
-
-This will provide you with lines of text which is probably not what you ultimately want for a word list. The next option to use is `--convert` which takes any block of text and turns it into a list of words. To make it crossword construction ready, you will also want to remove any non-alphabetic characters using `--strip` or `-s` which gets rid of everything (including numbers) that you would not want in your word list.
-
-For more information about the program’s content parsing ability, including how to target specific html class names or individual tags and how to use regex patterns, see the [expanded help page](/help).
-
-### Word Transformation
-
-With any list of words derived from a public source such as a lyrics database, you will want a few more items that are relatively self explanatory.
-
-*  Dedupe:  `--dedupe` or `-d`
-*  Alphabetize:  `--alphabetize` or `-a`
-*  Change case:  `--case lower | upper`
-*  Minimum word length:  `--minimum N` or `-m N`
-
-The dedupe function by default is case insensitive: "apple" and "APPLE" are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive. Also, the default minimum word length is 3 letters so if you’re happy with that (as most crosswords are), just `-m` without any additional number will screen out any word smaller than 3 letters.
-
-The order of options entered on the command line doesn’t matter, `xwordlist` does everything in the most logical order.
-
 ### Configuration File
 
 `xwordlist` will also look for a configuration file named `xwordlist.conf` located in either the same directory as the main Python program or in a folder in the user’s home directory (`~/xwordlist`). For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
