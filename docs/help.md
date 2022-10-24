@@ -138,14 +138,16 @@ Remove all non-alphabetic characters, to make your list crossword puzzle ready. 
 View the help message and exit.
 
 #### **--version** or **-v**
-View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](changelog). 
+View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](changelog).
 
+#### **--config**
+View the location of your currently active `xwordlist.conf` file and exit.
 
 ## Configuration File
 
-`xwordlist` will also look for a configuration file named `xwordlist.conf` located in the same directory as the main Python program or in a folder in the user’s home directory (`~/xwordlist`). For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
+`xwordlist` supports the use of a configuration file named `xwordlist.conf`. You can paste any or all command line options directly into the configuration file rather than entering them on the command line. Then you can just type `xwordlist` or `xwl` on the command line to run the software and it will process all of the options saved in the configuration file. Especially for things like using the [recipes](/resources/#recipes), it is often easier to just paste everything into the configuration file rather than trying to type it all on the command line.
 
-The `xwordlist.conf` that is provided when you download from GitHub includes a commented out example of the format for each option. The format is the same as the command line options described above, but the dashes (`-` or `--`) are not necessary:
+An `xwordlist.conf` file is provided when you install via `pip`, it will be located in the same directory as the program itself. This file includes a commented out example of the format for each option. The format is the same as the command line options described above, but the dashes (`-` or `--`) are not necessary:
  
 ```
 # options that take an argument:
@@ -154,6 +156,8 @@ case upper
 # options that don’t take an argument:
 alphabetize
 ```
+Often times when installing by `pip`, the `xwordlist.conf` file ends up in a hard to find directory buried in an obscure location. Rather than leave the configuration file in that directory, you can move it to a folder your home directory:  `~/xwordlist/xwordlist.conf` (it must be a folder named `xwordlist` inside your home folder). To help you find where your configuration file is located, enter `xwordlist --config` and the software will tell you which folder contains the active configuration file.
+
 Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
 Many of the [recipes provided on this site](/resources/#recipes) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.

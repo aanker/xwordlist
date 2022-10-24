@@ -62,11 +62,11 @@ For an example of how to use the software as well as a reference to all options,
 
 ### Configuration File
 
-`xwordlist` will also look for a configuration file named `xwordlist.conf` located in either the same directory as the main Python program or in a folder in the user’s home directory (`~/xwordlist`). For the word transformation options, you may want to store your preferences in the configuration file to save having to enter them on the command line each time.
+`xwordlist` supports the use of a configuration file named `xwordlist.conf`. You can paste any or all command line options directly into the configuration file rather than entering them on the command line. Then you can just type `xwordlist` or `xwl` on the command line to run the software and it will process all of the options saved in the configuration file. Especially for things like using the [recipes](/resources/#recipes), it is often easier to just paste everything into the configuration file rather than trying to type it all on the command line.
 
-Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’d rather look at raw text. It is recommended that you specify your most important defaults in the configuration file and leave the inputs and outputs to the command line — but YMMV.
+Often times when installing by `pip`, the `xwordlist.conf` file ends up in a hard to find directory buried in an obscure location. Rather than leave the configuration file in that directory, you can move it to a folder your home directory:  `~/xwordlist/xwordlist.conf` (it must be a folder named `xwordlist` inside your home folder). To help you find where your configuration file is located, enter `xwordlist --config` and the software will tell you which folder contains the active configuration file.
 
-The `xwordlist.conf` file included in the GitHub repository contains commented out examples of the usage of each option. 
+Options entered on the command line take precedence over the configuration file. The `xwordlist.conf` file included in the GitHub repository contains commented out examples of the usage of each option. 
 
 For more information about setting configuration options, see the [expanded help page](/help). Also, be sure to check out the various [recipes pages](/resources/#recipes) which provide options you can paste directly into your configuration file to do common activities.
 
