@@ -12,6 +12,8 @@ It helps to have some familiarity with Python and terminal programs to install `
 
 On either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program. The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both as well as how to install and upgrade `pip`. Follow the instructions on that page down to the section labeled *Installing from PyPI*.
 
+SPECIAL NOTE:  I just started testing this on Windows and have noticed big differences in how the software works (short answer, much less well than on Mac/Linux). If you are a Windows user, it may be a bit early to use this software.
+
 From there, you can install `xwordlist` by typing
 
 ```
