@@ -347,6 +347,40 @@ def setup_input(localArgs, otherArgs):
     return returnWords
 
 
+def do_config():
+    # Tells user where their config file is
+    if pathlib.Path(CONFIG_EXEC).is_file() and pathlib.Path(CONFIG_HOME).is_file():
+        print_text = 'There are configuration files located at both <{color}>{config_exec}</{color}>'
+        print_text += ' and <{color}>{config_home}</{color}>.\nThe one located in the folder <{color}>{home_path}</{color}>'
+        print_text += ' will take precedence and is the one you should edit.'
+        arg_dict = {
+            'config_home': CONFIG_HOME,
+            'config_exec': CONFIG_EXEC,
+            'home_path': FILE['user_path'],
+        }
+        print_line(print_text, arg_dict)
+        sys.exit()
+
+    elif pathlib.Path(CONFIG_EXEC).is_file():
+        whereFile = CONFIG_EXEC
+    elif pathlib.Path(CONFIG_HOME).is_file():
+        whereFile = CONFIG_HOME
+    else:
+        print_text = 'Cannot find a configuration file.\nYou should download a new version from this'
+        print_text += ' location: <{color}>{repo_conf}</{color}>\nSave it in a directory'
+        print_text += ' located at <{color}>{home_path}</{color}> and edit it there.'
+        arg_dict = {
+            'repo_conf': REPO['conf'],
+            'home_path': FILE['user_path'],
+        }
+        print_line(print_text, arg_dict)
+        sys.exit()
+
+    print_text = 'Your configuration file is located at <{color}>{whereFile}</{color}>'
+    print_line(print_text, {'whereFile': whereFile})
+    sys.exit()
+
+
 def main():
     # First set up configargparse
     parser = configargparse.ArgumentParser(default_config_files=[CONFIG_EXEC, CONFIG_HOME],
@@ -354,6 +388,7 @@ def main():
 
     # Meta options
     parser.add_argument('-v', '--version', action='version', version=f"{FILE['name']} {__version__}")
+    parser.add_argument('--config', action='store_true', help='locate your config file and quit')
 
     # Input and output options
     parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
@@ -403,6 +438,10 @@ def main():
     if 'impact_color' in envArgs and f"ansi{envArgs['impact_color']}" in COLOR_OPTIONS:
         global IMPACT_COLOR
         IMPACT_COLOR = f"ansi{envArgs['impact_color']}"
+
+    # See if the user selected --config, in which case we should handle that immediately
+    if confArgs.config:
+        do_config()
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:
