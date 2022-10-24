@@ -18,14 +18,20 @@ from importlib.metadata import version
 # Set up globals
 __version__ = version('xwordlist')
 
-FILE_NAMES = {
+FILE = {
     'name': __name__,
     'conf': f'{__name__}.conf',
     'exec_path': os.path.dirname(os.path.abspath(__file__)),
-    'user_path': f'~/{__name__}'
+    'user_path': os.path.join(pathlib.Path.home(), __name__ + '/')
 }
-CONFIG_EXEC = os.path.join(FILE_NAMES['exec_path'], FILE_NAMES['conf'])
-CONFIG_HOME = os.path.join(FILE_NAMES['user_path'], FILE_NAMES['conf'])
+
+REPO = {
+    'home': 'https://github.com/aanker/xwordlist/',
+    'conf': 'https://github.com/aanker/xwordlist/blob/main/xwordlist.conf',
+}
+
+CONFIG_EXEC = os.path.join(FILE['exec_path'], FILE['conf'])
+CONFIG_HOME = os.path.join(FILE['user_path'], FILE['conf'])
 
 
 GLOBAL_SETTINGS = {
@@ -335,7 +341,7 @@ def setup_input(localArgs, otherArgs):
 
     if len(returnWords) == 0:
         print_text = 'No input given, nothing to do (enter <{color}>{exec_name} -h</{color}> for help)'
-        print_line(print_text, {'exec_name': FILE_NAMES['name']})
+        print_line(print_text, {'exec_name': FILE['name']})
         sys.exit()
 
     return returnWords
@@ -347,7 +353,7 @@ def main():
                                            description='Crossword puzzle word list builder')
 
     # Meta options
-    parser.add_argument('-v', '--version', action='version', version=f"{FILE_NAMES['name']} {__version__}")
+    parser.add_argument('-v', '--version', action='version', version=f"{FILE['name']} {__version__}")
 
     # Input and output options
     parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
