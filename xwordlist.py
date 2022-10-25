@@ -22,7 +22,7 @@ FILE = {
     'name': __name__,
     'conf': f'{__name__}.conf',
     'exec_path': os.path.dirname(os.path.abspath(__file__)),
-    'user_path': os.path.join(pathlib.Path.home(), __name__ + '/')
+    'user_path': os.path.join(pathlib.Path.home(), __name__, '')
 }
 
 REPO = {
