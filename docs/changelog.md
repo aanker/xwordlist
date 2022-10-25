@@ -5,7 +5,7 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
-### Version 22.1.9 (10/XX/2022)
+### Version 22.1.9 (10/25/2022)
 * Fix how user’s home directory is specified so it is more cross platform [(link)](https://github.com/aanker/xwordlist/commit/0e0edd4d892ee53525e948ea85e4e38cb1c92ba8)
 
 ### Version 22.1.8 (10/24/2022)
