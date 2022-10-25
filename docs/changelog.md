@@ -6,7 +6,7 @@ permalink: /changelog/
 ---
 
 ### Version 22.1.8 (10/24/2022)
-* Add --config option to help user discover where their configuration file is located [(link)](https://github.com/aanker/xwordlist/commit/bdc0a3b10cbbc05871243951fc38d827a24960ed)
+* Add --config option to help user discover where their configuration file is located [(link)](https://github.com/aanker/xwordlist/commit/bdc0a3b10cbbc05871243951fc38d827a24960ed) {{ 'bdc0a3b10cbbc05871243951fc38d827a24960ed' | commit }}
 * Clean up global names and how the variables are created to give more durability to referencing user home directory [(link)](https://github.com/aanker/xwordlist/commit/f2e9194937df29d054ca9f20e6e288a580c36c3e)
 
 ### Version 22.1.7 (10/23/2022)
