@@ -4,15 +4,13 @@
 
 Besides helping with basic text functions such as deduping, alphabetizing and changing case, this program is able to pull content out of structured web pages and parse large blocks of text, including lists of web pages with similarly structured content. Although I first started using the software to grab the lyrics of songs, I have added regex and better html parsing functionality to make it easier to get data from Wikipedia and less structured sites.
 
-For more information, see the project’s main website hosted at [xwl.ist](https://xwl.ist). For an example of a themed 5x5 mini puzzle built with a word list assembled using this software, see [my personal website](https://quid.pro/xwords/tom-petty-mini/). For one of the bigger inspirations for this project, see Malaika Handa’s [Crosswift](https://www.7xwords.com/daily/01/01-13.html) puzzle using only Taylor Swift’s lyrics.
+For more information, see the project’s main website hosted at [xwl.ist](https://xwl.ist). For an example of a themed 5x5 mini puzzle built with a word list assembled using this software, see [my personal website](https://quid.pro/xwords/tom-petty-mini/). For one of the original inspirations for this project, see Malaika Handa’s [Crosswift](https://www.7xwords.com/daily/01/01-13.html) puzzle using only Taylor Swift’s lyrics.
 
 ## Installation
 
 It helps to have some familiarity with Python and terminal programs to install `xwordlist` but it is not a requirement. If your environment is all set up and you know `pip` is both installed and up-to-date, skip down to the `pip` instructions below. Most Macs and Linux users will find that `pip` is installed but probably needs to be updated. Most Windows users will need to install `pip` first. In other words, unless you really know what you are doing, you probably need to continue to follow the next paragraph.
 
 On either Mac or Windows, search for `terminal` and your operating system should show you the name and how to launch your default terminal program. The first thing you will need to do is make sure your Python is up-to-date (required) and that you have activated a virtual environment (recommended). See [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/) for helpful instructions on how to do both as well as how to install and upgrade `pip`. Follow the instructions on that page down to the section labeled *Installing from PyPI*.
-
-SPECIAL NOTE:  I just started testing this on Windows and have noticed big differences in how the software works (short answer, much less well than on Mac/Linux). If you are a Windows user, it may be a bit early to use this software.
 
 From there, you can install `xwordlist` by typing
 
@@ -24,6 +22,8 @@ Be sure to type `xwordlist` as there is other software called `wordlist` (withou
 xwordlist --version
 ```
 If properly installed, the software should respond with its name and the installed version.
+
+*SPECIAL NOTE:  I just started testing this on Windows and have noticed big differences in how the software works (short answer, much less well than on Mac/Linux). If you are a Windows user, it may be a bit early to use this software.*
 
 ### Manual Installation
 
