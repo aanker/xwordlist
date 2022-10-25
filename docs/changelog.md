@@ -5,6 +5,9 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 22.1.9 (10/XX/2022)
+* Fix how user’s home directory is specified so it is more cross platform [(link)](https://github.com/aanker/xwordlist/commit/0e0edd4d892ee53525e948ea85e4e38cb1c92ba8)
+
 ### Version 22.1.8 (10/24/2022)
 * Add --config option to help user discover where their configuration file is located [(link)](https://github.com/aanker/xwordlist/commit/bdc0a3b10cbbc05871243951fc38d827a24960ed)
 * Clean up global names and how the variables are created to give more durability to referencing user home directory [(link)](https://github.com/aanker/xwordlist/commit/f2e9194937df29d054ca9f20e6e288a580c36c3e)

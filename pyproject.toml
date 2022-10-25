@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "xwordlist"
-version = "22.1.8"
+version = "22.1.9"
 description = "Software to help create, build and organize crossword puzzle word lists"
 authors = ["Andrew Anker <aa@quid.pro>"]
 license = "MIT"
