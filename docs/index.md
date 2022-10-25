@@ -7,7 +7,7 @@ title: 'Software for Building Puzzle Word Lists'
 
 Besides helping with basic text functions such as deduping, alphabetizing and changing case, this program is able to pull content out of structured web pages and parse large blocks of text, including lists of web pages with similarly structured content. Although I first started using the software to grab the lyrics of songs, I have added regex and better html parsing functionality to make it easier to get data from Wikipedia and less structured sites.
 
-For an example of a themed 5x5 mini puzzle built with a word list assembled using this software, see [my personal website](https://quid.pro/xwords/tom-petty-mini/).
+For an example of a themed 5x5 mini puzzle built with a word list assembled using this software, see [my personal website](https://quid.pro/xwords/tom-petty-mini/). For one of the bigger inspirations for this project, see Malaika Handa’s [Crosswift](https://www.7xwords.com/daily/01/01-13.html) puzzle using only Taylor Swift’s lyrics.
 
 ## Installation
 
