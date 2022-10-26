@@ -58,7 +58,7 @@ To update your installation using `pip`, type
 ```
 pip install --upgrade xwordlist
 ```
-To upgrade a manual installation, it is best to repeat the installation process replacing old files with the new ones downloaded from GitHub.
+To upgrade a manual installation, it is best to repeat the installation process replacing old files with the new ones downloaded from GitHub. In general, you will only need to replace the file named `xwordlist.py`.
 
 ## Usage
 
@@ -74,7 +74,7 @@ For an example of how to use the software as well as a reference to all options,
 
 `xwordlist` supports the use of a configuration file named `xwordlist.conf`. You can paste any or all command line options directly into the configuration file rather than entering them on the command line. Then you can just type `xwordlist` or `xwl` on the command line to run the software and it will process all of the options saved in the configuration file. Especially for things like using the [recipes](/resources/#recipes), it is often easier to just paste everything into the configuration file rather than trying to type it all on the command line.
 
-Often times when installing by `pip`, the `xwordlist.conf` file ends up in a hard to find directory buried in an obscure location. Rather than leave the configuration file in that directory, you can move it to a folder your home directory:  `~/xwordlist/xwordlist.conf` (it must be a folder named `xwordlist` inside your home folder). To help you find where your configuration file is located, enter `xwordlist --config` and the software will tell you which folder contains the active configuration file.
+Often times when installing by `pip`, the `xwordlist.conf` file ends up in a hard to find directory buried in an obscure location. Rather than leave the configuration file in that directory, you can move it to a folder in your home directory:  `~/xwordlist/xwordlist.conf` (it must be a folder named `xwordlist` inside your home folder). To help you find where your configuration file is located, enter `xwordlist --config` and the software will tell you which folder contains the active configuration file.
 
 Options entered on the command line take precedence over the configuration file. The `xwordlist.conf` file included in the GitHub repository contains commented out examples of the usage of each option. 
 
