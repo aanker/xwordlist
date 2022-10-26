@@ -405,13 +405,12 @@ def main():
     parser.add_argument('--container', nargs=1, help=container_help)
     webextract_help = 'Specify whether to extract text, links or specific tags from web inputs'
     parser.add_argument('--webextract', nargs='?', default='text', help=webextract_help)
-    convert_help = 'Convert a block of text to a word list. Default delimiter is a space but acccepts\
-                    any number of characters in quotes (e.g., --convert " ;," will separate words delimited\
-                    by a space, comma or semicolon). Be careful with back slashes acting as an escape character'
-    parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
     parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
 
     # List transformation options
+    convert_help = 'Convert a block of text into individual words, separating words by spaces. See help\
+                    documentation for additional options'
+    parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     case_help = ' {none (default) | lower | upper} Change the case of words in the list'
     parser.add_argument('--case', nargs='?', const='none', help=case_help)

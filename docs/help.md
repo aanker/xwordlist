@@ -113,7 +113,7 @@ Use the `html-XX` to further refine which text to pull from a web page by limiti
 Refine which text to keep by using regex patterns. Whereas other options such as `--container` or `--webextract` will grab all of the text within whatever containers and/or elements specified, `--regex` allows you to narrow down to particular parts of text strings to keep. For examples of patterns to use, see regex examples. (*TK: regex examples*)
 
 #### **--convert** "chars" (optional)
-Take any block of text and turn it into a list of words. If `"chars"` is not specified, the software uses spaces to separate text into words and in most cases, that will suffice. If you do need to specify `"chars"`, put all characters to be used as delimiters inside the quotes. For instance, if you want to separate text blocks connected by either dashes or spaces, you would use `--convert "- "`.
+Take any block of text and turn it into a list of words. If `"chars"` is not specified, the software uses spaces to separate text into words and in most cases, that will suffice. If you do need to specify `"chars"`, put all characters to be used as delimiters inside the quotes. For instance, if you want to separate text blocks connected by either dashes or spaces, you would use `--convert "- "`. Be careful with back slashes (`\`) which can act as an escape character.
 
 ## Word Transformation
 
