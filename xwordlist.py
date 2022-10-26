@@ -452,6 +452,7 @@ def main():
             print_line(print_text, {'directory': confArgs.directory})
             sys.exit()
 
+    # Set up output file to make sure it doesn't exist then grab all inputs (including web parsing)
     outputFile = setup_output(confArgs, envArgs)
     inputWords = WordList(setup_input(confArgs, envArgs))
 
