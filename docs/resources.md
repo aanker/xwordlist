@@ -13,18 +13,13 @@ For each recipe included in these pages, we have provided configuration file opt
 
 In general, it is good to test the content before you turn it into a word list. To do this, first run `xwordlist` without the options for `convert`, `strip`, `dedupe`, `alphabetize` and `case`. After being certain that the content you are pulling makes sense for your word list, run it again with all options and you will have a word list.
 
-### Reference Sites
+We will be adding more sites over time, don’t hesitate to drop us a line if you are interested in a particular site.
 
-*  [Wikipedia](/recipes/wikipedia) - Pull reference text, tables of data, lists of collaborators and other information from Wikipedia
-
-### Song Lyric Sites
-
-*  [SongLyrics](/recipes/song-lyrics) - Get lists of songs and the lyrics of most well-known musicians
-*  [LyricsFreak](/recipes/lyrics-freak) - Get lists of songs and the lyrics of most well-known musicians
-
-### Movie and Television Sites
-
+*  [Fandom](/recipes/fandom) - Pull reference text, tables of data and other information from the largest collection of fan specific wikis
 *  [IMDB](/recipes/imdb) - Get filmography and biographical data on actors, directors and other movie and television creators
+*  [LyricsFreak](/recipes/lyrics-freak) - Get lists of songs and the lyrics of most well-known musicians
+*  [SongLyrics](/recipes/song-lyrics) - Get lists of songs and the lyrics of most well-known musicians
+*  [Wikipedia](/recipes/wikipedia) - Pull reference text, tables of data, lists of collaborators and other information from Wikipedia
 
 ## Legal Disclaimer
 
