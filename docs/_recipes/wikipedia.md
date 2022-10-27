@@ -13,12 +13,8 @@ The options below will grab the text from the main article of a Wikipedia page, 
 webpage https://en.wikipedia.org/wiki/[subject]                     ; customize
 container id=bodyContent
 webextract html-p
-convert
-strip
-dedupe
-alphabetize
-case upper
 ```
+It is recommended that you first use the above recipe to pull the raw text and then manually delete any extraneous text that doesn’t make sense for your word list. Then you can run the standard commands for turning the remaining text into a word list by using either `line2word` or `word2word`.
 
 ### To get a list from a Wikipedia table
 
@@ -32,11 +28,6 @@ Note that the options below work because most Wikipedia tables italicize the con
 webpage https://en.wikipedia.org/wiki/[subject]                     ; customize
 container class=wikitable
 webextract html-i
-convert
-strip
-dedupe
-alphabetize
-case upper
 ```
 
 For other tables — such as lists of song titles — the important words are in quotes. To get data from those tables, use these options instead.
@@ -46,12 +37,8 @@ webpage https://en.wikipedia.org/wiki/[subject]                     ; customize
 container class=wikitable
 webextract html-th
 regex '"(.*?)"'
-convert
-strip
-dedupe
-alphabetize
-case upper
 ```
+With either of these grabs, it is best to go through the data before parsing it further as there can be a lot of extra content you may don’t want. Once you have deleted the extraneous content, then run either the `line2word` or `word2word` parsing command on that file to get it into word list shape.
 
 ### Additional Notes
 

@@ -15,15 +15,7 @@ container id=mw-content-text
 webextract html-p
 ```
 
-Unfortunately there is no single container used by Fandom wikis that contains only the article text; the one used above (mw-content-text) may also include additional messages such as references to spoilers, other texts, etc. It is recommended that you first use the above recipe to pull the raw text and then manually delete any such extraneous text. Then you can run the standard commands for turning the remaining text into a word list by using
-
-```
-convert
-strip
-dedupe
-alphabetize
-case upper
-```
+Unfortunately there is no single container used by Fandom wikis that contains only the article text; the one used above (mw-content-text) may also include additional messages such as references to spoilers, other texts, etc. It is recommended that you first use the above recipe to pull the raw text and then manually delete any such extraneous text. Then you can run the standard commands for turning the remaining text into a word list by using either `line2word` or `word2word`.
 
 ### To get a list from a Fandom table
 
@@ -39,7 +31,7 @@ container class=wikitable=2
 webextract html-a
 ```
 
-As described in the primary text section, this will also result in some extraneous data since there are a few other links in that table. Therefore, it is recommended that you first pull the raw text, then edit anything extraneous and finally run the additional commands to convert, strip, dedupe, etc.
+As described in the primary text section, this will also result in some extraneous data since there are a few other links in that table. Therefore, it is recommended that you first pull the raw text, then edit anything extraneous and finally run the additional commands `line2word` or `word2word`.
 
 ### Additional Notes
 
