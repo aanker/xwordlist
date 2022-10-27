@@ -55,7 +55,7 @@ class WordList:
     def remove_min(self, numChars):
         newList = []
         for line in self.myList:
-            if line and len(line) >= numChars:
+            if line and len(line) >= int(numChars):
                 newList.append(line)
         self.myList = newList
 
