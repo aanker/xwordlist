@@ -146,7 +146,7 @@ Remove all non-alphabetic characters, to make your list crossword puzzle ready. 
 View the help message and exit.
 
 #### **--version** or **-v**
-View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](changelog).
+View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](/changelog/).
 
 #### **--config**
 View the location of your currently active `xwordlist.conf` file and exit.

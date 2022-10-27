@@ -51,7 +51,7 @@ If properly installed, the software should respond with its name and the install
 
 ### Upgrading
 
-As an early stage project, `xwordlist` is likely to be updated often — including new features and bug fixes. For a record of changes and to see the most current version number, see the [changelog](changelog). Remember that you can always check which version you have by typing `xwordlist --version`.
+As an early stage project, `xwordlist` is likely to be updated often — including new features and bug fixes. For a record of changes and to see the most current version number, see the [changelog](/changelog/). Remember that you can always check which version you have by typing `xwordlist --version`.
 
 To update your installation using `pip`, type
 
