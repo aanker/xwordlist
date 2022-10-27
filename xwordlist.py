@@ -33,6 +33,14 @@ REPO = {
 CONFIG_EXEC = os.path.join(FILE['exec_path'], FILE['conf'])
 CONFIG_HOME = os.path.join(FILE['user_path'], FILE['conf'])
 
+DEFAULTS = {
+    'convert': ' ',
+    'strip': 'diacritic',
+    'minimum': 3,
+    'case': 'upper',
+    'dedupe': 'nocase',
+    'webextract': 'text',
+}
 
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
@@ -41,7 +49,6 @@ GLOBAL_SETTINGS = {
 }
 
 IMPACT_COLOR = GLOBAL_SETTINGS['impact_color']
-
 COLOR_OPTIONS = ['ansiblack', 'ansired', 'ansigreen', 'ansiyellow', 'ansiblue', 'ansimagenta',
                  'ansicyan', 'ansigray', 'ansibrightblack', 'ansibrightred', 'ansibrightgreen',
                  'ansibrightyellow', 'ansibrightblue', 'ansibrightmagenta', 'ansibrightcyan', 'ansiwhite']
@@ -61,7 +68,7 @@ class WordList:
 
     def strip_nonalpha(self, stripWhat):
         newList = []
-        if stripWhat in ['keepdiacritic', 'diacritic', 'true']:
+        if stripWhat in ['keepdiacritic', 'diacritic']:
             for word in self.myList:
                 if stripWhat != 'keepdiacritic':
                     word = anyascii(word)
@@ -89,7 +96,7 @@ class WordList:
     def uniquify(self, dedupeType):
         if dedupeType == 'bycase':
             self.myList = list(dict.fromkeys(self.myList))
-        elif dedupeType in ['nocase', 'true']:
+        elif dedupeType == 'nocase':
             newList = []
             newSet = set()
             for line in self.myList:
@@ -125,8 +132,6 @@ class WordList:
 
     def convert(self, parseChars):
         # First trap for problem where defaults are assumed but not specified
-        if parseChars == 'true':
-            parseChars = ' '
         for char in parseChars:
             newList = []
             for line in self.myList:
@@ -167,7 +172,7 @@ def create_dict(localAttrs):
 
 def extract_from_web(extractWhat, soup, extractURL):
     # A few ways the default option can come in, try that first
-    if extractWhat == 'text' or extractWhat == 'true' or extractWhat is None:
+    if extractWhat == 'text' or extractWhat is None:
         localWords = soup.stripped_strings
     elif extractWhat == 'links':
         localWords = []
@@ -404,33 +409,37 @@ def main():
                       using tag=term syntax (e.g., id=main_content or class=lyrics).'
     parser.add_argument('--container', nargs=1, help=container_help)
     webextract_help = 'Specify whether to extract text, links or specific tags from web inputs'
-    parser.add_argument('--webextract', nargs='?', default='text', help=webextract_help)
+    parser.add_argument('--webextract', nargs='?', default=DEFAULTS['webextract'], help=webextract_help)
     parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
 
     # List transformation options
     convert_help = 'Convert a block of text into individual words, separating words by spaces. See help\
                     documentation for additional options'
-    parser.add_argument('--convert', nargs='?', const=' ', help=convert_help)
     parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
-    case_help = ' {none (default) | lower | upper} Change the case of words in the list'
-    parser.add_argument('--case', nargs='?', const='none', help=case_help)
+    parser.add_argument('--convert', nargs='?', const=DEFAULTS['convert'], help=convert_help)
+    case_help = ' {upper (default) | lower | none} Change the case of words in the list'
+    parser.add_argument('--case', nargs='?', const=DEFAULTS['case'], help=case_help)
     dedupe_help = '{nocase (default) | bycase} Remove duplicates from the word list. By default, ignores\
                    case: "apple" and "APPLE" are the same word and the first instance found is kept.\
                    Use --dedupe bycase to treat each as a different word'
-    parser.add_argument('-d', '--dedupe', nargs='?', const='nocase', help=dedupe_help)
-    min_ltrs = 3
-    minimum_help = f'Set minimum number of letters in a word (if not specified, default is {min_ltrs})'
-    parser.add_argument('-m', '--minimum', nargs='?', type=int, const=min_ltrs, help=minimum_help)
+    parser.add_argument('-d', '--dedupe', nargs='?', const=DEFAULTS['dedupe'], help=dedupe_help)
+    minimum_help = f"Set minimum number of letters in a word (if not specified, default is {DEFAULTS['minimum']})"
+    parser.add_argument('-m', '--minimum', nargs='?', const=DEFAULTS['minimum'], help=minimum_help)
     strip_help = '{diacritic (default) | keepdiacritic} Remove non-alphabetic characters (including spaces).\
                   By default, converts diacritical marks into English letters  (e.g., Renée becomes Renee).\
                   Use --strip keepdiacritic to leave diacriticals in.'
-    parser.add_argument('-s', '--strip', nargs='?', const='diacritic', help=strip_help)
+    parser.add_argument('-s', '--strip', nargs='?', const=DEFAULTS['strip'], help=strip_help)
 
     args = parser.parse_known_args()
     confArgs = args[0]
 
     # Check to see if we've found any configuration data
     envArgs = create_dict(args[1]) if len(args[1]) > 0 else {}
+
+    # Update items with defaults that come through as 'true'
+    for arg in DEFAULTS:
+        if getattr(confArgs, arg) == 'true':
+            setattr(confArgs, arg, DEFAULTS[arg])
 
     # See if conf file contains an impact color
     if 'impact_color' in envArgs and f"ansi{envArgs['impact_color']}" in COLOR_OPTIONS:
