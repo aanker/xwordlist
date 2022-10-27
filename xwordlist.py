@@ -451,14 +451,14 @@ def main():
     parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
 
     # List transformation options
-    line2word_help = 'Converts each line of text into a word by stripping out spaces and other non-alphabetic\
-                      characters, dedupes the list, alphabetizes and capitalizes every word. Removes all words\
+    line2word_help = 'Convert each line of text into a word by stripping out spaces and other non-alphabetic\
+                      characters, dedupe the list, alphabetize and capitalize every word. Remove all words\
                       below the minimum word size. This is the equivalent of running xwordlist with each of those\
                       options set and saves having to enter each one individually. See the help documentation to\
                       better understand how this works.'
     parser.add_argument('--line2word', action='store_true', help=line2word_help)
-    word2word_help = 'Converts blocks of text into individual words separated by spaces, strips out non-alphabetic\
-                      characters, dedupes the list, alphabetizes and capitalizes every word. Removes all words\
+    word2word_help = 'Convert blocks of text into individual words delimited by spaces, strip out non-alphabetic\
+                      characters, dedupe the list, alphabetize and capitalize every word. Remove all words\
                       below the minimum word size. This is the equivalent of running xwordlist with each of those\
                       options set and saves having to enter each one individually. See the help documentation to\
                       better understand how this works.'
