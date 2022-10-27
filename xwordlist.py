@@ -40,6 +40,7 @@ DEFAULTS = {
     'case': 'upper',
     'dedupe': 'nocase',
     'webextract': 'text',
+    'alphabetize': 'normal',
 }
 
 GLOBAL_SETTINGS = {
@@ -110,8 +111,15 @@ class WordList:
             print_line(print_text, {'dedupeType': dedupeType})
             sys.exit()
 
-    def alphabetize(self):
-        self.myList = sorted(self.myList, key=str.casefold)
+    def alphabetize(self, direction):
+        if direction == 'normal':
+            self.myList = sorted(self.myList, key=str.casefold)
+        elif direction == 'reverse':
+            self.myList = sorted(self.myList, key=str.casefold, reverse=True)
+        else:
+            print_text = 'Exiting... incorrect alphabetize option <{color}>{direction}</{color}>'
+            print_line(print_text, {'direction': direction})
+            sys.exit()
 
     # Content parsing options
     def regex(self, regexInput):
@@ -415,8 +423,9 @@ def main():
     # List transformation options
     convert_help = 'Convert a block of text into individual words, separating words by spaces. See help\
                     documentation for additional options'
-    parser.add_argument('-a', '--alphabetize', action='store_true', help='Alphabetize the list')
     parser.add_argument('--convert', nargs='?', const=DEFAULTS['convert'], help=convert_help)
+    alphabetize_help = '{normal (default) | reverse} Alphabetize the list'
+    parser.add_argument('-a', '--alphabetize', nargs='?', const=DEFAULTS['alphabetize'], help=alphabetize_help)
     case_help = ' {upper (default) | lower | none} Change the case of words in the list'
     parser.add_argument('--case', nargs='?', const=DEFAULTS['case'], help=case_help)
     dedupe_help = '{nocase (default) | bycase} Remove duplicates from the word list. By default, ignores\
