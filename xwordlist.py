@@ -60,14 +60,14 @@ class WordList:
         self.myList = myList
 
     # List transformation options
-    def remove_min(self, numChars):
+    def minimum(self, numChars):
         newList = []
         for line in self.myList:
             if line and len(line) >= int(numChars):
                 newList.append(line)
         self.myList = newList
 
-    def strip_nonalpha(self, stripWhat):
+    def strip(self, stripWhat):
         newList = []
         if stripWhat in ['keepdiacritic', 'diacritic']:
             for word in self.myList:
@@ -82,7 +82,7 @@ class WordList:
             print_line(print_text, {'stripWhat': stripWhat})
             sys.exit()
 
-    def case_change(self, newCase):
+    def case(self, newCase):
         case_dict = {
             'upper': str.upper,
             'lower': str.lower,
@@ -94,7 +94,7 @@ class WordList:
             print_line(print_text, {'newcase': newCase})
             sys.exit()
 
-    def uniquify(self, dedupeType):
+    def dedupe(self, dedupeType):
         if dedupeType == 'bycase':
             self.myList = list(dict.fromkeys(self.myList))
         elif dedupeType == 'nocase':
@@ -394,6 +394,36 @@ def do_config():
     sys.exit()
 
 
+def do_word_options(localWords, localArgs):
+    thatOption = ''
+    if localArgs.line2word and localArgs.word2word:
+        print_text = 'Options <{color}>line2word</{color}> and <{color}>word2word</{color}>'
+        print_text += ' are mutually exclusive, please use either but not both'
+        print_line(print_text)
+        sys.exit()
+    elif localArgs.line2word:
+        # If line2word we first do a convert
+        localWords.convert(DEFAULTS['convert'])
+        thatOption = 'line2word'
+    # Now run through all the other options
+    optionList = ['strip', 'minimum', 'case', 'dedupe', 'alphabetize']
+    for option in optionList:
+        getattr(localWords, option)(DEFAULTS[option])
+
+    if thatOption == '':
+        thatOption = 'word2word'
+    return localWords, thatOption
+
+
+def do_ignore(whichOption, thatOption):
+    print_text = 'Option <{color}>{whichOption}</{color}> ignored due to use of <{color}>{thatOption}</{color}>'
+    arg_dict = {
+        'whichOption': whichOption,
+        'thatOption': thatOption,
+    }
+    print_line(print_text, arg_dict)
+
+
 def main():
     # First set up configargparse
     parser = configargparse.ArgumentParser(default_config_files=[CONFIG_EXEC, CONFIG_HOME],
@@ -421,6 +451,18 @@ def main():
     parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
 
     # List transformation options
+    line2word_help = 'Converts each line of text into a word by stripping out spaces and other non-alphabetic\
+                      characters, dedupes the list, alphabetizes and capitalizes every word. Removes all words\
+                      below the minimum word size. This is the equivalent of running xwordlist with each of those\
+                      options set and saves having to enter each one individually. See the help documentation to\
+                      better understand how this works.'
+    parser.add_argument('--line2word', action='store_true', help=line2word_help)
+    word2word_help = 'Converts blocks of text into individual words separated by spaces, strips out non-alphabetic\
+                      characters, dedupes the list, alphabetizes and capitalizes every word. Removes all words\
+                      below the minimum word size. This is the equivalent of running xwordlist with each of those\
+                      options set and saves having to enter each one individually. See the help documentation to\
+                      better understand how this works.'
+    parser.add_argument('--word2word', action='store_true', help=word2word_help)
     convert_help = 'Convert a block of text into individual words, separating words by spaces. See help\
                     documentation for additional options'
     parser.add_argument('--convert', nargs='?', const=DEFAULTS['convert'], help=convert_help)
@@ -483,24 +525,20 @@ def main():
             sys.exit()
         inputWords.regex(confArgs.regex[0])
 
-    if confArgs.convert is not None:
-        inputWords.convert(confArgs.convert)
+    # First figure out if they set either combination option
+    if confArgs.line2word or confArgs.word2word:
+        inputWords, thatOption = do_word_options(inputWords, confArgs)
+    else:
+        thatOption = False
 
-    if confArgs.strip is not None:
-        inputWords.strip_nonalpha(confArgs.strip)
-
-    # Do any text transforms
-    if confArgs.minimum is not None:
-        inputWords.remove_min(confArgs.minimum)
-
-    if confArgs.case is not None:
-        inputWords.case_change(confArgs.case)
-
-    if confArgs.dedupe is not None:
-        inputWords.uniquify(confArgs.dedupe)
-
-    if confArgs.alphabetize:
-        inputWords.alphabetize()
+    # Now run through remaining options
+    # We also trap for the case where the user had one of the line2word or word2word options
+    # but also uses one of the duplicative other options (we ignore the duplicative one)
+    optionList = ['convert', 'strip', 'minimum', 'case', 'dedupe', 'alphabetize']
+    for option in optionList:
+        confOption = getattr(confArgs, option)
+        if confOption is not None:
+            do_ignore(option, thatOption) if thatOption else getattr(inputWords, option)(confOption)
 
     # Now save the file
     save_output(outputFile, inputWords)
