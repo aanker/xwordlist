@@ -45,16 +45,18 @@ Of course, you could save the alphabetized list to a different file name (or let
 From here, there are two ways we can go with this list. We may want to create a list where the entire song name is an entry, for instance for long themed entries such as “WONTBACKDOWN”. To do that, we need to strip out all non-alphabetic characters (including spaces) and dedupe the list. So first run this:
 
 ```
-xwordlist --input tompetty.txt --output tompetty_songs.txt --strip --dedupe --case upper --alphabetize
+xwordlist --input tompetty.txt --output tompetty_songs.txt --strip --dedupe --case --alphabetize
 ```
 
 We saved this to a new file name for reasons that will become obvious in a second. Go open that new file `tompetty_songs.txt` and you will see a list of Tom Petty songs that are ready to be imported into your crossword construction software. But since most of these are long titles that are hard to fit into a standard crossword, we also want the individual words: for instance just the word “BREAK” to clue as “___ Down” for a shorter entry. To do that, we need to add the `--convert` option on our original list which will separate each title’s words into a new list. Try:
 
 ```
-xwordlist --input tompetty.txt --output tompetty_title_words.txt --convert --strip --dedupe --case upper --alphabetize --minimum
+xwordlist --input tompetty.txt --output tompetty_title_words.txt --convert --strip --dedupe --case --alphabetize --minimum
 ```
 
 You now have two great lists to use to start building your Tom Petty puzzle! You can paste them into one doc and have `xwordlist` alphabetize and dedupe or you can just paste each individual list directly into your construction software, perhaps to score one set of words higher than the other. Experiement and figure out what works best for your constructing needs.
+
+To make things easier, `xwordlist` has two catch-all options: `--line2word` and `--word2word`. If you want each line to become a single word — as in the case where a song name on each line becomes “WONTBACKDOWN” — you can use `--line2word` instead of having to add `--strip --dedupe --case --alphabetize --minimum`. If you want every word in the block of text to become a separate word — as in the case where a song name on each line becomes “WONT”, “BACK” and “DOWN” — use the `--word2word` option.
 
 Also, check out the [recipes page](/resources/#recipes) for other possibilities. You can use the software to grab and convert the lyrics from individual songs, spider all of the songs at once or parse Wikipedia for album titles. Let us know what you find!
 
@@ -112,22 +114,28 @@ Use the `html-XX` to further refine which text to pull from a web page by limiti
 #### **--regex** pattern
 Refine which text to keep by using regex patterns. Whereas other options such as `--container` or `--webextract` will grab all of the text within whatever containers and/or elements specified, `--regex` allows you to narrow down to particular parts of text strings to keep. For examples of patterns to use, see regex examples. (*TK: regex examples*)
 
-#### **--convert** "chars" (optional)
-Take any block of text and turn it into a list of words. If `"chars"` is not specified, the software uses spaces to separate text into words and in most cases, that will suffice. If you do need to specify `"chars"`, put all characters to be used as delimiters inside the quotes. For instance, if you want to separate text blocks connected by either dashes or spaces, you would use `--convert "- "`. Be careful with back slashes (`\`) which can act as an escape character.
-
 ## Word Transformation
 
-#### **--alphabetize** or **-a**
+#### **--line2word**
+Convert each line of text into a word by stripping out spaces and other non-alphabetic characters, dedupe the list, alphabetize and capitalize every word. Remove all words below the minimum word size. This is the equivalent of doing the default behavior for all the following options: alphabetize, case, dedupe, minimum, strip.
+
+#### **--word2word**
+Convert blocks of text into individual words delimited by spaces, strip out non-alphabetic characters, dedupe the list, alphabetize and capitalize every word. Remove all words below the minimum word size. This is the equivalent of doing the default behavior for all the following options: alphabetize, case, convert, dedupe, minimum, strip.
+
+#### **--alphabetize** or **-a** normal (default) | reverse
 Alphabetize the list of words.
 
-#### **--case** none (default) | lower | upper
+#### **--case** upper (default) | lower | none
 Change the case of all words in the list.
+
+#### **--convert** "chars" (default is " " space)
+Take any block of text and turn it into a list of words. If `"chars"` is not specified, the software uses spaces to separate text into words and in most cases, that will suffice. If you do need to specify `"chars"`, put all characters to be used as delimiters inside the quotes. For instance, if you want to separate text blocks connected by either dashes or spaces, you would use `--convert "- "`. Be careful with back slashes (`\`) which can act as an escape character.
 
 #### **--dedupe** or **-d** nocase (default) | bycase
 Remove all duplicates in the list. The dedupe function by default is case insensitive: “apple” and “APPLE” are treated as the same word and the first instance found is kept. Use `--dedupe bycase` if you want the dedupe routine to be case sensitive.
 
-#### **--minimum** or **-m** N
-Remove all words with less than `N` characters. By default, `N` is 3 and for most crossword puzzle word lists, simply specifying `--minimum` or `-m` will be sufficient.
+#### **--minimum** or **-m** N (default is 3)
+Remove all words with less than `N` characters.
 
 #### **--strip** or **-s** diacritic (default) | keepdiacritic
 Remove all non-alphabetic characters, to make your list crossword puzzle ready. By default, the software first converts diacritics to English equivalents, for instance “Renée” is turned into “Renee”. To leave diacritics as is, use `--strip keepdiacritic`.
@@ -151,14 +159,14 @@ An `xwordlist.conf` file is provided when you install via `pip`, it will be loca
  
 ```
 # options that take an argument:
-case upper
+case lower
 
-# options that don’t take an argument:
+# options that don't need an argument (e.g., using default behavior)
 alphabetize
 ```
 Often times when installing by `pip`, the `xwordlist.conf` file ends up in a hard to find directory buried in an obscure location. Rather than leave the configuration file in that directory, you can move it to a folder your home directory:  `~/xwordlist/xwordlist.conf` (it must be a folder named `xwordlist` inside your home folder). To help you find where your configuration file is located, enter `xwordlist --config` and the software will tell you which folder contains the active configuration file.
 
-Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case upper` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
+Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case lower` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
 
 Many of the [recipes provided on this site](/resources/#recipes) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
 
