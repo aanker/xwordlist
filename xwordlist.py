@@ -401,17 +401,17 @@ def do_word_options(localWords, localArgs):
         print_text += ' are mutually exclusive, please use either but not both'
         print_line(print_text)
         sys.exit()
-    elif localArgs.line2word:
-        # If line2word we first do a convert
+    elif localArgs.word2word:
+        # If word2word we first do a convert
         localWords.convert(DEFAULTS['convert'])
-        thatOption = 'line2word'
+        thatOption = 'word2word'
     # Now run through all the other options
     optionList = ['strip', 'minimum', 'case', 'dedupe', 'alphabetize']
     for option in optionList:
         getattr(localWords, option)(DEFAULTS[option])
 
     if thatOption == '':
-        thatOption = 'word2word'
+        thatOption = 'line2word'
     return localWords, thatOption
 
 
