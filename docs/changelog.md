@@ -5,6 +5,9 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 22.2.1 (10/28/2022)
+* Last version switched functionality of line2word and word2word. Fixed! [(link)](https://github.com/aanker/xwordlist/commit/297b196f8d588cdd30cbd4c3fc2bef20ae51b3f5)
+
 ### Version 22.2.0 (10/27/2022)
 * Add new catch-all options line2word and word2word which wrap alphabetize, case, dedupe, minimum and strip (plus convert in the case of line2word) into one option [(link)](https://github.com/aanker/xwordlist/commit/cbe5fd06dbc4d2a7ccb7d6b389ca5e8ca4772f4b)
 * Create new DEFAULTS global variable to capture all defaults in one place rather than sprinkling through out the class [(link)](https://github.com/aanker/xwordlist/commit/0f495726e6103a96fd8a6018a82eb72856167b94)
