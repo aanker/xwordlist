@@ -13,7 +13,7 @@ webpage https://www.imdb.com/name/[ID-code-for-person]                     ; cus
 container class=filmo-category-section
 webextract html-b
 ```
-To get only one of a person’s roles, change the second line to `container class=filmo-category-section=N` where `N` is the numbered order on the page of the role. For instance, if we look at the profie page of [Greta Gerwig](https://www.imdb.com/name/nm1950086), we see that the second section of filmography is her writing credits. To pull that list only, use these settings.
+To get only one of a person’s roles, change the second line to `container class=filmo-category-section=N` where `N` is the numbered order on the page of the role. For instance, if we look at the profile page of [Greta Gerwig](https://www.imdb.com/name/nm1950086), we see that the second section of filmography is her writing credits. To pull that list only, use these settings.
 
 ```
 webpage https://www.imdb.com/name/nm1950086/
