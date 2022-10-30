@@ -72,8 +72,10 @@ The order that options are specified in does not matter, the software knows the 
 
 `xwordlist` only works with text files, if it is given binary data it will let you know and then quit.
 
-#### **--input** or **-i** filename.txt
-Use the text file named `filename.txt` as an input for the parsing and transformation engine. If you specify other input sources (such as `--webpage` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
+#### **--input** or **-i** file1.txt [file2.txt ...]
+Use the text file named `file1.txt` as an input for the parsing and transformation engine. Multiple input files can be specified and all will added. On the command line, use `--input file1.txt file2.txt` but in the configuration file use `input [file1.txt, file2.txt]`.
+
+If you specify other input sources (such as `--webpage` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
 
 #### **--webpage** or **-w** URL
 Use the web page located at the address named by the URL as an input into the parsing and transformation engine. The software will grab all of the available text strings from the web page, unless other options are specified to narrow the request down (see `--container` and `--webextract` for more information). The URL should be the fully qualified address, including `http://` or `https://`. The software does not support authenticated sites.
