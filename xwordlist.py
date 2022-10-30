@@ -157,6 +157,7 @@ def print_line(printText, argument={}, endText='\n'):
 
 def create_dict(localAttrs):
     returnDict = {}
+    arg_list = []
     for attr in localAttrs:
         dict_parts = attr.split('=')
         if dict_parts[0][:2] == '--':
@@ -165,16 +166,19 @@ def create_dict(localAttrs):
         if dict_parts[0] == 'class':
             numParts = int(dict_parts[2]) if len(dict_parts) == 3 else 0
             returnDict[dict_parts[0]] = (dict_parts[1], numParts)
-        elif len(dict_parts) > 1:
+        elif len(dict_parts) > 1 and (dict_parts[0] in GLOBAL_SETTINGS or dict_parts[0] in ['class', 'id']):
             returnDict[dict_parts[0]] = dict_parts[1]
         else:
-            print_text = 'Exiting... incorrect option <{color}>{dictPart}</{color}>'
-            print_line(print_text, {'dictPart': dict_parts[0]})
-            sys.exit()
-    if len(returnDict) > 0:
+            arg_list.append(dict_parts[0])
+    if len(arg_list) > 0:
+        for arg in arg_list:
+            print_text = 'Exiting... incorrect option <{color}>{arg}</{color}>'
+            print_line(print_text, {'arg': arg})
+        sys.exit()
+    elif len(returnDict) > 0:
         return returnDict
     else:
-        print_line('Exiting... something is wrong with your configuration file')
+        print_line('Exiting... something is wrong with your configuration settings')
         sys.exit()
 
 
@@ -484,7 +488,7 @@ def main():
     args = parser.parse_known_args()
     confArgs = args[0]
 
-    # Check to see if we've found any configuration data
+    # Check to see if we've found any additional configuration data
     envArgs = create_dict(args[1]) if len(args[1]) > 0 else {}
 
     # Update items with defaults that come through as 'true'
