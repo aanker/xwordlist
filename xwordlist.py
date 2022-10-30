@@ -291,7 +291,7 @@ def setup_output(localArgs, otherArgs):
     if localArgs.output:
         outputFile = localArgs.output
     elif localArgs.input or localArgs.urllist:
-        fileName = localArgs.input if localArgs.input else localArgs.urllist
+        fileName = localArgs.input[0] if localArgs.input else localArgs.urllist
         filePieces = os.path.splitext(fileName)
         outputFile = f'{filePieces[0]}_{file_add}{filePieces[1]}'
     elif localArgs.webpage:
@@ -322,9 +322,10 @@ def setup_input(localArgs, otherArgs):
 
     # Load input(s)
     if localArgs.input:
-        fileWords = get_file_content(localArgs.input)
-        if fileWords:
-            returnWords.extend(fileWords)
+        for inputFile in localArgs.input:
+            fileWords = get_file_content(inputFile)
+            if fileWords:
+                returnWords.extend(fileWords)
 
     if localArgs.webpage:
         webWords = get_web_page(localArgs.webpage, localArgs.container, localArgs.webextract)
@@ -438,7 +439,7 @@ def main():
     parser.add_argument('--config', action='store_true', help='locate your config file and quit')
 
     # Input and output options
-    parser.add_argument('-i', '--input', type=pathlib.Path, help='Input text file')
+    parser.add_argument('-i', '--input', nargs='*', type=pathlib.Path, help='Input one or more text file(s)')
     parser.add_argument('-w', '--webpage', help='Input web URL')
     parser.add_argument('--urllist', type=pathlib.Path, help='Input multiple URLs in a document')
     output_help = 'Output text file: if no name specified, a default name is created'
@@ -508,7 +509,11 @@ def main():
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:
         if pathlib.Path(confArgs.directory).is_dir():
-            confArgs.input = os.path.join(confArgs.directory, confArgs.input) if confArgs.input else None
+            if confArgs.input:
+                inputFiles = []
+                for inputFile in confArgs.input:
+                    inputFiles.append(os.path.join(confArgs.directory, inputFile) if inputFile else None)
+                confArgs.input = inputFiles
             confArgs.urllist = os.path.join(confArgs.directory, confArgs.urllist) if confArgs.urllist else None
             confArgs.output = os.path.join(confArgs.directory, confArgs.output) if confArgs.output else None
         else:
