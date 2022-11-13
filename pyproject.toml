@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "xwordlist"
-version = "22.2.2"
+version = "22.3.0"
 description = "Software to help create, build and organize crossword puzzle word lists"
 authors = ["Andrew Anker <aa@quid.pro>"]
 license = "MIT"
@@ -14,7 +14,7 @@ classifiers=[
         "Intended Audience :: End Users/Desktop",
         "Topic :: Games/Entertainment :: Puzzle Games",
     ]
-include = ["xwordlist.conf"]
+include = ["xwordlist.conf", "xwl.py"]
 repository = "https://github.com/aanker/xwordlist"
 homepage = "https://xwl.ist"
 documentation = "https://xwl.ist/help/"

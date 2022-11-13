@@ -5,6 +5,11 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 22.2.3 (11/13/2022)
+* Refactor class into a separate module [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
+* Refactor web extraction into a separate module [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
+* Check that minimum is given an integer, alert user and quit if not [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
+
 ### Version 22.2.2 (11/5/2022)
 * Allow multiple input files (e.g., --input file1.txt file2.txt) [(link)](https://github.com/aanker/xwordlist/commit/a0a32ad09dd429f04988582a6d034a9869979c55)
 * Look for unknown items in configuration settings and if found, alert user and quit [(link)](https://github.com/aanker/xwordlist/commit/09f91f6130fceff2e4d2e642dc9fe398f99467f1)
