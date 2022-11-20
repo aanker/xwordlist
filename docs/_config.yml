@@ -16,10 +16,14 @@ remote_theme: jekyll/minima
 minima:
   skin: auto
   social_links:
-  - { platform: github,          user_url: "https://github.com/aanker" }
-  - { platform: facebook,          user_url: "https://facebook.com/aanker" }
-  - { platform: linkedin,          user_url: "https://www.linkedin.com/in/aanker/" }
-  - { platform: twitter,          user_url: "https://twitter.com/aa" }
+  - platform: github
+    user_url: "https://github.com/aanker"
+  - platform: facebook
+    user_url: "https://facebook.com/aanker"
+  - platform: linkedin
+    user_url: "https://www.linkedin.com/in/aanker/"
+  - platform: twitter
+    user_url: "https://twitter.com/aa"
 
 header_pages:
   - help.md
