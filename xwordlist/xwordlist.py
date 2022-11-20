@@ -6,8 +6,8 @@ import sys
 import pathlib
 import urllib.parse
 import time
-import xwl
 
+from . import xwl
 from prompt_toolkit import prompt, print_formatted_text, HTML
 from importlib.metadata import version
 
@@ -16,10 +16,10 @@ from importlib.metadata import version
 __version__ = version('xwordlist')
 
 FILE = {
-    'name': __name__,
-    'conf': f'{__name__}.conf',
+    'name': 'xwordlist',
+    'conf': 'xwordlist.conf',
     'exec_path': os.path.dirname(os.path.abspath(__file__)),
-    'user_path': os.path.join(pathlib.Path.home(), __name__, '')
+    'user_path': os.path.join(pathlib.Path.home(), 'xwordlist', '')
 }
 
 REPO = {
