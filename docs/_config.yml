@@ -16,7 +16,7 @@ remote_theme: jekyll/minima
 minima:
   skin: auto
   social_links:
-    github: aanker/xwordlist
+    github: aanker
     facebook: aanker
     linkedin: aanker
     twitter: aa
