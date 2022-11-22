@@ -90,7 +90,8 @@ class WordList:
             raise XWLException(error)
 
     def convert(self, parseChars):
-        # First trap for problem where defaults are assumed but not specified
+        # Add a space to parseChars since we always parse by that
+        parseChars += ' '
         for char in parseChars:
             newList = []
             for line in self.myList:

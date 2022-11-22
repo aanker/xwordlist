@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import configargparse
+import argparse
 import os
 import sys
 import pathlib
@@ -8,48 +8,8 @@ import urllib.parse
 import time
 
 from . import xwl
+from .xwlconfig import __version__, FILE, IMPACT_COLOR, init_config
 from prompt_toolkit import prompt, print_formatted_text, HTML
-from importlib.metadata import version
-
-
-# Set up globals
-__version__ = version('xwordlist')
-
-FILE = {
-    'name': 'xwordlist',
-    'conf': 'xwordlist.conf',
-    'exec_path': os.path.dirname(os.path.abspath(__file__)),
-    'user_path': os.path.join(pathlib.Path.home(), 'xwordlist', '')
-}
-
-REPO = {
-    'home': 'https://github.com/aanker/xwordlist/',
-    'conf': 'https://github.com/aanker/xwordlist/blob/main/xwordlist.conf',
-}
-
-CONFIG_EXEC = os.path.join(FILE['exec_path'], FILE['conf'])
-CONFIG_HOME = os.path.join(FILE['user_path'], FILE['conf'])
-
-DEFAULTS = {
-    'convert': ' ',
-    'strip': 'diacritic',
-    'minimum': 3,
-    'case': 'upper',
-    'dedupe': 'nocase',
-    'webextract': 'text',
-    'alphabetize': 'normal',
-}
-
-GLOBAL_SETTINGS = {
-    'urllist_delay': 20,
-    'file_add': 'xwl',
-    'impact_color': 'ansired',
-}
-
-IMPACT_COLOR = GLOBAL_SETTINGS['impact_color']
-COLOR_OPTIONS = ['ansiblack', 'ansired', 'ansigreen', 'ansiyellow', 'ansiblue', 'ansimagenta',
-                 'ansicyan', 'ansigray', 'ansibrightblack', 'ansibrightred', 'ansibrightgreen',
-                 'ansibrightyellow', 'ansibrightblue', 'ansibrightmagenta', 'ansibrightcyan', 'ansiwhite']
 
 
 def print_line(printText, argument={}, endText='\n'):
@@ -59,28 +19,18 @@ def print_line(printText, argument={}, endText='\n'):
 
 def create_dict(localAttrs):
     returnDict = {}
-    arg_list = []
     for attr in localAttrs:
         dict_parts = attr.split('=')
-        if dict_parts[0][:2] == '--':
-            dict_parts[0] = dict_parts[0][2:]
         # See if it is a class dictionary, in which case we make a tuple
         if dict_parts[0] == 'class':
             numParts = int(dict_parts[2]) if len(dict_parts) == 3 else 0
             returnDict[dict_parts[0]] = (dict_parts[1], numParts)
-        elif len(dict_parts) > 1 and (dict_parts[0] in GLOBAL_SETTINGS or dict_parts[0] in ['class', 'id']):
-            returnDict[dict_parts[0]] = dict_parts[1]
         else:
-            arg_list.append(dict_parts[0])
-    if len(arg_list) > 0:
-        for arg in arg_list:
-            print_text = 'Exiting... incorrect option <{color}>{arg}</{color}>'
-            print_line(print_text, {'arg': arg})
-        sys.exit()
-    elif len(returnDict) > 0:
+            returnDict[dict_parts[0]] = dict_parts[1]
+    if len(returnDict) > 0:
         return returnDict
     else:
-        print_line('Exiting... something is wrong with your configuration settings')
+        print_line('Exiting... something is wrong with your --container setting')
         sys.exit()
 
 
@@ -116,7 +66,7 @@ def save_output(localOuput, localWords):
 
 
 def setup_output(localArgs, otherArgs):
-    file_add = otherArgs['file_add'] if 'file_add' in otherArgs else GLOBAL_SETTINGS['file_add']
+    file_add = otherArgs['file_add'] if 'file_add' in otherArgs else otherArgs['globals']['file_add']
 
     try:
         # Has an output file been specified? If not, create from either file or URL
@@ -194,7 +144,7 @@ def setup_input(localArgs, otherArgs):
                 webScrape.get_web_page(oneUrl, parseDict, localArgs.webextract)
                 returnWords.extend(webScrape.returnWords)
                 if urlCount < urlLength:
-                    delay = int(otherArgs['urllist_delay']) if 'urllist_delay' in otherArgs else GLOBAL_SETTINGS['urllist_delay']
+                    delay = int(otherArgs['urllist_delay'])
                     print_line('  ...done ...sleeping {delay} seconds', {'delay': delay})
                     time.sleep(delay)
                 else:
@@ -208,41 +158,7 @@ def setup_input(localArgs, otherArgs):
     return returnWords
 
 
-def do_config():
-    # Tells user where their config file is
-    if pathlib.Path(CONFIG_EXEC).is_file() and pathlib.Path(CONFIG_HOME).is_file():
-        print_text = 'There are configuration files located at both <{color}>{config_exec}</{color}>'
-        print_text += ' and <{color}>{config_home}</{color}>.\nThe one located in the folder <{color}>{home_path}</{color}>'
-        print_text += ' will take precedence and is the one you should edit.'
-        arg_dict = {
-            'config_home': CONFIG_HOME,
-            'config_exec': CONFIG_EXEC,
-            'home_path': FILE['user_path'],
-        }
-        print_line(print_text, arg_dict)
-        sys.exit()
-
-    elif pathlib.Path(CONFIG_EXEC).is_file():
-        whereFile = CONFIG_EXEC
-    elif pathlib.Path(CONFIG_HOME).is_file():
-        whereFile = CONFIG_HOME
-    else:
-        print_text = 'Cannot find a configuration file.\nYou should download a new version from this'
-        print_text += ' location: <{color}>{repo_conf}</{color}>\nSave it in a directory'
-        print_text += ' located at <{color}>{home_path}</{color}> and edit it there.'
-        arg_dict = {
-            'repo_conf': REPO['conf'],
-            'home_path': FILE['user_path'],
-        }
-        print_line(print_text, arg_dict)
-        sys.exit()
-
-    print_text = 'Your configuration file is located at <{color}>{whereFile}</{color}>'
-    print_line(print_text, {'whereFile': whereFile})
-    sys.exit()
-
-
-def do_word_options(localWords, localArgs):
+def do_word_options(localWords, localArgs, defaultArgs):
     thatOption = ''
     if localArgs.line2word and localArgs.word2word:
         print_text = 'Options <{color}>line2word</{color}> and <{color}>word2word</{color}>'
@@ -251,12 +167,12 @@ def do_word_options(localWords, localArgs):
         sys.exit()
     elif localArgs.word2word:
         # If word2word we first do a convert
-        localWords.convert(DEFAULTS['convert'])
+        localWords.convert(defaultArgs['convert'])
         thatOption = 'word2word'
     # Now run through all the other options
     optionList = ['strip', 'minimum', 'case', 'dedupe', 'alphabetize']
     for option in optionList:
-        getattr(localWords, option)(DEFAULTS[option])
+        getattr(localWords, option)(defaultArgs[option])
 
     if thatOption == '':
         thatOption = 'line2word'
@@ -273,20 +189,27 @@ def do_ignore(whichOption, thatOption):
 
 
 def main():
+    # First read config file and set up defaults
+    defArgs = init_config()
+    global IMPACT_COLOR
+    IMPACT_COLOR = defArgs['globals']['impact_color']
+
     # First set up configargparse
-    parser = configargparse.ArgumentParser(default_config_files=[CONFIG_EXEC, CONFIG_HOME],
-                                           description='Crossword puzzle word list builder')
+    parser = argparse.ArgumentParser(description='Crossword puzzle word list builder')
 
     # Meta options
     parser.add_argument('-v', '--version', action='version', version=f"{FILE['name']} {__version__}")
-    parser.add_argument('--config', action='store_true', help='locate your config file and quit')
 
     # Input and output options
     parser.add_argument('-i', '--input', nargs='*', type=pathlib.Path, help='Input one or more text file(s)')
+
     parser.add_argument('-w', '--webpage', help='Input web URL')
+
     parser.add_argument('--urllist', type=pathlib.Path, help='Input multiple URLs in a document')
+
     output_help = 'Output text file: if no name specified, a default name is created'
     parser.add_argument('-o', '--output', type=pathlib.Path, help=output_help)
+
     directory_help = 'Set directory for input, output and urllist files'
     parser.add_argument('--directory', type=pathlib.Path, help=directory_help)
 
@@ -294,8 +217,11 @@ def main():
     container_help = 'Further refines the text from a webpage by narrowing to any HTML entity(ies) specified,\
                       using tag=term syntax (e.g., id=main_content or class=lyrics).'
     parser.add_argument('--container', nargs=1, help=container_help)
-    webextract_help = 'Specify whether to extract text, links or specific tags from web inputs'
-    parser.add_argument('--webextract', nargs='?', default=DEFAULTS['webextract'], help=webextract_help)
+
+    webextract_help = 'Specify what to extract from web inputs '
+    webextract_help += f"[ text | links | html-XX ] - DEFAULT: {defArgs['defaults']['webextract']}"
+    parser.add_argument('--webextract', nargs='?', default=defArgs['defaults']['webextract'], help=webextract_help)
+
     parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
 
     # List transformation options
@@ -305,49 +231,37 @@ def main():
                       options set and saves having to enter each one individually. See the help documentation to\
                       better understand how this works.'
     parser.add_argument('--line2word', action='store_true', help=line2word_help)
+
     word2word_help = 'Convert blocks of text into individual words delimited by spaces, strip out non-alphabetic\
                       characters, dedupe the list, alphabetize and capitalize every word. Remove all words\
                       below the minimum word size. This is the equivalent of running xwordlist with each of those\
                       options set and saves having to enter each one individually. See the help documentation to\
                       better understand how this works.'
     parser.add_argument('--word2word', action='store_true', help=word2word_help)
-    convert_help = 'Convert a block of text into individual words, separating words by spaces. See help\
-                    documentation for additional options'
-    parser.add_argument('--convert', nargs='?', const=DEFAULTS['convert'], help=convert_help)
-    alphabetize_help = '{normal (default) | reverse} Alphabetize the list'
-    parser.add_argument('-a', '--alphabetize', nargs='?', const=DEFAULTS['alphabetize'], help=alphabetize_help)
-    case_help = ' {upper (default) | lower | none} Change the case of words in the list'
-    parser.add_argument('--case', nargs='?', const=DEFAULTS['case'], help=case_help)
-    dedupe_help = '{nocase (default) | bycase} Remove duplicates from the word list. By default, ignores\
-                   case: "apple" and "APPLE" are the same word and the first instance found is kept.\
-                   Use --dedupe bycase to treat each as a different word'
-    parser.add_argument('-d', '--dedupe', nargs='?', const=DEFAULTS['dedupe'], help=dedupe_help)
-    minimum_help = f"Set minimum number of letters in a word (if not specified, default is {DEFAULTS['minimum']})"
-    parser.add_argument('-m', '--minimum', nargs='?', const=DEFAULTS['minimum'], help=minimum_help)
-    strip_help = '{diacritic (default) | keepdiacritic} Remove non-alphabetic characters (including spaces).\
-                  By default, converts diacritical marks into English letters  (e.g., Renée becomes Renee).\
-                  Use --strip keepdiacritic to leave diacriticals in.'
-    parser.add_argument('-s', '--strip', nargs='?', const=DEFAULTS['strip'], help=strip_help)
 
-    args = parser.parse_known_args()
-    confArgs = args[0]
+    convert_help = 'Convert a block of text into individual words, separating words by spaces'
+    parser.add_argument('--convert', nargs='?', const=defArgs['defaults']['convert'], help=convert_help)
 
-    # Check to see if we've found any additional configuration data
-    envArgs = create_dict(args[1]) if len(args[1]) > 0 else {}
+    alphabetize_help = 'Alphabetize the list '
+    alphabetize_help += f"[ normal | reverse ] - DEFAULT: {defArgs['defaults']['alphabetize']}"
+    parser.add_argument('-a', '--alphabetize', nargs='?', const=defArgs['defaults']['alphabetize'], help=alphabetize_help)
 
-    # Update items with defaults that come through as 'true'
-    for arg in DEFAULTS:
-        if getattr(confArgs, arg) == 'true':
-            setattr(confArgs, arg, DEFAULTS[arg])
+    case_help = 'Change the case of words in the list '
+    case_help += f"[ upper | lower | none ] - DEFAULT: {defArgs['defaults']['case']}"
+    parser.add_argument('--case', nargs='?', const=defArgs['defaults']['case'], help=case_help)
 
-    # See if conf file contains an impact color
-    if 'impact_color' in envArgs and f"ansi{envArgs['impact_color']}" in COLOR_OPTIONS:
-        global IMPACT_COLOR
-        IMPACT_COLOR = f"ansi{envArgs['impact_color']}"
+    dedupe_help = 'Remove duplicates from the word list '
+    dedupe_help += f"[ nocase | bycase ] - DEFAULT: {defArgs['defaults']['dedupe']}"
+    parser.add_argument('-d', '--dedupe', nargs='?', const=defArgs['defaults']['dedupe'], help=dedupe_help)
 
-    # See if the user selected --config, in which case we should handle that immediately
-    if confArgs.config:
-        do_config()
+    minimum_help = f"Minimum number of letters in a word - DEFAULT: {defArgs['defaults']['minimum']}"
+    parser.add_argument('-m', '--minimum', nargs='?', const=defArgs['defaults']['minimum'], help=minimum_help)
+
+    strip_help = 'Remove non-alphabetic characters '
+    strip_help += f"[ diacritic | keepdiacritic ] - DEFAULT: {defArgs['defaults']['strip']}"
+    parser.add_argument('-s', '--strip', nargs='?', const=defArgs['defaults']['strip'], help=strip_help)
+
+    confArgs = parser.parse_args()
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
     if confArgs.directory is not None:
@@ -365,9 +279,9 @@ def main():
             sys.exit()
 
     # Set up output file to make sure it doesn't exist then grab all inputs (including web parsing)
-    outputFile = setup_output(confArgs, envArgs)
+    outputFile = setup_output(confArgs, defArgs)
     try:
-        inputWords = xwl.WordList(myList=setup_input(confArgs, envArgs), color=IMPACT_COLOR)
+        inputWords = xwl.WordList(myList=setup_input(confArgs, defArgs['globals']), color=IMPACT_COLOR)
 
         # Do any text parsing
         if confArgs.regex is not None:
@@ -380,7 +294,7 @@ def main():
 
         # First figure out if they set either combination option
         if confArgs.line2word or confArgs.word2word:
-            inputWords, thatOption = do_word_options(inputWords, confArgs)
+            inputWords, thatOption = do_word_options(inputWords, confArgs, defArgs['defaults'])
         else:
             thatOption = False
 
