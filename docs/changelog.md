@@ -5,7 +5,7 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
-### Version 22.2.3 (11/13/2022)
+### Version 22.3.0 (11/13/2022)
 * Refactor class into a separate module [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
 * Refactor web extraction into a separate module [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
 * Check that minimum is given an integer, alert user and quit if not [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
