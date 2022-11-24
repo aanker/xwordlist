@@ -24,6 +24,13 @@ DEFAULTS = {
     'alphabetize': 'normal',
 }
 
+OPTIONS = {
+    'strip': ['diacritic', 'keepdiacritic'],
+    'case': ['upper', 'lower', 'none'],
+    'dedupe': ['nocase', 'bycase'],
+    'alphabetize': ['normal', 'reverse'],
+}
+
 GLOBAL_SETTINGS = {
     'urllist_delay': 20,
     'file_add': 'xwl',
@@ -49,6 +56,10 @@ def init_config():
     # Otherwise read the file
     else:
         configClass.read_file(open(CONFIG))
+        # Check to make sure there are no items which aren't correct (and revert to default if so)
+        for key, item in configClass['defaults'].items():
+            if key in OPTIONS and item not in OPTIONS[key]:
+                configClass['defaults'][key] = DEFAULTS[key]
 
     # See if conf file contains an impact color
     global IMPACT_COLOR
