@@ -121,7 +121,6 @@ def setup_input(localArgs, otherArgs):
     if localArgs.webpage:
         if localArgs.container:
             parseDict = create_dict(localArgs.container)
-        webScrape = xwl.WebExtract(color=IMPACT_COLOR)
         webScrape.get_web_page(localArgs.webpage, parseDict, localArgs.webextract)
         returnWords.extend(webScrape.returnWords)
 
@@ -140,7 +139,6 @@ def setup_input(localArgs, otherArgs):
                     'urlLength': urlLength,
                 }
                 print_line(print_text, arg_dict, endText='')
-                webScrape = xwl.WebExtract(color=IMPACT_COLOR)
                 webScrape.get_web_page(oneUrl, parseDict, localArgs.webextract)
                 returnWords.extend(webScrape.returnWords)
                 if urlCount < urlLength:
@@ -281,7 +279,7 @@ def main():
     # Set up output file to make sure it doesn't exist then grab all inputs (including web parsing)
     outputFile = setup_output(confArgs, defArgs)
     try:
-        inputWords = xwl.WordList(myList=setup_input(confArgs, defArgs['globals']), color=IMPACT_COLOR)
+        inputWords = xwl.WordList(myList=setup_input(confArgs, defArgs['globals']))
 
         # Do any text parsing
         if confArgs.regex is not None:
@@ -308,7 +306,12 @@ def main():
                 do_ignore(option, thatOption) if thatOption else getattr(inputWords, option)(confOption)
 
     except xwl.XWLException as e:
-        print_formatted_text(HTML(e))
+        (err_info, ) = e.args
+        if 'arg' in err_info:
+            arg = f"<{IMPACT_COLOR}>{err_info['arg']}</{IMPACT_COLOR}>"
+            print_formatted_text(HTML(err_info['error'].format(arg)))
+        else:
+            print_formatted_text(HTML(err_info['error']))
         sys.exit()
 
     # Now save the file

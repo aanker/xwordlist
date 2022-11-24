@@ -7,9 +7,8 @@ from anyascii import anyascii
 
 
 class WordList:
-    def __init__(self, myList=[], color=''):
+    def __init__(self, myList=[]):
         self.myList = myList
-        self.color = color
 
     # List transformation options
     def minimum(self, numChars):
@@ -20,8 +19,11 @@ class WordList:
                     newList.append(line)
             self.myList = newList
         else:
-            error = f'Exiting... argument for minimum must be an integer, not {self.err_text(numChars)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Exiting... argument for minimum must be an integer, not {}',
+                'arg': numChars,
+            }
+            raise XWLException(err_dict)
 
     def strip(self, stripWhat):
         newList = []
@@ -34,8 +36,11 @@ class WordList:
                     newList.append(newWord)
             self.myList = newList
         else:
-            error = f'Exiting... unknown strip option {self.err_text(stripWhat)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Exiting... unknown strip option {}',
+                'arg': stripWhat,
+            }
+            raise XWLException(err_dict)
 
     def case(self, newCase):
         case_dict = {
@@ -45,8 +50,11 @@ class WordList:
         if newCase in case_dict:
             self.myList = list(case_dict[newCase](line) for line in self.myList)
         elif newCase != 'none':
-            error = f'Exiting... unknown case option {self.err_text(newCase)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Exiting... unknown case option {}',
+                'arg': newCase,
+            }
+            raise XWLException(err_dict)
 
     def dedupe(self, dedupeType):
         if dedupeType == 'bycase':
@@ -61,8 +69,11 @@ class WordList:
                     newList.append(line)
             self.myList = newList
         else:
-            error = f'Exiting... incorrect dedupe option {self.err_text(dedupeType)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Exiting... incorrect dedupe option {}',
+                'arg': dedupeType,
+            }
+            raise XWLException(err_dict)
 
     def alphabetize(self, direction):
         if direction == 'normal':
@@ -70,8 +81,11 @@ class WordList:
         elif direction == 'reverse':
             self.myList = sorted(self.myList, key=str.casefold, reverse=True)
         else:
-            error = f'Exiting... incorrect alphabetize option {self.err_text(direction)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Exiting... incorrect alphabetize option {}',
+                'arg': direction,
+            }
+            raise XWLException(err_dict)
 
     # Content parsing options
     def regex(self, regexInput):
@@ -82,12 +96,18 @@ class WordList:
             self.myList = newList
 
         except re.error:
-            error = f'Regex pattern {self.err_text(regexInput)} not valid, please check and try again'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Regex pattern {} not valid, please check and try again',
+                'arg': regexInput,
+            }
+            raise XWLException(err_dict)
 
         except Exception as e:
-            error = f'Error {self.err_text(e)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Error {}',
+                'arg': e,
+            }
+            raise XWLException(err_dict)
 
     def convert(self, parseChars):
         # Add a space to parseChars since we always parse by that
@@ -101,18 +121,10 @@ class WordList:
                     newList.append(line)
             self.myList = newList
 
-    def err_text(self, text):
-        if self.color:
-            return f'<{self.color}>{text}</{self.color}>'
-        else:
-            return text
-
 
 class WebExtract:
-    def __init__(self, color=''):
         self.returnWords = []
         self.scrapeWords = []
-        self.color = color
 
     def get_web_page(self, webURL, parseDict, webExtract):
         try:
@@ -137,27 +149,41 @@ class WebExtract:
                     self.returnWords.extend(self.scrapeWords)
 
             elif r.status_code == 403:
-                error = 'Unable to load webpage due to code 403: this usually means we are being blocked'
-                raise XWLException(error)
+                err_dict = {
+                    'error': 'Unable to load webpage due to code 403: this usually means we are being blocked',
+                }
+                raise XWLException(err_dict)
 
             else:
-                error = f'Unable to load webpage, status code = {self.err_text(r.status_code)}'
-                raise XWLException(error)
+                err_dict = {
+                    'error': 'Unable to load webpage, status code = {}',
+                    'arg': r.status_code,
+                }
+                raise XWLException(err_dict)
 
         except XWLException:
             raise
 
         except (requests.URLRequired, requests.RequestException):
-            error = f'No content retrieved, error URL: {self.err_text(webURL)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'No content retrieved, error URL: {}',
+                'arg': self.webURL,
+            }
+            raise XWLException(err_dict)
 
         except AttributeError:
-            error = f'HTML attribute {self.err_text(parseDict)} not found, check document and try again'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'HTML attribute {} not found, check document and try again',
+                'arg': self.parseDict,
+            }
+            raise XWLException(err_dict)
 
         except Exception as e:
-            error = f'Web error {self.err_text(e)}'
-            raise XWLException(error)
+            err_dict = {
+                'error': 'Web error {}',
+                'arg': e,
+            }
+            raise XWLException(err_dict)
 
     def _extract_from_web(self, extractWhat, soup, extractURL):
         # A few ways the default option can come in, try that first
@@ -184,12 +210,6 @@ class WebExtract:
             raise XWLException(error)
 
         self.scrapeWords = list(line for line in self.scrapeWords)
-
-    def err_text(self, text):
-        if self.color:
-            return f'<{self.color}>{text}</{self.color}>'
-        else:
-            return text
 
 
 class XWLException(Exception):
