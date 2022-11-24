@@ -51,7 +51,6 @@ def init_config():
     # First see if the config file exists and if not, create it
     if not os.path.exists(CONFIG):
         os.makedirs(os.path.dirname(CONFIG), exist_ok=True)
-        open(CONFIG, 'w').close()
 
     # Otherwise read the file
     else:
