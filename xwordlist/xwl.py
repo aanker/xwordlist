@@ -123,29 +123,38 @@ class WordList:
 
 
 class WebExtract:
+    PARSEDICT = {}
+    WEBEXTRACT = ''
+
+    def __init__(self, parseDict={}, webExtract=''):
         self.returnWords = []
         self.scrapeWords = []
+        self.parseDict = parseDict if parseDict != {} else self.PARSEDICT
+        self.webExtract = webExtract if webExtract != '' else self.WEBEXTRACT
 
-    def get_web_page(self, webURL, parseDict, webExtract):
+    def pull_data(self, getData):
+        return self._get_web_page(getData)
+
+    def _get_web_page(self, webURL):
         try:
             r = requests.get(webURL)
             if r.status_code == 200:
                 inputSoup = BeautifulSoup(r.text, 'html.parser')
-                if parseDict:
+                if self.parseDict:
                     # See if we have a class, in which case, have to do more screening (1 to N classes)
-                    if 'class' in parseDict:
+                    if 'class' in self.parseDict:
                         classDict = {}
-                        classDict['class'], whichNum = parseDict['class']
+                        classDict['class'], whichNum = self.parseDict['class']
                         fullSoup = inputSoup.find_all(attrs=classDict)
                         for counter, whichSoup in enumerate(fullSoup, start=1):
                             if whichNum == counter or whichNum == 0:
-                                self._extract_from_web(webExtract, whichSoup, webURL)
+                                self._extract_from_web(whichSoup, webURL)
                                 self.returnWords.extend(self.scrapeWords)
                     else:
-                        self._extract_from_web(webExtract, inputSoup.find(attrs=parseDict), webURL)
+                        self._extract_from_web(inputSoup.find(attrs=self.parseDict), webURL)
                         self.returnWords.extend(self.scrapeWords)
                 else:
-                    self._extract_from_web(webExtract, inputSoup, webURL)
+                    self._extract_from_web(inputSoup, webURL)
                     self.returnWords.extend(self.scrapeWords)
 
             elif r.status_code == 403:
@@ -185,11 +194,11 @@ class WebExtract:
             }
             raise XWLException(err_dict)
 
-    def _extract_from_web(self, extractWhat, soup, extractURL):
+    def _extract_from_web(self, soup, extractURL):
         # A few ways the default option can come in, try that first
-        if extractWhat == 'text' or extractWhat is None:
+        if self.webExtract == 'text':
             self.scrapeWords = soup.stripped_strings
-        elif extractWhat == 'links':
+        elif self.webExtract == 'links':
             for link in soup.find_all('a'):
                 getURL = link.get('href')
                 if getURL:
@@ -199,14 +208,14 @@ class WebExtract:
                         parseExtract = urllib.parse.urlsplit(extractURL)
                         getURL = urllib.parse.urljoin(f'{parseExtract.scheme}://{parseExtract.netloc}', getURL)
                     self.scrapeWords.append(getURL)
-        elif extractWhat[:5] == 'html-':
-            extractTags = extractWhat[5:].split('_')
+        elif self.webExtract[:5] == 'html-':
+            extractTags = self.webExtract[5:].split('_')
             for tag in extractTags:
                 for link in soup.find_all(tag):
                     text = link.get_text()
                     self.scrapeWords.append(text)
         else:
-            error = f'Exiting... incorrect option for webextract: {self.err_text(extractWhat)}'
+            error = f'Exiting... incorrect option for webextract: {self.err_text(self.webExtract)}'
             raise XWLException(error)
 
         self.scrapeWords = list(line for line in self.scrapeWords)

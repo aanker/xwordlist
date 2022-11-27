@@ -121,7 +121,8 @@ def setup_input(localArgs, otherArgs):
     if localArgs.webpage:
         if localArgs.container:
             parseDict = create_dict(localArgs.container)
-        webScrape.get_web_page(localArgs.webpage, parseDict, localArgs.webextract)
+        webScrape = xwl.WebExtract(parseDict, localArgs.webextract)
+        webScrape.pull_data(localArgs.webpage)
         returnWords.extend(webScrape.returnWords)
 
     if localArgs.urllist:
@@ -139,7 +140,8 @@ def setup_input(localArgs, otherArgs):
                     'urlLength': urlLength,
                 }
                 print_line(print_text, arg_dict, endText='')
-                webScrape.get_web_page(oneUrl, parseDict, localArgs.webextract)
+                webScrape = xwl.WebExtract(parseDict, localArgs.webextract)
+                webScrape.pull_data(oneUrl)
                 returnWords.extend(webScrape.returnWords)
                 if urlCount < urlLength:
                     delay = int(otherArgs['urllist_delay'])
