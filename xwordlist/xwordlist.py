@@ -237,7 +237,7 @@ def main():
                       better understand how this works.'
     parser.add_argument('--word2word', action='store_true', help=word2word_help)
 
-    convert_help = 'Convert a block of text into individual words, separating words by spaces'
+    convert_help = 'Convert a block of text into individual words, separating words by spaces '
     parser.add_argument('--convert', nargs='?', const=defArgs['defaults']['convert'], help=convert_help)
 
     alphabetize_help = 'Alphabetize the list '
