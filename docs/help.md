@@ -10,8 +10,6 @@ The functionality of `xwordlist` can be divided into three categories:
 *  [Content Parsing](#content-parsing): take content from multiple sources and parse it into a normalized list of words. Grab all the words on a web page or limit to one ID, one or more classes and/or one or more HTML tags. Use a regex pattern to get rid of anything you don’t need.
 *  [Word Transformation](#word-transformation): refine your list into something you can paste directly into your construction software — alphabetized, deduped, properly cased and with all the extraneous words filtered out.
 
-Although `xwordlist` is a command line tool and all of its key functionality is available via command line options, it is often easier to use the [configuration file](#configuration-file) to enter a set of options before running the program with fewer or no command line options. Many of the [recipes provided on this site](/resources/#recipes) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
-
 ## Basic Example
 
 The easiest way to understand `xwordlist` is to walk through the example of getting a list of song titles, something you might want to do if you are building a themed puzzle about a particular musician. In this case, we’ll be grabbing a list of songs by Tom Petty from [this page on SongLyrics](https://www.songlyrics.com/tom-petty-lyrics/):
@@ -149,35 +147,3 @@ View the help message and exit.
 
 #### **--version** or **-v**
 View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](/changelog/).
-
-#### **--config**
-View the location of your currently active `xwordlist.conf` file and exit.
-
-## Configuration File
-
-`xwordlist` supports the use of a configuration file named `xwordlist.conf`. You can paste any or all command line options directly into the configuration file rather than entering them on the command line. Then you can just type `xwordlist` or `xwl` on the command line to run the software and it will process all of the options saved in the configuration file. Especially for things like using the [recipes](/resources/#recipes), it is often easier to just paste everything into the configuration file rather than trying to type it all on the command line.
-
-An `xwordlist.conf` file is provided when you install via `pip`, it will be located in the same directory as the program itself. This file includes a commented out example of the format for each option. The format is the same as the command line options described above, but the dashes (`-` or `--`) are not necessary:
- 
-```
-# options that take an argument:
-case lower
-
-# options that don't need an argument (e.g., using default behavior)
-alphabetize
-```
-Often times when installing by `pip`, the `xwordlist.conf` file ends up in a hard to find directory buried in an obscure location. Rather than leave the configuration file in that directory, you can move it to a folder your home directory:  `~/xwordlist/xwordlist.conf` (it must be a folder named `xwordlist` inside your home folder). To help you find where your configuration file is located, enter `xwordlist --config` and the software will tell you which folder contains the active configuration file.
-
-Options entered on the command line take precedence over the configuration file. So for instance, set your default in the configuration file for `case lower` but then override it with `--case none` when you’re requesting links and don’t want to change the case of URLs. It is recommended that you specify your most important defaults (for example `directory`) in the configuration file and leave the inputs and outputs to the command line — but YMMV.
-
-Many of the [recipes provided on this site](/resources/#recipes) include options that you can paste directly into your configuration file to grab data off websites and start building word lists.
-
-### Changing Global Settings
-
-The configuration file also includes global settings that are user editable:
-
-*  `urllist_delay`:  the number of seconds between web page requests when you specify a list of URLs using the `--urllist` option. If you set this too low, you run the danger of looking like a bot and getting blocked by the website. Default setting: `20`
-
-*  `file_add`:  the string added when a new output file needs to be created but no name is specified by the user. For instance, if the input file is `tompetty.txt` and `file_add` is set to `xwl`, the output file created will be named `tompetty_xwl.txt`. Default setting: `xwl`
-
-*  `impact_color`:  the color used during alerts and error messages for the most important part of the message. For instance, if you specify a directory that cannot be found, the error message will include the directory you specified in the `impact_color`. Possible options are black, white, red, green, yellow, blue, magenta, cyan, gray, brightblack, brightred, brightgreen, brightyellow, brightblue, brightmagenta or brightcyan. Default setting `red`

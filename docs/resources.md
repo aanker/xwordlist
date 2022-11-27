@@ -9,7 +9,7 @@ To help you understand ways to use `xwordlist` as well as provide support for co
 
 ## Recipes
 
-For each recipe included in these pages, we have provided configuration file options that can be easily pasted into your `xwordlist.conf` file. Be sure to customize any links to the exact page(s) you want and to configure any output file names. The instructions given are specific to each site’s HTML when we created the recipes but of course, websites change. If you notice that one of the recipes is no longer working, don’t hesitate to open an [issue](https://github.com/aanker/xwordlist/issues) and let us know.
+For each recipe included in these pages, we have provided options that can be used to grab data from known webpages. Be sure to customize any links to the exact page(s) you want and to configure any output file names. The instructions given are specific to each site’s HTML when we created the recipes but of course, websites change. If you notice that one of the recipes is no longer working, don’t hesitate to open an [issue](https://github.com/aanker/xwordlist/issues) and let us know.
 
 In general, it is good to test the content before you turn it into a word list. To do this, first run `xwordlist` without the options for `convert`, `strip`, `dedupe`, `alphabetize` and `case`. After being certain that the content you are pulling makes sense for your word list, run it again with all options and you will have a word list.
 
