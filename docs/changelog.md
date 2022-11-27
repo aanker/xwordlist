@@ -5,6 +5,11 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 22.3.1 (11/27/2022)
+* Finish refactoring, format into Python package [(link)](https://github.com/aanker/xwordlist/commit/f7be7a4202df10739171c7f49f0e7b749156724f)
+* Read defaults and globals from a config file stored in ~/.config/xwordlist, replace configargparse with argparse and remove --config option which is no longer applicable, move all applicable config code to xwlconfig.py [(link)](https://github.com/aanker/xwordlist/commit/87f576d6ae61ffe1d0a34dc98e92a9b08acd0dd1)
+* Refactor WebExtract to prepare for subclassing modules: we want specific websites to have special subclasses preformatted with parseDict and webExtract arguments [(link)](https://github.com/aanker/xwordlist/commit/da18b38751a33387a084821e9ce793e63f74ae7d)
+
 ### Version 22.3.0 (11/13/2022)
 * Refactor class into a separate module [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
 * Refactor web extraction into a separate module [(link)](https://github.com/aanker/xwordlist/commit/d05aefb47d1752bc2b2f000a67322dfd20782b71)
