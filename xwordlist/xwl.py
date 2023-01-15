@@ -128,7 +128,6 @@ class WebExtract:
 
     def __init__(self, parseDict={}, webExtract=''):
         self.returnWords = []
-        self.scrapeWords = []
         self.parseDict = parseDict if parseDict != {} else self.PARSEDICT
         self.webExtract = webExtract if webExtract != '' else self.WEBEXTRACT
 
@@ -199,6 +198,7 @@ class WebExtract:
         if self.webExtract == 'text':
             self.scrapeWords = soup.stripped_strings
         elif self.webExtract == 'links':
+            self.scrapeWords = []
             for link in soup.find_all('a'):
                 getURL = link.get('href')
                 if getURL:
@@ -209,6 +209,7 @@ class WebExtract:
                         getURL = urllib.parse.urljoin(f'{parseExtract.scheme}://{parseExtract.netloc}', getURL)
                     self.scrapeWords.append(getURL)
         elif self.webExtract[:5] == 'html-':
+            self.scrapeWords = []
             extractTags = self.webExtract[5:].split('_')
             for tag in extractTags:
                 for link in soup.find_all(tag):
