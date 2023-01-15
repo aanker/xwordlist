@@ -66,4 +66,9 @@ def init_config():
 
     # Now write a new file
     configClass.write(open(CONFIG, 'w'))
+
+    # If directory option exists, expand it before passing back
+    if 'directory' in configClass['globals']:
+        configClass['globals']['directory'] = os.path.expanduser(configClass['globals']['directory'])
+
     return configClass

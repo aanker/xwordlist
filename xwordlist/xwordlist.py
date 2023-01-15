@@ -264,18 +264,19 @@ def main():
     confArgs = parser.parse_args()
 
     # See if a default directory was specified and rewrite inputs and outputs as necessary
-    if confArgs.directory is not None:
-        if pathlib.Path(confArgs.directory).is_dir():
+    if confArgs.directory is not None or 'directory' in defArgs['globals']:
+        directory = confArgs.directory if confArgs.directory else defArgs['globals']['directory']
+        if pathlib.Path(directory).is_dir():
             if confArgs.input:
                 inputFiles = []
                 for inputFile in confArgs.input:
-                    inputFiles.append(os.path.join(confArgs.directory, inputFile) if inputFile else None)
+                    inputFiles.append(os.path.join(directory, inputFile) if inputFile else None)
                 confArgs.input = inputFiles
-            confArgs.urllist = os.path.join(confArgs.directory, confArgs.urllist) if confArgs.urllist else None
-            confArgs.output = os.path.join(confArgs.directory, confArgs.output) if confArgs.output else None
+            confArgs.urllist = os.path.join(directory, confArgs.urllist) if confArgs.urllist else None
+            confArgs.output = os.path.join(directory, confArgs.output) if confArgs.output else None
         else:
             print_text = 'Exiting... directory path <{color}>{directory}</{color}> does not exist'
-            print_line(print_text, {'directory': confArgs.directory})
+            print_line(print_text, {'directory': directory})
             sys.exit()
 
     # Set up output file to make sure it doesn't exist then grab all inputs (including web parsing)
