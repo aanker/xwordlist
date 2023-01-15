@@ -5,6 +5,10 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 23.0.0 (1/15/2023)
+* Add option to store default directory in config file (currently no UI for that)  [(link)](https://github.com/aanker/xwordlist/commit/18f8db2de9e44fd499d81459c97d956202fb04bf)
+* Fix regression where classes in webextract get added multiple times [(link)](https://github.com/aanker/xwordlist/commit/c26aac06409b0bef21ca6d59389ed7e3cc7b7628)
+
 ### Version 22.3.1 (11/27/2022)
 * Finish refactoring, format into Python package [(link)](https://github.com/aanker/xwordlist/commit/f7be7a4202df10739171c7f49f0e7b749156724f)
 * Read defaults and globals from a config file stored in ~/.config/xwordlist, replace configargparse with argparse and remove --config option which is no longer applicable, move all applicable config code to xwlconfig.py [(link)](https://github.com/aanker/xwordlist/commit/87f576d6ae61ffe1d0a34dc98e92a9b08acd0dd1)
