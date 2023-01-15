@@ -60,9 +60,7 @@ Also, check out the [recipes page](/resources/#recipes) for other possibilities.
 
 ## List of Available Options
 
-Each option below is shown as would be specified on the command line. To use as an option in the configuration file, you do not have to enter the dashes (i.e., `--input filename.txt` on the command line but `input filename.txt` in the configuration file.)
-
-When a default option is specified, you can leave it out. For instance, rather than entering `--dedupe nocase`, you can just add `--dedupe`.
+When a default option is specified, you can leave it out. For instance, rather than entering `--dedupe nocase`, you can just add `--dedupe`. To change a default, see the [Changing Global Settings](#changing-global-settings) section below. 
 
 The order that options are specified in does not matter, the software knows the right order to take these operations so they don’t conflict with each other.
 
@@ -71,7 +69,7 @@ The order that options are specified in does not matter, the software knows the 
 `xwordlist` only works with text files, if it is given binary data it will let you know and then quit.
 
 #### **--input** or **-i** file1.txt [file2.txt ...]
-Use the text file named `file1.txt` as an input for the parsing and transformation engine. Multiple input files can be specified and all will added. On the command line, use `--input file1.txt file2.txt` but in the configuration file use `input [file1.txt, file2.txt]`.
+Use the text file named `file1.txt` as an input for the parsing and transformation engine. Multiple input files can be specified and all will added, use `--input file1.txt file2.txt`.
 
 If you specify other input sources (such as `--webpage` and `--urllist`), all will be added together before processing by the parsing and transformation engine.
 
@@ -147,3 +145,32 @@ View the help message and exit.
 
 #### **--version** or **-v**
 View the version number and exit. For a record of changes and to see the most current version number, see the [changelog](/changelog/).
+
+## Changing Global Settings
+
+Global defaults and settings for `line2word` and `word2word` are stored in a configuration file that is created on first run. The configuration file is named `xwordlist.conf` and is stored within a subdirectory of the user’s home directory located at `~/.config/xwordlist`. The default configuration file should look like this:
+
+```
+[globals]
+urllist_delay = 20
+file_add = xwl
+impact_color = ansired
+
+[defaults]
+convert = 
+strip = diacritic
+minimum = 3
+case = upper
+dedupe = nocase
+webextract = text
+alphabetize = normal
+```
+
+There is currently no user interface built into `xwordlist` to modify these defaults; use your text editor to change an entry in the configuration file to change a default. For instance, by changing the line `minimum = 3` to `minimum = 4`, you will cause every instance of `line2word` or `word2word` to remove all words with less than 4 letters instead of the default of 3.
+
+To set a default directory to avoid having to enter `--directory ~/my_files` each time on the command line, add a line in the `[globals]` section with your default directory — for instance, `directory = ~/my_files`. You can always override the default setting by using `--directory /something/else` in the command line.
+
+If you enter an incorrect entry or option, `xwordlist` will delete the entry and revert back to the default.
+
+The `impact_color` setting is the color used in the command line to emphasize important parts of any response. Possible colors are `ansiblack`, `ansired`, `ansigreen`, `ansiyellow`, `ansiblue`, `ansimagenta`, `ansicyan`, `ansigray`, `ansibrightblack`, `ansibrightred`, `ansibrightgreen`, `ansibrightyellow`, `ansibrightblue`, `ansibrightmagenta`, `ansibrightcyan` and `ansiwhite`.
+
