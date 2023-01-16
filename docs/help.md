@@ -93,14 +93,16 @@ Your input and output files can be the same, the software will always prompt you
 #### **--directory** /path/to/folder
 Set a directory to use for all input and output files. The software will look in the directory specified for files named in the `--input` and `--urllist` options and will write any file specified by the `--output` option (or the default file if no output is specified) to this directory.
 
+To avoid entering the same directory on the command line each time, add your default directory to the configuration file. See the [Changing Global Settings](#changing-global-settings) section below for more information.
+
 For all inputs and outputs you can also specify a path as part of a file name as in `--input /path/to/wordlist.txt`.
 
 ## Content Parsing
 
 #### **--container** tag=name
-Limit the content read from web page(s) specified by either `--webpage` or `--urllist` to a particular HTML `id` or `class` tag. You must specify both the tag and the name of the element requested, for example `--container id=page_content` or `--container class=wikitable`.
+Limit the content read from web page(s) specified by either `--webpage` or `--urllist` to a particular HTML id or class tag. You must specify both the tag and the name of the element requested, for example `--container id=page_content` or `--container class=wikitable`.
 
-Since the `id` tag must be unique on a properly structured HTML page, specifying an `id` element will return a single container. To specify a single instance of a `class` attribute, add `=N` which will only grab the Nth time that label appears on the page. For example, `class=tracklist=1` will retrieve the first instance of the tracklist `class` on a page. If you leave out the `=N` attribute, the software will grab all instances of that `class`. 
+Since the id tag must be unique on a properly structured HTML page, specifying an id element will return a single container. To specify a single instance of a class attribute, add `=N` which will only grab the Nth time that label appears on the page. For example, `class=tracklist=1` will retrieve the first instance of the class named tracklist on the page. If you leave out the `=N` attribute, the software will grab all instances of that class. 
 
 #### **--webextract** text (default) | links | html-XX
 Specify what kind of content to grab from web pages. The default is `text` and for most web pages you will not need to use this option at all.
@@ -117,8 +119,12 @@ Refine which text to keep by using regex patterns. Whereas other options such as
 #### **--line2word**
 Convert each line of text into a word by stripping out spaces and other non-alphabetic characters, dedupe the list, alphabetize and capitalize every word. Remove all words below the minimum word size. This is the equivalent of doing the default behavior for all the following options: alphabetize, case, dedupe, minimum, strip.
 
+To change the default behaviors for any of the items called by `line2word`, see the [Changing Global Settings](#changing-global-settings) section below.
+
 #### **--word2word**
 Convert blocks of text into individual words delimited by spaces, strip out non-alphabetic characters, dedupe the list, alphabetize and capitalize every word. Remove all words below the minimum word size. This is the equivalent of doing the default behavior for all the following options: alphabetize, case, convert, dedupe, minimum, strip.
+
+To change the default behaviors for any of the items called by `word2word`, see the [Changing Global Settings](#changing-global-settings) section below.
 
 #### **--alphabetize** or **-a** normal (default) | reverse
 Alphabetize the list of words.
@@ -172,5 +178,5 @@ To set a default directory to avoid having to enter `--directory ~/my_files` eac
 
 If you enter an incorrect entry or option, `xwordlist` will delete the entry and revert back to the default.
 
-The `impact_color` setting is the color used in the command line to emphasize important parts of any response. Possible colors are `ansiblack`, `ansired`, `ansigreen`, `ansiyellow`, `ansiblue`, `ansimagenta`, `ansicyan`, `ansigray`, `ansibrightblack`, `ansibrightred`, `ansibrightgreen`, `ansibrightyellow`, `ansibrightblue`, `ansibrightmagenta`, `ansibrightcyan` and `ansiwhite`.
+`impact_color` is the color used in the command line to emphasize important parts of a response. Possible colors are `ansiblack`, `ansired`, `ansigreen`, `ansiyellow`, `ansiblue`, `ansimagenta`, `ansicyan`, `ansigray`, `ansibrightblack`, `ansibrightred`, `ansibrightgreen`, `ansibrightyellow`, `ansibrightblue`, `ansibrightmagenta`, `ansibrightcyan` and `ansiwhite`.
 
