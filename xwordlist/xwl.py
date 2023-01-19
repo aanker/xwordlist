@@ -44,7 +44,7 @@ class WordList:
             'lower': str.lower,
         }
         if newCase in case_dict:
-            self.myList = list(case_dict[newCase](line) for line in self.myList)
+            self.myList = [case_dict[newCase](line) for line in self.myList]
         elif newCase != 'none':
             err_dict = {
                 'error': 'Exiting... unknown case option {}',
