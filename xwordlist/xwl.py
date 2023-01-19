@@ -13,11 +13,7 @@ class WordList:
     # List transformation options
     def minimum(self, numChars):
         if isinstance(numChars, int) or numChars.isdigit():
-            newList = []
-            for line in self.myList:
-                if line and len(line) >= int(numChars):
-                    newList.append(line)
-            self.myList = newList
+            self.myList = [line for line in self.myList if line and len(line) >= int(numChars)]
         else:
             err_dict = {
                 'error': 'Exiting... argument for minimum must be an integer, not {}',
