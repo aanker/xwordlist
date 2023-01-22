@@ -13,7 +13,7 @@ class WordList:
     # List transformation options
     def minimum(self, numChars):
         if isinstance(numChars, int) or numChars.isdigit():
-            self.myList = [line for line in self.myList if line and len(line) >= int(numChars)]
+            self.myList = [line for line in self.myList if line and len(line[0]) >= int(numChars)]
         else:
             err_dict = {
                 'error': 'Exiting... argument for minimum must be an integer, not {}',
@@ -24,13 +24,13 @@ class WordList:
     def strip(self, stripWhat):
         newList = []
         if stripWhat in ['keepdiacritic', 'diacritic']:
-            for word in self.myList:
+            for word, other in self.myList:
                 if stripWhat != 'keepdiacritic':
                     word = anyascii(word)
                 newWord = ''.join([i for i in word if i.isalpha()])
                 if len(newWord) > 0:
-                    newList.append(newWord)
-            self.myList = newList
+                    newList.append([newWord, other])
+            self.myList = list(newList)
         else:
             err_dict = {
                 'error': 'Exiting... unknown strip option {}',
@@ -44,7 +44,7 @@ class WordList:
             'lower': str.lower,
         }
         if newCase in case_dict:
-            self.myList = [case_dict[newCase](line) for line in self.myList]
+            self.myList = [[case_dict[newCase](line[0]), line[1]] for line in self.myList]
         elif newCase != 'none':
             err_dict = {
                 'error': 'Exiting... unknown case option {}',
@@ -53,17 +53,15 @@ class WordList:
             raise XWLException(err_dict)
 
     def dedupe(self, dedupeType):
-        if dedupeType == 'bycase':
-            self.myList = list(dict.fromkeys(self.myList))
-        elif dedupeType == 'nocase':
+        if dedupeType in ['bycase', 'nocase']:
             newList = []
             newSet = set()
-            for line in self.myList:
-                newLine = line.casefold()
-                if newLine not in newSet:
-                    newSet.add(newLine)
-                    newList.append(line)
-            self.myList = newList
+            for word, other in self.myList:
+                dupe_check = word.casefold() if dedupeType == 'nocase' else word
+                if dupe_check not in newSet:
+                    newSet.add(dupe_check)
+                    newList.append([word, other])
+            self.myList = list(newList)
         else:
             err_dict = {
                 'error': 'Exiting... incorrect dedupe option {}',
@@ -73,9 +71,9 @@ class WordList:
 
     def alphabetize(self, direction):
         if direction == 'normal':
-            self.myList = sorted(self.myList, key=str.casefold)
+            self.myList.sort(key=lambda x: x[0].casefold())
         elif direction == 'reverse':
-            self.myList = sorted(self.myList, key=str.casefold, reverse=True)
+            self.myList.sort(key=lambda x: x[0].casefold(), reverse=True)
         else:
             err_dict = {
                 'error': 'Exiting... incorrect alphabetize option {}',
@@ -87,9 +85,11 @@ class WordList:
     def regex(self, regexInput):
         try:
             newList = []
-            for line in self.myList:
-                newList.extend(re.findall(regexInput, line))
-            self.myList = newList
+            for line, other in self.myList:
+                reg_find = re.findall(regexInput, line)
+                for reg_line in reg_find:
+                    newList.append([reg_line, other])
+            self.myList = list(newList)
 
         except re.error:
             err_dict = {
@@ -110,12 +110,14 @@ class WordList:
         parseChars += ' '
         for char in parseChars:
             newList = []
-            for line in self.myList:
+            for line, other in self.myList:
                 if line.find(char) != -1:
-                    newList.extend(line.split(char))
+                    line_find = line.split(char)
+                    for new_line in line_find:
+                        newList.append([new_line, other])
                 else:
-                    newList.append(line)
-            self.myList = newList
+                    newList.append([line, other])
+            self.myList = list(newList)
 
 
 class WebExtract:
@@ -144,13 +146,13 @@ class WebExtract:
                         for counter, whichSoup in enumerate(fullSoup, start=1):
                             if whichNum == counter or whichNum == 0:
                                 self._extract_from_web(whichSoup, webURL)
-                                self.returnWords.extend(self.scrapeWords)
                     else:
                         self._extract_from_web(inputSoup.find(attrs=self.parseDict), webURL)
-                        self.returnWords.extend(self.scrapeWords)
                 else:
                     self._extract_from_web(inputSoup, webURL)
-                    self.returnWords.extend(self.scrapeWords)
+
+                for line in self.scrapeWords:
+                    self.returnWords.append([line, ''])
 
             elif r.status_code == 403:
                 err_dict = {
@@ -214,8 +216,6 @@ class WebExtract:
         else:
             error = f'Exiting... incorrect option for webextract: {self.err_text(self.webExtract)}'
             raise XWLException(error)
-
-        self.scrapeWords = list(line for line in self.scrapeWords)
 
 
 class XWLException(Exception):

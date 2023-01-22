@@ -34,10 +34,17 @@ def create_dict(localAttrs):
         sys.exit()
 
 
-def get_file_content(inputFile):
+def get_file_content(inputFile, doParse, parseChar=''):
     try:
         with open(inputFile, 'r') as inputOpen:
-            return list(line.strip() for line in inputOpen)
+            returnFile = []
+            for line in inputOpen:
+                if doParse and parseChar in line:
+                    split = line.split(parseChar)
+                    returnFile.append([split[0], split[1].strip()])
+                else:
+                    returnFile.append([line.strip(), ''])
+            return returnFile
 
     except UnicodeDecodeError:
         print_line('Exiting... only text files accepted')
@@ -53,10 +60,14 @@ def get_file_content(inputFile):
         sys.exit()
 
 
-def save_output(localOuput, localWords):
+def save_output(localOuput, localWords, localArgs, otherArgs):
     try:
         with open(localOuput, 'w') as outputOpen:
-            outputOpen.writelines(str(line) + '\n' for line in localWords.myList)
+            for line in localWords.myList:
+                if not localArgs.delimiter:
+                    outputOpen.writelines(str(line[0]) + '\n')
+                else:
+                    outputOpen.writelines(str(line[0]) + otherArgs['parse_char'] + str(line[1]) + '\n')
         print_text = 'New list saved to <{color}>{output}</{color}>'
         print_line(print_text, {'output': outputOpen.name})
 
@@ -113,8 +124,12 @@ def setup_input(localArgs, otherArgs):
 
     # Load input(s)
     if localArgs.input:
+        if localArgs.delimiter and 'parse_char' not in otherArgs:
+            print_line('Exiting... --delimiter option specified but no parse_char found in configuration file')
+            sys.exit()
+
         for inputFile in localArgs.input:
-            fileWords = get_file_content(inputFile)
+            fileWords = get_file_content(inputFile, localArgs.delimiter, otherArgs['parse_char'])
             if fileWords:
                 returnWords.extend(fileWords)
 
@@ -126,7 +141,7 @@ def setup_input(localArgs, otherArgs):
         returnWords.extend(webScrape.returnWords)
 
     if localArgs.urllist:
-        urlList = get_file_content(localArgs.urllist)
+        urlList = get_file_content(localArgs.urllist, False)
         if urlList:
             urlLength = len(urlList)
             if localArgs.container:
@@ -135,13 +150,13 @@ def setup_input(localArgs, otherArgs):
             for urlCount, oneUrl in enumerate(urlList, start=1):
                 print_text = 'Getting <{color}>{oneUrl}</{color}> ({urlCount} of {urlLength})'
                 arg_dict = {
-                    'oneUrl': oneUrl,
+                    'oneUrl': oneUrl[0],
                     'urlCount': urlCount,
                     'urlLength': urlLength,
                 }
                 print_line(print_text, arg_dict, endText='')
                 webScrape = xwl.WebExtract(parseDict, localArgs.webextract)
-                webScrape.pull_data(oneUrl)
+                webScrape.pull_data(oneUrl[0])
                 returnWords.extend(webScrape.returnWords)
                 if urlCount < urlLength:
                     delay = int(otherArgs['urllist_delay'])
@@ -223,6 +238,10 @@ def main():
     parser.add_argument('--webextract', nargs='?', default=defArgs['defaults']['webextract'], help=webextract_help)
 
     parser.add_argument('--regex', nargs=1, help='Parse text based on regex')
+
+    delimiter_help = 'Each line contains a delimiter, separate into two columns based on that character '
+    delimiter_help += f"- DEFAULT: {defArgs['globals']['parse_char']}"
+    parser.add_argument('--delimiter', action='store_true', help=delimiter_help)
 
     # List transformation options
     line2word_help = 'Convert each line of text into a word by stripping out spaces and other non-alphabetic\
@@ -318,7 +337,7 @@ def main():
         sys.exit()
 
     # Now save the file
-    save_output(outputFile, inputWords)
+    save_output(outputFile, inputWords, confArgs, defArgs['globals'])
 
 
 if __name__ == '__main__':

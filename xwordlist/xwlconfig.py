@@ -35,6 +35,7 @@ GLOBAL_SETTINGS = {
     'urllist_delay': 20,
     'file_add': 'xwl',
     'impact_color': 'ansired',
+    'parse_char': ';',
 }
 
 IMPACT_COLOR = 'ansired'
