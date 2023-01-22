@@ -290,7 +290,7 @@ def main():
                 inputFiles = []
                 for inputFile in confArgs.input:
                     inputFiles.append(os.path.join(directory, inputFile) if inputFile else None)
-                confArgs.input = inputFiles
+                confArgs.input = list(inputFiles)
             confArgs.urllist = os.path.join(directory, confArgs.urllist) if confArgs.urllist else None
             confArgs.output = os.path.join(directory, confArgs.output) if confArgs.output else None
         else:
