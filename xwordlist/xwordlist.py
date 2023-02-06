@@ -176,7 +176,7 @@ def setup_input(localArgs, otherArgs):
 
 
 def do_word_options(localWords, localArgs, defaultArgs):
-    thatOption = ''
+    thatOption = 'line2word'
     if localArgs.line2word and localArgs.word2word:
         print_text = 'Options <{color}>line2word</{color}> and <{color}>word2word</{color}>'
         print_text += ' are mutually exclusive, please use either but not both'
@@ -191,8 +191,6 @@ def do_word_options(localWords, localArgs, defaultArgs):
     for option in optionList:
         getattr(localWords, option)(defaultArgs[option])
 
-    if thatOption == '':
-        thatOption = 'line2word'
     return localWords, thatOption
 
 
