@@ -135,14 +135,14 @@ def setup_input(localArgs, otherArgs):
             if fileWords:
                 returnWords.extend(fileWords)
 
-    if localArgs.webpage:
+    if 'webpage' in localArgs and localArgs.webpage:
         if localArgs.container:
             parseDict = create_dict(localArgs.container)
         webScrape = WebExtract(parseDict, localArgs.webextract)
         webScrape.pull_data(localArgs.webpage)
         returnWords.extend(webScrape.returnWords)
 
-    if localArgs.urllist:
+    if 'urllist' in localArgs and localArgs.urllist:
         urlList = get_file_content(localArgs.urllist, False)
         if urlList:
             urlLength = len(urlList)
@@ -293,8 +293,9 @@ def main():
                 for inputFile in confArgs.input:
                     inputFiles.append(os.path.join(directory, inputFile) if inputFile else None)
                 confArgs.input = list(inputFiles)
-            confArgs.urllist = os.path.join(directory, confArgs.urllist) if confArgs.urllist else None
             confArgs.output = os.path.join(directory, confArgs.output) if confArgs.output else None
+            if 'urllist' in confArgs and confArgs.urllist:
+                confArgs.urllist = os.path.join(directory, confArgs.urllist)
         else:
             print_text = 'Exiting... directory path <{color}>{directory}</{color}> does not exist'
             print_line(print_text, {'directory': directory})
