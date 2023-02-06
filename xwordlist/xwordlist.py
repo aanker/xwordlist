@@ -64,7 +64,9 @@ def save_output(localOuput, localWords, localArgs, otherArgs):
     try:
         with open(localOuput, 'w') as outputOpen:
             for line in localWords.myList:
-                if not localArgs.delimiter:
+                if isinstance(line[0], str) and line[0][:1] == '#':
+                    outputOpen.writelines(str(line) + '\n')
+                elif not localArgs.delimiter:
                     outputOpen.writelines(str(line[0]) + '\n')
                 else:
                     outputOpen.writelines(str(line[0]) + otherArgs['parse_char'] + str(line[1]) + '\n')
