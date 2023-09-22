@@ -24,7 +24,6 @@ documentation = "https://xwl.ist/help/"
 python = "^3.9"
 anyascii = "^0.3.1"
 beautifulsoup4 = "^4.11.1"
-configargparse = "^1.5.3"
 prompt-toolkit = "^3.0.20"
 requests = "^2.28.1"
 
