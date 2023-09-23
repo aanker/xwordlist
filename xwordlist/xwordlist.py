@@ -302,6 +302,7 @@ def main():
     # Set up output file to make sure it doesn't exist then grab all inputs (including web parsing)
     outputFile = setup_output(confArgs, defArgs)
     try:
+        inputWords = WordList(myList=setup_input(confArgs, defArgs['globals']))
 
         # Do any text parsing
         if confArgs.regex is not None:
@@ -327,7 +328,6 @@ def main():
             if confOption is not None:
                 do_ignore(option, thatOption) if thatOption else getattr(inputWords, option)(confOption)
 
-        inputWords = WordList(myList=setup_input(confArgs, defArgs['globals']))
     except XWLException as e:
         (err_info, ) = e.args
         if 'arg' in err_info:
