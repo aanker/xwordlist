@@ -5,6 +5,9 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 23.0.1 (9/23/2023)
+* Various dependabot updates to libraries
+
 ### Version 23.0.0 (1/15/2023)
 * Add option to store default directory in config file (currently no UI for that)  [(link)](https://github.com/aanker/xwordlist/commit/18f8db2de9e44fd499d81459c97d956202fb04bf)
 * Fix regression where classes in webextract get added multiple times [(link)](https://github.com/aanker/xwordlist/commit/c26aac06409b0bef21ca6d59389ed7e3cc7b7628)
