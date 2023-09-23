@@ -5,6 +5,9 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 23.0.2 (9/23/2023)
+* Fix silly bug where a line magically moved to the wrong place [(link)](https://github.com/aanker/xwordlist/commit/54a0d42a705f4446e4b7b0d63c8e0a73d5322ecf)
+
 ### Version 23.0.1 (9/23/2023)
 * Various dependabot updates to libraries
 
