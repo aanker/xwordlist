@@ -22,8 +22,6 @@ minima:
     user_url: "https://facebook.com/aanker"
   - platform: linkedin
     user_url: "https://www.linkedin.com/in/aanker/"
-  - platform: twitter
-    user_url: "https://twitter.com/aa"
 
 header_pages:
   - help.md
