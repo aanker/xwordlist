@@ -51,6 +51,10 @@ button {
     border-radius: 5px;
     text-align: right;
 
+    .nav-trigger {
+      display: none;
+    }
+
     label[for="nav-trigger"] {
       display: block;
       float: right;
