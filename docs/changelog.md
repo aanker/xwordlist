@@ -5,6 +5,18 @@ menu_title: Changelog
 permalink: /changelog/
 ---
 
+### Version 26.0.0 (1/8/2026)
+* Update Python dependencies to latest secure versions: anyascii 0.3.1→0.3.3, beautifulsoup4 4.11.1→4.14.3, ConfigArgParse 1.5.3→1.7.1, prompt_toolkit 3.0.20→3.0.52
+* Fix security vulnerabilities in Ruby dependencies: activesupport 6.0.6.1→6.1.7.10, addressable 2.8.1→2.8.8, github-pages 227→231
+* Fix mobile menu displaying duplicate icons (checkbox and SVG hamburger)
+* Fix custom styles not being imported by creating local assets/main.scss
+* Switch from remote_theme to local minima theme for better stability
+* Fix undefined SCSS variables in custom-styles.scss
+
+### Version 23.0.X (X/XX/2023)
+* Bump urllib from 2.0.6 to 2.0.7 [(link)](https://github.com/aanker/xwordlist/commit/7dab4d0d881d3fa2e45f1d30bdc360f0e9e0fab0)
+* Bump urllib from 2.0.5 to 2.0.6 [(link)](https://github.com/aanker/xwordlist/commit/605f4b0a9d05bc28bd9d78e1a91ff8b33ee1984e)
+
 ### Version 23.0.2 (9/23/2023)
 * Fix silly bug where a line magically moved to the wrong place [(link)](https://github.com/aanker/xwordlist/commit/54a0d42a705f4446e4b7b0d63c8e0a73d5322ecf)
 
