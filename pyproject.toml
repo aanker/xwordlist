@@ -22,10 +22,10 @@ documentation = "https://xwl.ist/help/"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-anyascii = "^0.3.1"
-beautifulsoup4 = "^4.11.1"
-prompt-toolkit = "^3.0.20"
-requests = "^2.28.1"
+anyascii = "^0.3.3"
+beautifulsoup4 = "^4.14.3"
+prompt-toolkit = "^3.0.52"
+requests = "^2.32.4"
 
 
 [build-system]
