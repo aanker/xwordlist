@@ -12,7 +12,7 @@ url: "https://xwl.ist"
 markdown: GFM
 
 # Theme info
-remote_theme: jekyll/minima
+theme: minima
 minima:
   skin: auto
   social_links:
