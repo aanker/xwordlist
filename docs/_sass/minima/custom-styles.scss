@@ -52,7 +52,12 @@ button {
     text-align: right;
 
     .nav-trigger {
-      display: none;
+      display: none !important;
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      visibility: hidden !important;
     }
 
     label[for="nav-trigger"] {
